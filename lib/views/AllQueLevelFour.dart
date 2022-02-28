@@ -998,6 +998,8 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
     }
   }
 
+  
+
   _levelCompleteSummary(BuildContext context, int gameScore, int balance,
       int qualityOfLife) async {
     DocumentSnapshot documentSnapshot =
