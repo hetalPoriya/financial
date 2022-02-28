@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "121614251815",
+    "project_id": "finshark-b70dd",
+    "storage_bucket": "finshark-b70dd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:121614251815:android:0534f76720a2f242099b02",
+        "android_client_info": {
+          "package_name": "com.finshark"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "121614251815-7vhavjuim4fva93rupsim4r1e5q55kui.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.finshark",
+            "certificate_hash": "d7eaf81474366673ff28ec0c7a856e2a4b2f1870"
+          }
+        },
+        {
+          "client_id": "121614251815-ijv0bnl391sqt4u8kl17l531f66h8900.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.finshark",
+            "certificate_hash": "aad2852cc8cfcc2677cf82146087fecfeb156398"
+          }
+        },
+        {
+          "client_id": "121614251815-etrm7ujj9uqbhug3n73g3r10vf270c9j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3C5u2s7jUlu_psy3VjLw66Nw3yhfcbz4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "121614251815-etrm7ujj9uqbhug3n73g3r10vf270c9j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
