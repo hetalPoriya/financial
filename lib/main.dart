@@ -181,7 +181,7 @@ class _MyAppState extends State<MyApp> {
           GetPage(name: '/AllDone', page:()=> AllDone()),
         ],
        // initialRoute: '/Level4SetUp',
-        home: SplashScreen(),
+        home: LevelOneSetUpPage(),
       );
     });
   }

@@ -112,7 +112,7 @@ class _AllQueLevelOneState extends State<AllQueLevelOne> {
                       itemCount: snapshot.data!.docs.length,
                       controller: controller,
                       scrollDirection: Axis.vertical,
-                      // physics: NeverScrollableScrollPhysics(),
+                       physics: NeverScrollableScrollPhysics(),
                       onPageChanged: (b) async {
                         flag1 = false;
                         flag2 = false;
