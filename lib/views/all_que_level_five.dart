@@ -1522,12 +1522,6 @@ class LevelSummary extends StatelessWidget {
                     '${(((netWorth - mutualFund) / mutualFund) * 100).floor()}' +
                         '%',
                     1.h),
-            // richText('Bills Paid : ',
-            //     '${(((bill * 30) / 60000) * 100).floor()}' + '%', 1.h),
-            // richText('Spend on Needs : ',
-            //     '${((need / 60000) * 100).floor()}' + '%', 1.h),
-            // richText('Spend on Wants : ',
-            //     '${((want / 60000) * 100).floor()}' + '%', 1.h),
             richText(AllStrings.moneySaved,
                 '${((accountBalance / 60000) * 100).floor()}' + '%', 1.h),
             (accountBalance + netWorth) >= 30000

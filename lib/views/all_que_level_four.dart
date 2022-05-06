@@ -411,58 +411,6 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
                                                                     balance -
                                                                         bill!;
                                                               });
-
-                                                              // if (home == 'Rent' ||
-                                                              //     (home == 'EMI' &&
-                                                              //         homeLoan == 0) || ) {
-                                                              //
-                                                              //   bill = snap.get(
-                                                              //       'bill_payment');
-                                                              //   _setState(() {
-                                                              //     balance =
-                                                              //         balance - bill!;
-                                                              //   });
-                                                              // } else if (home ==
-                                                              //         'EMI' &&
-                                                              //     homeLoan >
-                                                              //         rentPrice) {
-                                                              //
-                                                              //   bill = snap.get(
-                                                              //       'bill_payment');
-                                                              //   _setState(() {
-                                                              //     balance =
-                                                              //         balance - bill!;
-                                                              //   });
-                                                              // } else {
-                                                              //
-                                                              //   rentPrice = homeLoan;
-                                                              //
-                                                              //   _setState(() {
-                                                              //     bill = rentPrice +
-                                                              //         transportPrice +
-                                                              //         lifestylePrice;
-                                                              //     balance =
-                                                              //         balance - bill!;
-                                                              //     pref.setInt(
-                                                              //         'rentPrice', 0);
-                                                              //     pref.setInt(
-                                                              //         'level4TotalPrice',
-                                                              //         transportPrice +
-                                                              //             lifestylePrice);
-                                                              //   });
-                                                              //   firestore
-                                                              //       .collection('User')
-                                                              //       .doc(userId)
-                                                              //       .update({
-                                                              //     'account_balance':
-                                                              //         FieldValue
-                                                              //             .increment(
-                                                              //                 -balance),
-                                                              //     'bill_payment':
-                                                              //         transportPrice +
-                                                              //             lifestylePrice,
-                                                              //   });
-                                                              // }
                                                               if (balance >=
                                                                   0) {
                                                                 firestore
@@ -480,8 +428,6 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
                                                                       FieldValue
                                                                           .increment(
                                                                               billPayment),
-                                                                  // if (home == 'EMI' && homeLoan != 0) 'home_loan': FieldValue.increment(-rentPrice),
-                                                                  // if (transport == 'Other' && transportLoan != 0) 'transport_loan': FieldValue.increment(-transportPrice),
                                                                 }).then((value) {
                                                                   controllerForInner.nextPage(
                                                                       duration: Duration(
@@ -569,21 +515,6 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
                                                                             });
                                                                           });
                                                                         }
-                                                                        // if (fundName[index] == 'Home Loan' && homeLoanValue != 0) {
-                                                                        //   _setState1(() {
-                                                                        //     homeLoanValue = homeLoanValue - 100;
-                                                                        //   });
-                                                                        // }
-                                                                        // if (fundName[index] == 'Car Loan' && transportLoanValue != 0) {
-                                                                        //   _setState1(() {
-                                                                        //     transportLoanValue = transportLoanValue - 100;
-                                                                        //   });
-                                                                        // }
-                                                                        // if (fundName[index] == 'Mutual Fund' && lifestyleLoanValue != 0) {
-                                                                        //   _setState1(() {
-                                                                        //     lifestyleLoanValue = lifestyleLoanValue - 100;
-                                                                        //   });
-                                                                        // }
                                                                       },
                                                                     ),
                                                                     Container(
@@ -644,30 +575,6 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
                                                                                 FieldValue.increment(-100),
                                                                           });
                                                                         });
-                                                                        // if (fundName[index] == 'Home Loan') {
-                                                                        //   if (homeLoanValue == homeLoan && homeLoanValue >= homeLoan) {
-                                                                        //     Fluttertoast.showToast(msg: 'Your Home EMI is only $homeLoan Left');
-                                                                        //   } else {
-                                                                        //     _setState1(() {
-                                                                        //       homeLoanValue = homeLoanValue + 100;
-                                                                        //     });
-                                                                        //   }
-                                                                        // }
-                                                                        // if (fundName[index] == 'Car Loan') {
-                                                                        //   if (transportLoanValue == transportLoan && transportLoanValue >= transportLoan) {
-                                                                        //     Fluttertoast.showToast(msg: 'Your Transport EMI is only $transportLoan Left');
-                                                                        //   } else {
-                                                                        //     _setState1(() {
-                                                                        //       transportLoanValue = transportLoanValue + 100;
-                                                                        //     });
-                                                                        //   }
-                                                                        // }
-                                                                        // if (fundName[index] == 'Mutual Fund') {
-                                                                        //   _setState1(() {
-                                                                        //     lifestyleLoanValue = lifestyleLoanValue + 100;
-                                                                        //   });
-                                                                        // }
-                                                                        //
                                                                       },
                                                                     ),
                                                                   ],
@@ -710,15 +617,10 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
                                                                     qualityOfLife =
                                                                         snap.get(
                                                                             'quality_of_life');
-                                                                    //fund = fundAllocation[0] + fundAllocation[1];
                                                                     fund =
                                                                         fundAllocation[
                                                                             0];
-                                                                    // balance = balance - fund;
-                                                                    //  totalFundAmount = homeLoanValue + transportLoanValue + lifestyleLoanValue;
-                                                                    //balance = balance - totalFundAmount;
                                                                   });
-                                                                  //SharedPreferences pref = await SharedPreferences.getInstance();
                                                                   if (balance >=
                                                                       0) {
                                                                     firestore
@@ -727,7 +629,6 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
                                                                         .doc(
                                                                             userId)
                                                                         .update({
-                                                                      // 'account_balance': balance,
                                                                       'game_score': gameScore +
                                                                           balance +
                                                                           qualityOfLife,
@@ -737,8 +638,6 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
                                                                       'investment':
                                                                           FieldValue.increment(
                                                                               fundAllocation[0])
-                                                                      // if (home == 'EMI' && homeLoan != 0) 'home_loan': FieldValue.increment(-homeLoanValue),
-                                                                      // if (transport == 'Other' && transportLoan != 0) 'transport_loan': FieldValue.increment(-transportLoanValue),
                                                                     }).then((value) {
                                                                       balance =
                                                                           balance +
@@ -860,26 +759,6 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
     if (totalMutualFund == 0) {
       number = 0;
     } else {
-      // if(randomNumber == 0 && positiveMonth! <= 18){
-
-      //   storeValue.write('positiveMonthValue',positiveMonth! + 1);
-      //   number = rnd.nextInt(6);
-      // }
-      // if(randomNumber == 1 && negativeMonth! <= 12){
-
-      //   storeValue.write('negativeMonthValue',negativeMonth! + 1);
-      //   number = rnd.nextInt(-6);
-      // }
-      // if(negativeMonth != 12 && positiveMonth! == 18){
-
-      //   storeValue.write('negativeMonthValue',negativeMonth! + 1);
-      //   number = rnd.nextInt(-6);
-      // }
-      // if(positiveMonth != 18 && negativeMonth! == 12){
-
-      //   storeValue.write('positiveMonthValue',positiveMonth! + 1);
-      //   number = rnd.nextInt(6);
-      // }
       number = randomNumberTotalPositive! <= 10
           ? rnd.nextInt(5 + 5) - 5
           : rnd.nextInt(6);
@@ -945,7 +824,6 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
         await firestore.collection('User').doc(userId).get();
     setState1(() {
       balance = snap.get('account_balance');
-      //int value = storeValue.read('level4or5innerPageViewId');
     });
     // if (index == snapshot.data!.docs.length - 1 && value == 2) {
     //   firestore.collection('User').doc(userId).update({
@@ -975,10 +853,6 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
       }).then((value) {
         controllerForInner.nextPage(
             duration: Duration(seconds: 1), curve: Curves.easeIn);
-        // balance = snap.get('account_balance');
-        // if (document['month'] != 0)
-        //   Future.delayed(
-        //       Duration(milliseconds: 500), () => _billPayment(balance, index));
       });
     } else {
       _showDialogForRestartLevel();
@@ -1023,7 +897,6 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
   _playLevelOrPopQuiz() {
     return popQuizDialog(
       () async {
-        // SharedPreferences pref = await SharedPreferences.getInstance();
         var userId = storeValue.read('uId');
         DocumentSnapshot snap =
             await firestore.collection('User').doc(userId).get();
@@ -1067,7 +940,6 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
         //       .update({'replay_level': false});
         // }
         Future.delayed(Duration(seconds: 2), () async {
-          //await localNotifyManager.flutterLocalNotificationsPlugin.cancel(24);
           await localNotifyManager.configureLocalTimeZone();
           await localNotifyManager.flutterLocalNotificationsPlugin.cancel(4);
           await localNotifyManager.flutterLocalNotificationsPlugin.cancel(10);
@@ -1094,11 +966,7 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
   }
 
   summary(DocumentSnapshot<Object?> documentSnapshot) {
-    // int need = documentSnapshot['need'];
-    // int want = documentSnapshot['want'];
-    // int bill = documentSnapshot['bill_payment'];
     int accountBalance = documentSnapshot['account_balance'];
-    // int qol = documentSnapshot['quality_of_life'];
     int netWorth = documentSnapshot['investment'];
     int mutualFund = documentSnapshot['mutual_fund'];
 
