@@ -1,6 +1,6 @@
-import 'package:financial/models/OnBoardingModel.dart';
-import 'package:financial/utils/AllImages.dart';
-import 'package:financial/utils/AllStrings.dart';
+import 'package:financial/models/on_boarding_model.dart';
+import 'package:financial/utils/all_images.dart';
+import 'package:financial/utils/all_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

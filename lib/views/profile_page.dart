@@ -318,24 +318,24 @@
 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:financial/ReusableScreen/GlobleVariable.dart';
-import 'package:financial/ReusableScreen/GradientText.dart';
-import 'package:financial/models/ProfilePageModel.dart';
-import 'package:financial/models/QueModel.dart';
-import 'package:financial/models/RankingUser.dart';
-import 'package:financial/utils/AllColors.dart';
-import 'package:financial/utils/AllImages.dart';
-import 'package:financial/utils/AllStrings.dart';
-import 'package:financial/utils/AllTextStyle.dart';
-import 'package:financial/views/LevelFiveSetUpPage.dart';
-import 'package:financial/views/LevelFourSetUpPage.dart';
-import 'package:financial/views/LevelOnePopQuiz.dart';
+import 'package:financial/shareable_screens/globle_variable.dart';
+import 'package:financial/shareable_screens/gradient_text.dart';
+import 'package:financial/models/profile_page_model.dart';
+import 'package:financial/models/que_model.dart';
+import 'package:financial/models/ranking_user.dart';
+import 'package:financial/utils/all_colors.dart';
+import 'package:financial/utils/all_images.dart';
+import 'package:financial/utils/all_strings.dart';
+import 'package:financial/utils/all_textStyle.dart';
+import 'package:financial/views/level_five_setUp_page.dart';
+import 'package:financial/views/level_four_setUp_page.dart';
+import 'package:financial/views/level_one_pop_quiz.dart';
 
-import 'package:financial/views/LevelOneSetUpPage.dart';
-import 'package:financial/views/LevelSixSetUpPage.dart';
-import 'package:financial/views/LevelThreeSetUpPage.dart';
-import 'package:financial/views/LevelTwoSetUpPage.dart';
-import 'package:financial/views/PopQuiz.dart';
+import 'package:financial/views/level_one_setUp_page.dart';
+import 'package:financial/views/level_six_setUp_page.dart';
+import 'package:financial/views/level_three_setUp_page.dart';
+import 'package:financial/views/level_two_setUp_page.dart';
+import 'package:financial/views/pop_quiz.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -676,7 +676,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                               filled: true,
                                                               hintStyle:
                                                                   AllTextStyles.dialogStyleSmall(
-                                                                      size: 13.sp),
+                                                                      size: 13.sp,color: Colors.grey),
                                                               hintText: " Enter your name"),
                                                       controller:
                                                           textEditingController,

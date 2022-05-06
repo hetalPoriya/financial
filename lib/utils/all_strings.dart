@@ -126,7 +126,7 @@ class AllStrings {
 
   static String restartLevelText =
       'Oops! You do not have enough money in your account to make this purchase. \n Press restart to try again.';
-  static String playPopQuiz = 'Play Pop Quiz';
+  static String playPopQuiz = 'Quiz Me Up';
   static String playNextLevel = 'Play Next Level';
   static String congratulations = 'Congratulations!';
 
@@ -174,7 +174,7 @@ class AllStrings {
   static String spentOnNeed = 'Spent on Needs ';
   static String spentOnWant = 'Spent on Wants  ';
   static String savings = 'Savings  ';
-  static String billsPaid = 'Bills Paid : ';
+  static String billsPaid = 'Bills Paid  ';
   static String levelCompleteText =
       'Congratulations! You have completed this level successfully ';
   static String level1And2CompleteText = 'Budgeting Skills';

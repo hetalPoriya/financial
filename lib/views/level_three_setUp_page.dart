@@ -1,19 +1,28 @@
 
-
-import 'package:financial/ReusableScreen/CommanClass.dart';
-import 'package:financial/utils/AllStrings.dart';
-import 'package:financial/utils/AllTextStyle.dart';
-import 'package:financial/views/LevelTwoAndThreeOptions.dart';
+import 'package:financial/shareable_screens/globle_variable.dart';
+import 'package:financial/shareable_screens/setUp_page.dart';
+import 'package:financial/utils/all_colors.dart';
+import 'package:financial/utils/all_strings.dart';
+import 'package:financial/utils/all_textStyle.dart';
+import 'package:financial/views/level_two_and_three_options.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
-class LevelThreeSetUpPage extends StatelessWidget {
+class LevelThreeSetUpPage extends StatefulWidget {
   LevelThreeSetUpPage({Key? key}) : super(key: key);
+
+  @override
+  State<LevelThreeSetUpPage> createState() => _LevelThreeSetUpPageState();
+}
+
+class _LevelThreeSetUpPageState extends State<LevelThreeSetUpPage> {
+  Color color = Colors.white;
 
   @override
   Widget build(BuildContext context) {
     return SetUpPage(
+      color: color,
       level: 'Level 3',
       levelText: AllStrings.level3,
       buttonText: 'Let’s Go',
@@ -80,9 +89,12 @@ class LevelThreeSetUpPage extends StatelessWidget {
         ),
       ),
       onPressed: () async {
+        setState(() {
+          color = AllColors.green;
+        });
         Get.off(
           () => LevelTwoAndThreeOptions(),
-          duration: Duration(milliseconds: 250),
+          duration: Duration(seconds: 1),
           transition: Transition.downToUp,
         );
       },

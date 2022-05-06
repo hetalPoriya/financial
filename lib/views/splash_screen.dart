@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:financial/ReusableScreen/GlobleVariable.dart';
-import 'package:financial/controllers/UserInfoController.dart';
-import 'package:financial/utils/AllTextStyle.dart';
-import 'package:financial/views/AllQueLevelFive.dart';
-import 'package:financial/views/AllQueLevelSix.dart';
+import 'package:financial/shareable_screens/globle_variable.dart';
+import 'package:financial/controllers/user_info_controller.dart';
+import 'package:financial/utils/all_textStyle.dart';
+import 'package:financial/views/all_que_level_five.dart';
+import 'package:financial/views/all_que_level_six.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -16,13 +16,15 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+
   final userController = Get.put<UserInfoController>(UserInfoController());
 
-  //function for get all value from firestore and check user state
+  //function for get all value from fireStore and check user state
   getUID() async {
     userController.userId = userController.getCredential.read('uId');
     userController.update();
     print('UserId ${userController.userId}');
+
     //if user id available than check there state and move to that position
     if (userController.userId != null) {
       FirebaseFirestore.instance

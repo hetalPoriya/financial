@@ -1,20 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:financial/ReusableScreen/CommanClass.dart';
-import 'package:financial/ReusableScreen/GlobleVariable.dart';
-import 'package:financial/controllers/UserInfoController.dart';
-import 'package:financial/models/QueModel.dart';
-import 'package:financial/utils/AllColors.dart';
-import 'package:financial/utils/AllStrings.dart';
-import 'package:financial/utils/AllTextStyle.dart';
-import 'package:financial/views/LevelFourSetUpPage.dart';
-import 'package:financial/views/LocalNotifyManager.dart';
-import 'package:financial/views/PopQuiz.dart';
-import 'package:financial/views/RateUs.dart';
+import 'package:financial/shareable_screens/background_widget.dart';
+import 'package:financial/shareable_screens/bill_payment_widget.dart';
+import 'package:financial/shareable_screens/comman_functions.dart';
+import 'package:financial/shareable_screens/fund_allocation_screen.dart';
+import 'package:financial/shareable_screens/game_question_container.dart';
+import 'package:financial/shareable_screens/globle_variable.dart';
+import 'package:financial/shareable_screens/insight_widget.dart';
+import 'package:financial/shareable_screens/level_summary_screen.dart';
+import 'package:financial/shareable_screens/mutual_fund_widget.dart';
+import 'package:financial/controllers/user_info_controller.dart';
+import 'package:financial/models/que_model.dart';
+import 'package:financial/utils/all_colors.dart';
+import 'package:financial/utils/all_strings.dart';
+import 'package:financial/utils/all_textStyle.dart';
+import 'package:financial/views/level_four_setUp_page.dart';
+import 'package:financial/views/local_notify_manager.dart';
+import 'package:financial/views/pop_quiz.dart';
+import 'package:financial/views/rate_us.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:sizer/sizer.dart';
 import 'dart:math';
 
@@ -28,18 +33,11 @@ class AllQueLevelFour extends StatefulWidget {
 }
 
 class _AllQueLevelFourState extends State<AllQueLevelFour> {
-  int levelId = 0;
-  String level = '';
-  int qualityOfLife = 0;
-  int qolBill = 0;
-  int gameScore = 0;
-  int balance = 0;
-  var document;
   int priceOfOption = 0;
   String option = '';
-  var userId;
   int? bill;
   bool? homeRent = false;
+  int investment = 0;
 
   //get bill data
   int rentPrice = 0;
@@ -48,16 +46,8 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
   int fund = 0;
   int count = 0;
 
-  // //home rent/emi
-  // String? home;
-  // String? transport;
-  // int homeLoan = 0;
-  // int transportLoan = 0;
-  // int totalFundAmount = 0;
   final userInfo = Get.find<UserInfoController>();
 
-  //page controller
-  PageController controller = PageController();
   PageController controllerForInner = PageController();
   int currentIndex = 0;
   int totalMutualFund = 0;
@@ -66,27 +56,15 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
   int? randomNumberTotalPositive;
   Random rnd = Random();
 
-  //for option selection
-  bool flag1 = false;
-  bool flag2 = false;
-  bool flagForKnow = false;
-  Color color = Colors.white;
-
   //for Monthly Discretionary Fund
   List<String> fundName = ['Mutual Fund'];
   List<int> fundAllocation = [0];
-
-  final storeValue = GetStorage();
 
   //for model
   QueModel? queModel;
   List<QueModel> list = [];
 
-  int investment = 0;
-
-  int updateValue = 0;
-
-  Future<QueModel?> getLevelId() async {
+  getAllData() async {
     storeValue.write('count', 0);
     rentPrice = storeValue.read('rentPrice')!;
     transportPrice = storeValue.read('transportPrice')!;
@@ -95,24 +73,16 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
     if (count == null) {
       count = 0;
     }
-    userId = storeValue.read('uId');
-    updateValue = storeValue.read('update');
 
     DocumentSnapshot snapshot =
         await firestore.collection('User').doc(userId).get();
-    level = snapshot.get('previous_session_info');
-    levelId = snapshot.get('level_id');
-    gameScore = snapshot.get('game_score');
-    balance = snapshot.get('account_balance');
-    qolBill = snapshot.get('bill_payment');
     totalMutualFund = snapshot.get('mutual_fund');
-    qualityOfLife = snapshot.get('quality_of_life');
-    controller = PageController(initialPage: levelId);
     randomNumberTotalPositive = storeValue.read('randomNumberValue');
     controllerForInner = PageController(
         initialPage: storeValue.read('level4or5innerPageViewId'));
 
-    qolBill = (qolBill / 2).floor();
+    billPayment = (billPayment / 2).floor();
+
     QuerySnapshot querySnapshot =
         await FirebaseFirestore.instance.collection("Level_4").get();
     for (int i = 0; i < querySnapshot.docs.length; i++) {
@@ -129,7 +99,7 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
   @override
   void initState() {
     super.initState();
-    getLevelId();
+    getLevelId().then((value) => getAllData());
   }
 
   @override
@@ -509,7 +479,7 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
                                                                   'quality_of_life':
                                                                       FieldValue
                                                                           .increment(
-                                                                              qolBill),
+                                                                              billPayment),
                                                                   // if (home == 'EMI' && homeLoan != 0) 'home_loan': FieldValue.increment(-rentPrice),
                                                                   // if (transport == 'Other' && transportLoan != 0) 'transport_loan': FieldValue.increment(-transportPrice),
                                                                 }).then((value) {
@@ -1098,6 +1068,7 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
         // }
         Future.delayed(Duration(seconds: 2), () async {
           //await localNotifyManager.flutterLocalNotificationsPlugin.cancel(24);
+          await localNotifyManager.configureLocalTimeZone();
           await localNotifyManager.flutterLocalNotificationsPlugin.cancel(4);
           await localNotifyManager.flutterLocalNotificationsPlugin.cancel(10);
           inviteDialog();

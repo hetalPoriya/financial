@@ -1,5 +1,5 @@
 import 'dart:io' show Platform;
-import 'package:financial/utils/AllStrings.dart';
+import 'package:financial/utils/all_strings.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:get_storage/get_storage.dart';
@@ -233,10 +233,9 @@ class LocalNotifyManager {
   tz.TZDateTime _nextInstanceOfElevenAm() {
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
     tz.TZDateTime scheduledDate =
-        tz.TZDateTime(tz.local, now.year, now.month, now.day, 11);
+    tz.TZDateTime(tz.local, now.year, now.month, now.day, 9);
     // tz.TZDateTime scheduledDate = tz.TZDateTime.from(
     //     DateTime(now.year, now.month, now.day, 10, 00), tz.local);
-    print('sss ${scheduledDate}');
     if (scheduledDate.isBefore(now)) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
@@ -244,7 +243,7 @@ class LocalNotifyManager {
   }
   tz.TZDateTime _nextInstanceOfSaturdayElevenAM() {
     tz.TZDateTime scheduledDate = _nextInstanceOfElevenAm();
-    while (scheduledDate.weekday != DateTime.thursday) {
+    while (scheduledDate.weekday != DateTime.sunday) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
     return scheduledDate;
@@ -256,7 +255,6 @@ class LocalNotifyManager {
     tz.TZDateTime(tz.local, now.year, now.month, now.day, 10);
     // tz.TZDateTime scheduledDate = tz.TZDateTime.from(
     //     DateTime(now.year, now.month, now.day, 10, 02), tz.local);
-    print('sss ${scheduledDate}');
     if (scheduledDate.isBefore(now)) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
@@ -264,7 +262,7 @@ class LocalNotifyManager {
   }
   tz.TZDateTime _nextInstanceOfWednesdaySevenPm() {
     tz.TZDateTime scheduledDate = _nextInstanceOfSevenPm();
-    while (scheduledDate.weekday != DateTime.friday) {
+    while (scheduledDate.weekday != DateTime.saturday) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
     return scheduledDate;
@@ -279,7 +277,8 @@ class LocalNotifyManager {
         androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
-        matchDateTimeComponents: DateTimeComponents.dateAndTime);
+         matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime
+    );
   }
 
   scheduleNotificationForLevelOneSaturdayElevenAm() async {

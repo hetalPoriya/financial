@@ -1,9 +1,10 @@
 
-
-import 'package:financial/ReusableScreen/CommanClass.dart';
-import 'package:financial/utils/AllStrings.dart';
-import 'package:financial/utils/AllTextStyle.dart';
-import 'package:financial/views/LevelFourAndFiveOptions.dart';
+import 'package:financial/shareable_screens/globle_variable.dart';
+import 'package:financial/shareable_screens/setUp_page.dart';
+import 'package:financial/utils/all_colors.dart';
+import 'package:financial/utils/all_strings.dart';
+import 'package:financial/utils/all_textStyle.dart';
+import 'package:financial/views/level_four_and_five_options.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -17,10 +18,10 @@ class LevelFourSetUpPage extends StatefulWidget {
 
 class _LevelFourSetUpPageState extends State<LevelFourSetUpPage> {
 
-
+  Color color = Colors.white;
   @override
   Widget build(BuildContext context) {
-    return SetUpPage(level: 'Level 4', levelText: AllStrings.level4, buttonText: 'Let’s Go', container:  Container(
+    return SetUpPage(color: color,level: 'Level 4', levelText: AllStrings.level4, buttonText: 'Let’s Go', container:  Container(
       child: Padding(
         padding: EdgeInsets.only(right: 04.w, left: 04.w),
         child: Column(
@@ -81,9 +82,12 @@ class _LevelFourSetUpPageState extends State<LevelFourSetUpPage> {
       ),
     ),
         onPressed: ()async{
+      setState(() {
+        color = AllColors.green;
+      });
           Get.off(
                 () => LevelFourAndFiveOptions(),
-            duration: Duration(milliseconds: 250),
+            duration: Duration(seconds: 1),
             transition: Transition.downToUp,
           );
         },);

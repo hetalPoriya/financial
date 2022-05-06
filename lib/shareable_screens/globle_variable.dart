@@ -1,10 +1,9 @@
 library globals;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:financial/utils/AllColors.dart';
-import 'package:financial/utils/AllTextStyle.dart';
+import 'package:financial/utils/all_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+import 'package:get_storage/get_storage.dart';
 
 //for store select plan(rent,tv etc) value
 int globalVar = 0;
@@ -44,26 +43,54 @@ BoxDecoration boxDecoration = BoxDecoration(
   end: Alignment.bottomLeft,
 ));
 
-//button style for restart level or (creditbalance or debitbalance not enough) ok button
 
-Widget restartOrOkButton(String text, VoidCallback onPressed,
-        [Alignment? alignment]) =>
-    Padding(
-      padding: EdgeInsets.all(6.0),
-      child: Align(
-        alignment: alignment == null ? Alignment.centerRight : alignment,
-        child: ElevatedButton(
-            onPressed: onPressed,
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.white),
-                shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(2.w)))),
-            child: Padding(
-              padding: EdgeInsets.all(1.w),
-              child: Text(text,
-                  style: AllTextStyles.dialogStyleSmall(
-                      color: AllColors.darkPurple,
-                      fontWeight: FontWeight.normal)),
-            )),
-      ),
-    );
+String level = '';
+int levelId = 0;
+int gameScore = 0;
+int balance = 0;
+int qualityOfLife = 0;
+var userId;
+int updateValue = 0;
+Color color = Colors.white;
+int billPayment = 0;
+// page controller
+PageController controller = PageController();
+
+//store streambuilder value
+var document;
+
+// for option selection
+bool flag1 = false;
+bool flag2 = false;
+bool scroll = true;
+bool flagForKnow = false;
+final storeValue = GetStorage();
+
+
+// LocalNotifyManager localNotifyManager = LocalNotifyManager.init();
+
+
+ getLevelId() async {
+  //SharedPreferences pref = await SharedPreferences.getInstance();
+  userId = storeValue.read('uId');
+  updateValue = storeValue.read('update');
+  DocumentSnapshot snapshot =
+  await firestore.collection('User').doc(userId).get();
+  level = snapshot.get('previous_session_info');
+  levelId = snapshot.get('level_id');
+  gameScore = snapshot.get('game_score');
+  balance = snapshot.get('account_balance');
+  qualityOfLife = snapshot.get('quality_of_life');
+  billPayment = snapshot.get('bill_payment');
+  controller = PageController(initialPage: levelId);
+
+  if(level == 'Level_2' || level == 'Level_3'){
+    forPlan1 = storeValue.read('plan1')!;
+    forPlan2 = storeValue.read('plan2')!;
+    forPlan3 = storeValue.read('plan3')!;
+    forPlan4 = storeValue.read('plan4')!;
+  }
+  return null;
+}
+
+

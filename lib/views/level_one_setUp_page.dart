@@ -1,23 +1,32 @@
-import 'package:financial/ReusableScreen/CommanClass.dart';
-import 'package:financial/ReusableScreen/GlobleVariable.dart';
-import 'package:financial/utils/AllStrings.dart';
-import 'package:financial/utils/AllTextStyle.dart';
-import 'package:financial/views/AllQueLevelOne.dart';
+import 'package:financial/controllers/user_info_controller.dart';
+import 'package:financial/shareable_screens/comman_functions.dart';
+import 'package:financial/shareable_screens/globle_variable.dart';
+import 'package:financial/shareable_screens/setUp_page.dart';
+import 'package:financial/utils/all_colors.dart';
+import 'package:financial/utils/all_strings.dart';
+import 'package:financial/utils/all_textStyle.dart';
+import 'package:financial/views/all_que_level_one.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:sizer/sizer.dart';
 
-class LevelOneSetUpPage extends StatelessWidget {
-  LevelOneSetUpPage({Key? key,}) : super(key: key);
+class LevelOneSetUpPage extends StatefulWidget {
+  LevelOneSetUpPage({
+    Key? key,
+  }) : super(key: key);
 
-  var userId;
-  final getData = GetStorage();
+  @override
+  State<LevelOneSetUpPage> createState() => _LevelOneSetUpPageState();
+}
 
+class _LevelOneSetUpPageState extends State<LevelOneSetUpPage> {
+  Color color = Colors.white;
 
   @override
   Widget build(BuildContext context) {
     return SetUpPage(
+      color: color,
       level: 'Level 1',
       levelText: AllStrings.level1SetUp,
       container: Container(
@@ -38,7 +47,7 @@ class LevelOneSetUpPage extends StatelessWidget {
                     child: Text(
                       AllStrings.levelOneText1,
                       textAlign: TextAlign.center,
-                      style:AllTextStyles.workSansMedium(),
+                      style: AllTextStyles.workSansMedium(),
                     ),
                   )),
               Expanded(
@@ -57,22 +66,20 @@ class LevelOneSetUpPage extends StatelessWidget {
                   child: Container(
                     // color: Colors.yellow,
                     alignment: Alignment.center,
-                    child: Text(
-                        AllStrings.levelOneText3,
-                      textAlign: TextAlign.center,
-                      style: AllTextStyles.workSansSmall(fontWeight: FontWeight.w400)
-                    ),
+                    child: Text(AllStrings.levelOneText3,
+                        textAlign: TextAlign.center,
+                        style: AllTextStyles.workSansSmall(
+                            fontWeight: FontWeight.w400)),
                   )),
               Expanded(
                   flex: 2,
                   child: Container(
                     // color: Colors.red,
                     alignment: Alignment.center,
-                    child: Text(
-                        AllStrings.levelOneText4,
-                      textAlign: TextAlign.center,
-                      style: AllTextStyles.workSansSmall(fontWeight: FontWeight.w500)
-                    ),
+                    child: Text(AllStrings.levelOneText4,
+                        textAlign: TextAlign.center,
+                        style: AllTextStyles.workSansSmall(
+                            fontWeight: FontWeight.w500)),
                   )),
               Spacer(),
               Spacer(),
@@ -81,8 +88,11 @@ class LevelOneSetUpPage extends StatelessWidget {
         ),
       ),
       onPressed: () async {
+        setState(() {
+          color = AllColors.green;
+        });
         var storeValue = GetStorage();
-        userId =  storeValue.read('uId');
+        userId = storeValue.read('uId');
         storeValue.write('update', 0);
         firestore.collection('User').doc(userId).get().then((doc) {
           bool value = doc.get('replay_level');
@@ -101,17 +111,16 @@ class LevelOneSetUpPage extends StatelessWidget {
             storeValue.write('tInvestment', 0);
             storeValue.write('tCredit', 0);
             storeValue.write('tUser', 0);
-            getUser(1).then((value) =>  Get.off(
+            getUser(1).then((value) => Get.off(
                   () => AllQueLevelOne(),
-              duration: Duration(milliseconds: 250),
-              transition: Transition.downToUp,
-            ));
+                  duration: Duration(milliseconds: 250),
+                  transition: Transition.downToUp,
+                ));
           });
         });
       },
       buttonText: 'Start Spending',
     );
-
   }
 }
 // import 'package:financial/ReusableScreen/CommanClass.dart';

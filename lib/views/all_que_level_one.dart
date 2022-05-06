@@ -1,26 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:financial/ReusableScreen/CommanClass.dart';
-import 'package:financial/ReusableScreen/GlobleVariable.dart';
-import 'package:financial/controllers/UserInfoController.dart';
-import 'package:financial/models/QueModel.dart';
-import 'package:financial/utils/AllStrings.dart';
-import 'package:financial/utils/AllTextStyle.dart';
-import 'package:financial/views/LevelOnePopQuiz.dart';
-import 'package:financial/views/LevelOneSetUpPage.dart';
-import 'package:financial/views/LevelTwoSetUpPage.dart';
-import 'package:financial/views/LocalNotifyManager.dart';
+import 'package:financial/shareable_screens/background_widget.dart';
+import 'package:financial/shareable_screens/comman_functions.dart';
+import 'package:financial/shareable_screens/game_question_container.dart';
+import 'package:financial/shareable_screens/globle_variable.dart';
+import 'package:financial/shareable_screens/insight_widget.dart';
+import 'package:financial/shareable_screens/level_summary_for_level1_and_level2.dart';
+import 'package:financial/shareable_screens/level_summary_screen.dart';
+import 'package:financial/controllers/user_info_controller.dart';
+import 'package:financial/models/que_model.dart';
+import 'package:financial/utils/all_strings.dart';
+import 'package:financial/utils/all_textStyle.dart';
+import 'package:financial/views/level_one_pop_quiz.dart';
+import 'package:financial/views/level_one_setUp_page.dart';
+import 'package:financial/views/level_two_setUp_page.dart';
+import 'package:financial/views/local_notify_manager.dart';
 
-import 'package:financial/views/RateUs.dart';
+import 'package:financial/views/rate_us.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:pie_chart/pie_chart.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:sizer/sizer.dart';
 
-import '../utils/AllColors.dart';
+import '../utils/all_colors.dart';
 
 class AllQueLevelOne extends StatefulWidget {
   const AllQueLevelOne({
@@ -32,46 +34,13 @@ class AllQueLevelOne extends StatefulWidget {
 }
 
 class _AllQueLevelOneState extends State<AllQueLevelOne> {
-  String level = '';
-  int levelId = 0;
-  int gameScore = 0;
-  int balance = 0;
-  int qualityOfLife = 0;
-  var userId;
-  int updateValue = 0;
 
-  // page controller
-  PageController controller = PageController();
-
-  //store streambuilder value
-  var document;
-
-  // for option selection
-  bool flag1 = false;
-  bool flag2 = false;
-  bool scroll = true;
-  bool flagForKnow = false;
-  final storeValue = GetStorage();
-  final _controller = Get.put<UserInfoController>(UserInfoController());
-
-  // LocalNotifyManager localNotifyManager = LocalNotifyManager.init();
-  // //for model
+  bool? showCase;
+  final userInfo = Get.put<UserInfoController>(UserInfoController());
   QueModel? queModel;
   List<QueModel> list = [];
 
-  Future<QueModel?> getLevelId() async {
-    //SharedPreferences pref = await SharedPreferences.getInstance();
-    userId = storeValue.read('uId');
-    updateValue = storeValue.read('update');
-    DocumentSnapshot snapshot =
-        await firestore.collection('User').doc(userId).get();
-    level = snapshot.get('previous_session_info');
-    levelId = snapshot.get('level_id');
-    gameScore = snapshot.get('game_score');
-    balance = snapshot.get('account_balance');
-    qualityOfLife = snapshot.get('quality_of_life');
-    controller = PageController(initialPage: levelId);
-
+  getAllData() async {
     QuerySnapshot querySnapshot =
         await FirebaseFirestore.instance.collection("Level_1").get();
     for (int i = 0; i < querySnapshot.docs.length; i++) {
@@ -82,18 +51,12 @@ class _AllQueLevelOneState extends State<AllQueLevelOne> {
         list.add(queModel!);
       });
     }
-    return null;
   }
-
-  // GlobalKey _one = GlobalKey();
-  // GlobalKey _two = GlobalKey();
-  bool? showCase;
-  final userInfo = Get.find<UserInfoController>();
 
   @override
   void initState() {
+   getLevelId().then((value) => getAllData());
     super.initState();
-    getLevelId();
   }
 
   @override
@@ -589,6 +552,7 @@ class _AllQueLevelOneState extends State<AllQueLevelOne> {
         });
         // await localNotifyManager.flutterLocalNotificationsPlugin.cancel(21);
         // await localNotifyManager.repeatNotificationLevel2();
+        await localNotifyManager.configureLocalTimeZone();
         await localNotifyManager.flutterLocalNotificationsPlugin.cancel(1);
         await localNotifyManager.flutterLocalNotificationsPlugin.cancel(7);
         await localNotifyManager

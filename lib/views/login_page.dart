@@ -1,12 +1,12 @@
 import 'dart:async';
-import 'package:financial/utils/AllImages.dart';
+import 'package:financial/utils/all_images.dart';
 
-import 'LocalNotifyManager.dart';
+import 'local_notify_manager.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country_code_picker/country_code_picker.dart';
-import 'package:financial/ReusableScreen/GradientText.dart';
-import 'package:financial/utils/AllColors.dart';
-import 'package:financial/utils/AllTextStyle.dart';
+import 'package:financial/shareable_screens/gradient_text.dart';
+import 'package:financial/utils/all_colors.dart';
+import 'package:financial/utils/all_textStyle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -33,7 +33,7 @@ class _LoginPageState extends State<LoginPage> with WidgetsBindingObserver {
   bool showLoading = false;
   String? dropdownvalue = '+91';
   FirebaseAuth _auth = FirebaseAuth.instance;
-  GoogleSignIn _googleSignIn = GoogleSignIn();
+  GoogleSignIn googleSignIn = GoogleSignIn();
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
   //for password visibility

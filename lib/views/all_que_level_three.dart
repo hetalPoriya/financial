@@ -1,23 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:financial/ReusableScreen/CommanClass.dart';
-import 'package:financial/ReusableScreen/GlobleVariable.dart';
-import 'package:financial/controllers/UserInfoController.dart';
-import 'package:financial/models/QueModel.dart';
-import 'package:financial/utils/AllColors.dart';
-import 'package:financial/utils/AllStrings.dart';
-import 'package:financial/utils/AllTextStyle.dart';
-import 'package:financial/views/LevelFourSetUpPage.dart';
-import 'package:financial/views/LevelThreeSetUpPage.dart';
-import 'package:financial/views/PopQuiz.dart';
-import 'package:financial/views/RateUs.dart';
+import 'package:financial/controllers/user_info_controller.dart';
+import 'package:financial/shareable_screens/background_widget.dart';
+import 'package:financial/shareable_screens/bill_payment_widget.dart';
+import 'package:financial/shareable_screens/comman_functions.dart';
+import 'package:financial/shareable_screens/game_question_container.dart';
+import 'package:financial/shareable_screens/globle_variable.dart';
+import 'package:financial/shareable_screens/insight_widget.dart';
+import 'package:financial/shareable_screens/level_summary_screen.dart';
+import 'package:financial/shareable_screens/salary_credited_widget.dart';
+import 'package:financial/models/que_model.dart';
+import 'package:financial/utils/all_colors.dart';
+import 'package:financial/utils/all_strings.dart';
+import 'package:financial/utils/all_textStyle.dart';
+import 'package:financial/views/level_four_setUp_page.dart';
+import 'package:financial/views/level_three_setUp_page.dart';
+import 'package:financial/views/pop_quiz.dart';
+import 'package:financial/views/rate_us.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:sizer/sizer.dart';
 
-import 'LocalNotifyManager.dart';
+import 'local_notify_manager.dart';
 
 class AllQueLevelThree extends StatefulWidget {
   const AllQueLevelThree({
@@ -29,14 +33,7 @@ class AllQueLevelThree extends StatefulWidget {
 }
 
 class _AllQueLevelThreeState extends State<AllQueLevelThree> {
-  //user value
-  var userId;
-  var document;
-  int levelId = 0;
-  String level = '';
-  int balance = 0;
-  int qualityOfLife = 0;
-  int gameScore = 0;
+
   int creditScore = 0;
   int score = 0;
   int priceOfOption = 0;
@@ -44,58 +41,13 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
   int creditBill = 0;
   int creditBal = 0;
   int payableBill = 0;
-  int updateValue = 0;
-
-  //get bill data
-  int billPayment = 0;
-  int forPlan1 = 0;
-  int forPlan2 = 0;
-  int forPlan3 = 0;
-  int forPlan4 = 0;
-
-  //page controller
-  PageController controller = PageController();
-
-  //for indexing
-  int currentIndex = 0;
-  // FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  // LocalNotifyManager localNotifyManager = LocalNotifyManager.init();
-  //for option selection
-  bool flag1 = false;
-  bool flag2 = false;
-  bool scroll = true;
-  List<int> payArray = [];
-  Color color = Colors.white;
-  bool flagForKnow = false;
-  final storeValue = GetStorage();
-
-  //for model
   QueModel? queModel;
   List<QueModel> list = [];
-
   final userInfo = Get.put<UserInfoController>(UserInfoController());
 
-  Future<QueModel?> getLevelId() async {
-    // SharedPreferences pref = await SharedPreferences.getInstance();
-    userId = storeValue.read('uId');
-    updateValue = storeValue.read('update');
-    forPlan1 = storeValue.read('plan1')!;
-    forPlan2 = storeValue.read('plan2')!;
-    forPlan3 = storeValue.read('plan3')!;
-    forPlan4 = storeValue.read('plan4')!;
-
-    DocumentSnapshot snapshot =
-        await firestore.collection('User').doc(userId).get();
-    level = snapshot.get('previous_session_info');
-    levelId = snapshot.get('level_id');
-    gameScore = snapshot.get('game_score');
-    balance = snapshot.get('account_balance');
-    qualityOfLife = snapshot.get('quality_of_life');
-    billPayment = snapshot.get('bill_payment');
-    controller = PageController(initialPage: levelId);
-
+  getAllData() async {
     QuerySnapshot querySnapshot =
-        await FirebaseFirestore.instance.collection("Level_3").get();
+    await FirebaseFirestore.instance.collection("Level_3").get();
     for (int i = 0; i < querySnapshot.docs.length; i++) {
       var a = querySnapshot.docs[i];
       queModel = QueModel();
@@ -104,13 +56,13 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
         list.add(queModel!);
       });
     }
-    return null;
   }
 
   @override
   void initState() {
     super.initState();
     getLevelId().then((value) {
+      getAllData();
       if (levelId == 0)
         Future.delayed(Duration(milliseconds: 10), () => _salaryCredited());
     });
@@ -185,7 +137,6 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
                           }
                         },
                         itemBuilder: (context, index) {
-                          currentIndex = index;
                           document = snapshot.data!.docs[index];
                           levelId = index;
                           return document['card_type'] == 'GameQuestion'
@@ -517,7 +468,6 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
                               _setState(() {
                                 color = AllColors.green;
                               });
-                              payArray.add(currentIndex);
                               DocumentSnapshot doc = await firestore
                                   .collection('User')
                                   .doc(userId)
@@ -762,6 +712,7 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
     }, () async {
       // await flutterLocalNotificationsPlugin.cancel(23);
       // await localNotifyManager.repeatNotificationLevel4();
+      await localNotifyManager.configureLocalTimeZone();
       await localNotifyManager.flutterLocalNotificationsPlugin.cancel(3);
       await localNotifyManager.flutterLocalNotificationsPlugin.cancel(9);
       await localNotifyManager
@@ -1024,8 +975,8 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
                                             .collection('Feedback')
                                             .doc()
                                             .set({
-                                          'user_id': userInfo.userId,
-                                          'level_name': userInfo.level,
+                                          'user_id': userId,
+                                          'level_name': level,
                                           'rating': userInfo.star,
                                           'feedback': userInfo.feedbackCon.text
                                               .toString(),

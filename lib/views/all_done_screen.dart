@@ -1,26 +1,29 @@
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
-import 'package:financial/ReusableScreen/CommanClass.dart';
-import 'package:financial/ReusableScreen/GlobleVariable.dart';
-import 'package:financial/ReusableScreen/GradientText.dart';
-import 'package:financial/utils/AllColors.dart';
-import 'package:financial/utils/AllImages.dart';
-import 'package:financial/utils/AllStrings.dart';
-import 'package:financial/utils/AllTextStyle.dart';
+import 'package:financial/shareable_screens/gradient_text.dart';
+import 'package:financial/shareable_screens/comman_functions.dart';
+import 'package:financial/shareable_screens/globle_variable.dart';
+import 'package:financial/utils/all_colors.dart';
+import 'package:financial/utils/all_images.dart';
+import 'package:financial/utils/all_strings.dart';
+import 'package:financial/utils/all_textStyle.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:sizer/sizer.dart';
 import 'dart:math' as math;
 
-class AllDone extends StatelessWidget {
+class AllDone extends StatefulWidget {
   AllDone({
     Key? key,
   }) : super(key: key);
 
-  //get user id
-  var userId;
-  int gameScore = 0;
+  @override
+  State<AllDone> createState() => _AllDoneState();
+}
 
+class _AllDoneState extends State<AllDone> {
+
+  Color color = Colors.white;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -65,10 +68,13 @@ class AllDone extends StatelessWidget {
                     height: 8.h,
                     width: 75.w,
                     decoration: BoxDecoration(
-                        color: Colors.white,
+                        color:color,
                         borderRadius: BorderRadius.circular(12.w)),
                     child: TextButton(
                       onPressed: () {
+                        setState(() {
+                          color = AllColors.green;
+                        });
                         getUserData();
                       },
                       child: GradientText(
@@ -76,7 +82,7 @@ class AllDone extends StatelessWidget {
                           style: AllTextStyles.dialogStyleLarge(
                               size: 16.sp, fontWeight: FontWeight.w700),
                           gradient:  LinearGradient(
-                              colors: [Colors.white, AllColors.purple],
+                              colors: color == AllColors.green ? [Colors.white,Colors.white] :[Colors.white, AllColors.purple],
                               transform: GradientRotation(math.pi / 2))),
                     ),
                   ),

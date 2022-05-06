@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:financial/ReusableScreen/GlobleVariable.dart';
-import 'package:financial/models/QueModel.dart';
-import 'package:financial/models/RankingUser.dart';
+import 'package:financial/shareable_screens/globle_variable.dart';
+import 'package:financial/models/que_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -44,7 +43,6 @@ class UserInfoController extends GetxController
     //SharedPreferences pref = await SharedPreferences.getInstance();
     list = [];
     userId = getCredential.read('uId');
-    color = Colors.white;
     updateValue = getCredential.read('update');
     DocumentSnapshot snapshot =
         await firestore.collection('User').doc(userId).get();
@@ -64,17 +62,17 @@ class UserInfoController extends GetxController
       update();
     }
 
-    String getLevel = level == 'Level_1'
-        ? 'Level_1'
-        : level == 'Level_2'
-            ? 'Level_2'
-            : level == 'Level_3'
-                ? 'Level_3'
-                : level == 'Level_4'
-                    ? 'Level_4'
-                    : level == 'Level_5'
-                        ? 'Level_5'
-                        : 'Level_6';
+    // String getLevel = level == 'Level_1'
+    //     ? 'Level_1'
+    //     : level == 'Level_2'
+    //         ? 'Level_2'
+    //         : level == 'Level_3'
+    //             ? 'Level_3'
+    //             : level == 'Level_4'
+    //                 ? 'Level_4'
+    //                 : level == 'Level_5'
+    //                     ? 'Level_5'
+    //                     : 'Level_6';
 
     print('Get Level $level');
     // QuerySnapshot querySnapshot = await firestore.collection(getLevel).get();

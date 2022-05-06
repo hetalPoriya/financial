@@ -9,14 +9,16 @@
     "note": "",
     "option_1": "Start saving $200/month for 6 months",
     "option_1_price": 200,
-    "option_2": "Skip the trip $0",
+    "option_2": "$400 for 6 month",
     "option_2_price": 0,
     "quality_of_life_1": 50,
     "quality_of_life_2": 0,
     "send": "",
     "title": "",
     "month": 1,
-    "badge": "Globetrotter"
+    "badge": "Globetrotter",
+    "total_month" :  6,
+    "emi_amount" : 400
   },
   "Card_2": {
     "card_type": "GameQuestion",
@@ -28,14 +30,16 @@
     "note": "",
     "option_1": "Put aside extra $200/month for 2 months",
     "option_1_price": 200,
-    "option_2": "Skip It $0",
+    "option_2": "600 for 5 month",
     "option_2_price": 200,
     "quality_of_life_1": 30,
     "quality_of_life_2": 0,
     "send": "",
     "title": "",
     "month": 2,
-    "badge": ""
+    "badge": "",
+    "total_month" :  5,
+    "emi_amount" : 600
   },
   "Card_3": {
     "card_type": "GameQuestion",
@@ -54,7 +58,9 @@
     "send": "",
     "title": "",
     "month": 3,
-    "badge": "Decor Guru"
+    "badge": "Decor Guru",
+    "total_month" :  3,
+    "emi_amount" : 200
   },
   "Card_4": {
     "card_type": "Insights",
@@ -73,7 +79,9 @@
     "send": "",
     "title": "",
     "month": 0,
-    "badge": ""
+    "badge": "",
+    "total_month" : 0 ,
+    "emi_amount" : 0
   },
   "Card_5": {
     "card_type": "GameQuestion",
@@ -92,7 +100,9 @@
     "send": "",
     "title": "",
     "month": 4,
-    "badge": ""
+    "badge": "",
+    "total_month" : 9,
+    "emi_amount" : 100
   },
   "Card_6": {
     "card_type": "GameQuestion",
@@ -111,7 +121,9 @@
     "send": "",
     "title": "",
     "month": 5,
-    "badge": "Family Man"
+    "badge": "Family Man",
+    "total_month" :  3,
+    "emi_amount" : 100
   },
   "Card_7": {
     "card_type": "Insights",
@@ -130,7 +142,9 @@
     "send": "",
     "title": "",
     "month": 0,
-    "badge": ""
+    "badge": "",
+    "total_month" :  1,
+    "emi_amount" : 100
   },
   "Card_8": {
     "card_type": "GameQuestion",
@@ -149,7 +163,9 @@
     "send": "",
     "title": "",
     "month": 6,
-    "badge": "Globetrotter"
+    "badge": "Globetrotter",
+    "total_month" :  6,
+    "emi_amount" : 100
   },
   "Card_9": {
     "card_type": "Insights",
@@ -168,7 +184,9 @@
     "send": "",
     "title": "",
     "month": 0,
-    "badge": ""
+    "badge": "",
+    "total_month" :  6,
+    "emi_amount" : 400
   },
   "Card_10": {
     "card_type": "Insights",
@@ -187,7 +205,9 @@
     "send": "",
     "title": "",
     "month": 0,
-    "badge": ""
+    "badge": "",
+    "total_month" :  0,
+    "emi_amount" : 0
   },
   "Card_11": {
     "card_type": "GameQuestion",
@@ -206,7 +226,9 @@
     "send": "",
     "title": "",
     "month": 7,
-    "badge": "Torque Master"
+    "badge": "Torque Master",
+    "total_month" :  5,
+    "emi_amount" : 150
   },
   "Card_12": {
     "card_type": "Insights",
@@ -225,7 +247,9 @@
     "send": "",
     "title": "",
     "month": 0,
-    "badge": ""
+    "badge": "",
+    "total_month" :  0,
+    "emi_amount" : 0
   },
   "Card_13": {
     "card_type": "GameQuestion",
@@ -244,7 +268,9 @@
     "send": "",
     "title": "",
     "month": 8,
-    "badge": ""
+    "badge": "",
+    "total_month" :  12,
+    "emi_amount" : 100
   },
   "Card_14": {
     "card_type": "GameQuestion",
@@ -263,7 +289,9 @@
     "send": "",
     "title": "",
     "month": 9,
-    "badge": "Globetrotter"
+    "badge": "Globetrotter",
+    "total_month" :  6,
+    "emi_amount" : 200
   },
   "Card_15": {
     "card_type": "GameQuestion",
@@ -282,7 +310,9 @@
     "send": "",
     "title": "",
     "month": 10,
-    "badge": "Fashionista"
+    "badge": "Fashionista",
+    "total_month" :  4,
+    "emi_amount" : 200
   },
   "Card_16": {
     "card_type": "GameQuestion",
@@ -301,7 +331,9 @@
     "send": "",
     "title": "",
     "month": 11,
-    "badge": "Decor Guru"
+    "badge": "Decor Guru",
+    "total_month" :  2,
+    "emi_amount" : 100
   },
   "Card_17": {
     "card_type": "GameQuestion",
@@ -320,7 +352,9 @@
     "send": "",
     "title": "",
     "month": 12,
-    "badge": "Torque Master"
+    "badge": "Torque Master",
+    "total_month" :  6,
+    "emi_amount" : 50
   },
   "Card_18": {
     "card_type": "",
@@ -339,7 +373,9 @@
     "send": "",
     "title": "",
     "month": "",
-    "badge": ""
+    "badge": "",
+    "total_month" :  4,
+    "emi_amount" : 200
   },
   "Card_19": {
     "card_type": "GameQuestion",
@@ -358,7 +394,9 @@
     "send": "",
     "title": "",
     "month": 13,
-    "badge": ""
+    "badge": "",
+    "total_month" :  5,
+    "emi_amount" : 300
   },
   "Card_20": {
     "card_type": "GameQuestion",
@@ -377,7 +415,9 @@
     "send": "",
     "title": "",
     "month": 14,
-    "badge": ""
+    "badge": "",
+    "total_month" :  5,
+    "emi_amount" : 100
   },
   "Card_21": {
     "card_type": "GameQuestion",
@@ -396,7 +436,9 @@
     "send": "",
     "title": "",
     "month": 15,
-    "badge": ""
+    "badge": "",
+    "total_month" :  2,
+    "emi_amount" : 100
   },
   "Card_22": {
     "card_type": "GameQuestion",
@@ -415,7 +457,9 @@
     "send": "",
     "title": "",
     "month": 16,
-    "badge": "Gastronomer"
+    "badge": "Gastronomer",
+    "total_month" :  4,
+    "emi_amount" : 100
   },
   "Card_23": {
     "card_type": "GameQuestion",
@@ -434,7 +478,9 @@
     "send": "",
     "title": "",
     "month": 17,
-    "badge": "Party Animal"
+    "badge": "Party Animal",
+    "total_month" :  3,
+    "emi_amount" : 500
   },
   "Card_24": {
     "card_type": "GameQuestion",
@@ -453,7 +499,9 @@
     "send": "",
     "title": "",
     "month": 18,
-    "badge": "Technophile"
+    "badge": "Technophile",
+    "total_month" :  2,
+    "emi_amount" : 100
   },
   "Card_25": {
     "card_type": "GameQuestion",
@@ -472,7 +520,9 @@
     "send": "",
     "title": "",
     "month": 19,
-    "badge": "Technophile"
+    "badge": "Technophile",
+    "total_month" :  0,
+    "emi_amount" : 0
   },
   "Card_26": {
     "card_type": "GameQuestion",
@@ -491,7 +541,9 @@
     "send": "",
     "title": "",
     "month": 20,
-    "badge": "Fashionista"
+    "badge": "Fashionista",
+    "total_month" :  0,
+    "emi_amount" : 0
   },
   "Card_27": {
     "card_type": "GameQuestion",
@@ -510,7 +562,9 @@
     "send": "",
     "title": "",
     "month": 21,
-    "badge": "Art Afficionado"
+    "badge": "Art Afficionado",
+    "total_month" :  0,
+    "emi_amount" : 0
   },
   "Card_28": {
     "card_type": "GameQuestion",
@@ -529,7 +583,9 @@
     "send": "",
     "title": "",
     "month": 22,
-    "badge": "Fashionista"
+    "badge": "Fashionista",
+    "total_month" :  0,
+    "emi_amount" : 0
   },
   "Card_29": {
     "card_type": "GameQuestion",
@@ -548,7 +604,9 @@
     "send": "",
     "title": "",
     "month": 23,
-    "badge": "Globetrotter"
+    "badge": "Globetrotter",
+    "total_month" :  0,
+    "emi_amount" : 0
   },
   "Card_30": {
     "card_type": "GameQuestion",
@@ -567,7 +625,9 @@
     "send": "",
     "title": "",
     "month": 24,
-    "badge": "Torque Master"
+    "badge": "Torque Master",
+    "total_month" :  0,
+    "emi_amount" : 0
   },
   "Card_31": {
     "card_type": "GameQuestion",
@@ -586,7 +646,9 @@
     "send": "",
     "title": "",
     "month": 25,
-    "badge": "Gastronomer"
+    "badge": "Gastronomer",
+    "total_month" :  0,
+    "emi_amount" : 0
   },
   "Card_32": {
     "card_type": "GameQuestion",
@@ -605,7 +667,9 @@
     "send": "",
     "title": "",
     "month": 26,
-    "badge": "Party Animal"
+    "badge": "Party Animal",
+    "total_month" :  0,
+    "emi_amount" : 0
   },
   "Card_33": {
     "card_type": "GameQuestion",
@@ -624,7 +688,9 @@
     "send": "",
     "title": "",
     "month": 27,
-    "badge": "Technophile"
+    "badge": "Technophile",
+    "total_month" :  0,
+    "emi_amount" : 0
   },
   "Card_34": {
     "card_type": "GameQuestion",
@@ -643,6 +709,8 @@
     "send": "",
     "title": "",
     "month": 28,
-    "badge": "Art Afficionado"
+    "badge": "Art Afficionado",
+    "total_month" :  0,
+    "emi_amount" : 0
   }
 }

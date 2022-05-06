@@ -1,7 +1,7 @@
-import 'package:financial/ReusableScreen/GradientText.dart';
-import 'package:financial/controllers/OnBoardingController.dart';
-import 'package:financial/utils/AllColors.dart';
-import 'package:financial/utils/AllTextStyle.dart';
+import 'package:financial/shareable_screens/gradient_text.dart';
+import 'package:financial/controllers/on_boarding_controller.dart';
+import 'package:financial/utils/all_colors.dart';
+import 'package:financial/utils/all_textStyle.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';

@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
-import 'package:financial/ReusableScreen/GlobleVariable.dart';
-import 'package:financial/ReusableScreen/GradientText.dart';
-import 'package:financial/utils/AllColors.dart';
-import 'package:financial/utils/AllImages.dart';
-import 'package:financial/utils/AllStrings.dart';
-import 'package:financial/utils/AllTextStyle.dart';
-import 'package:financial/views/AllDoneScreen.dart';
+import 'package:financial/shareable_screens/globle_variable.dart';
+import 'package:financial/shareable_screens/gradient_text.dart';
+import 'package:financial/utils/all_colors.dart';
+import 'package:financial/utils/all_images.dart';
+import 'package:financial/utils/all_strings.dart';
+import 'package:financial/utils/all_textStyle.dart';
+import 'package:financial/views/all_done_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';

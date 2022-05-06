@@ -1,25 +1,22 @@
-import 'package:financial/ReusableScreen/GlobleVariable.dart';
-import 'package:financial/controllers/UserInfoController.dart';
-import 'package:financial/utils/AllColors.dart';
-import 'package:financial/utils/AllStrings.dart';
-import 'package:financial/utils/AllTextStyle.dart';
+import 'package:financial/shareable_screens/globle_variable.dart';
+import 'package:financial/controllers/user_info_controller.dart';
+import 'package:financial/utils/all_colors.dart';
+import 'package:financial/utils/all_strings.dart';
+import 'package:financial/utils/all_textStyle.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class RateUs extends StatelessWidget {
-  Function onSubmit;
+  final Function onSubmit;
 
   RateUs({Key? key, required this.onSubmit}) : super(key: key);
 
-  var _con = Get.put<UserInfoController>(UserInfoController());
-
   @override
   Widget build(BuildContext context) {
+    var con = Get.put<UserInfoController>(UserInfoController());
     return SafeArea(
       top: false,
       child: Scaffold(

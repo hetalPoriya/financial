@@ -1,12 +1,12 @@
 //ignore: must_be_immutable
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:financial/ReusableScreen/GlobleVariable.dart';
-import 'package:financial/ReusableScreen/GradientText.dart';
-import 'package:financial/utils/AllColors.dart';
-import 'package:financial/utils/AllImages.dart';
-import 'package:financial/utils/AllStrings.dart';
-import 'package:financial/utils/AllTextStyle.dart';
-import 'package:financial/views/ProfilePage.dart';
+import 'package:financial/shareable_screens/globle_variable.dart';
+import 'package:financial/shareable_screens/gradient_text.dart';
+import 'package:financial/utils/all_colors.dart';
+import 'package:financial/utils/all_images.dart';
+import 'package:financial/utils/all_strings.dart';
+import 'package:financial/utils/all_textStyle.dart';
+import 'package:financial/views/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -17,7 +17,7 @@ import 'dart:math' as math;
 
 class GameScorePage extends StatefulWidget {
   var document;
-  String level = '';
+  final String level;
   GlobalKey? keyValue = GlobalKey();
 
   GameScorePage({Key? key, this.document, required this.level, this.keyValue})
@@ -111,12 +111,7 @@ class _GameScorePageState extends State<GameScorePage> {
                               flex: 1,
                               child: Container(
                                 child: Text('GAME SCORE',
-                                    style: GoogleFonts.workSans(
-                                      fontWeight: FontWeight.w500,
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 12.sp,
-                                      color: AllColors.extraDarkPurple,
-                                    ),
+                                    style:AllTextStyles.dialogStyleSmall(fontWeight: FontWeight.w500,color:AllColors.extraDarkPurple ),
                                     maxLines: 1),
                                 alignment: Alignment.center,
                               ),
@@ -133,8 +128,6 @@ class _GameScorePageState extends State<GameScorePage> {
               ),
               (level == 'Level_1' && levelId == 0)
                   ? Showcase(
-                      // title: 'Profile',
-                      // titleTextStyle: GoogleFonts.workSans(color: Colors.black,fontSize: 12.sp),
                       description: AllStrings.showCaseProfilePageText,
                       descTextStyle: AllTextStyles.workSansSmall(fontSize: 12.sp),
                       animationDuration: Duration(milliseconds: 500),

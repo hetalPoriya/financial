@@ -1,11 +1,11 @@
 
-import 'package:financial/ReusableScreen/GlobleVariable.dart';
-import 'package:financial/ReusableScreen/GradientText.dart';
-import 'package:financial/utils/AllColors.dart';
-import 'package:financial/utils/AllImages.dart';
-import 'package:financial/utils/AllStrings.dart';
-import 'package:financial/utils/AllTextStyle.dart';
-import 'package:financial/views/ProfilePage.dart';
+import 'package:financial/shareable_screens/globle_variable.dart';
+import 'package:financial/shareable_screens/gradient_text.dart';
+import 'package:financial/utils/all_colors.dart';
+import 'package:financial/utils/all_images.dart';
+import 'package:financial/utils/all_strings.dart';
+import 'package:financial/utils/all_textStyle.dart';
+import 'package:financial/views/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';

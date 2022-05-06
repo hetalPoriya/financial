@@ -1,9 +1,9 @@
 //ignore: must_be_immutable
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:financial/ReusableScreen/GlobleVariable.dart';
-import 'package:financial/utils/AllColors.dart';
-import 'package:financial/utils/AllImages.dart';
-import 'package:financial/utils/AllTextStyle.dart';
+import 'package:financial/shareable_screens/globle_variable.dart';
+import 'package:financial/utils/all_colors.dart';
+import 'package:financial/utils/all_images.dart';
+import 'package:financial/utils/all_textStyle.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:ripple_animation/ripple_animation.dart';

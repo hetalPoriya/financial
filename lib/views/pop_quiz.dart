@@ -305,21 +305,21 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
-import 'package:financial/ReusableScreen/CommanClass.dart';
-import 'package:financial/ReusableScreen/GameScorePage.dart';
-import 'package:financial/ReusableScreen/GlobleVariable.dart';
-import 'package:financial/models/QueModel.dart';
-import 'package:financial/utils/AllColors.dart';
-import 'package:financial/utils/AllStrings.dart';
-import 'package:financial/utils/AllTextStyle.dart';
-import 'package:financial/views/LevelFourSetUpPage.dart';
-import 'package:financial/views/LevelThreeSetUpPage.dart';
+import 'package:financial/shareable_screens/comman_functions.dart';
+import 'package:financial/shareable_screens/game_score_page.dart';
+import 'package:financial/shareable_screens/globle_variable.dart';
+import 'package:financial/models/que_model.dart';
+import 'package:financial/utils/all_colors.dart';
+import 'package:financial/utils/all_strings.dart';
+import 'package:financial/utils/all_textStyle.dart';
+import 'package:financial/views/level_four_setUp_page.dart';
+import 'package:financial/views/level_three_setUp_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:sizer/sizer.dart';
 
-import 'LocalNotifyManager.dart';
+import 'local_notify_manager.dart';
 
 class PopQuiz extends StatefulWidget {
   PopQuiz({

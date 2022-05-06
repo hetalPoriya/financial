@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:financial/ReusableScreen/GlobleVariable.dart';
+import 'package:financial/shareable_screens/globle_variable.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -72,7 +72,7 @@ class LevelFiveController extends GetxController {
 
     firestore.collection('User').doc(userId).get().then((value) {
       getTotalEmi = value.data()!['List'];
-      print('GET EMI DATA ${getTotalEmi}');
+      print('GET EMI DATA $getTotalEmi');
     }).then((v) async {
       if (getTotalEmi != null) {
         for (int i = 0; i < getTotalEmi.length; i++) {
@@ -87,7 +87,7 @@ class LevelFiveController extends GetxController {
             mapList['queId'] = getTotalEmi[i]['queId'];
 
             getTotalEmi[i] = mapList;
-            print('MApList ${mapList}');
+            print('MApList $mapList');
             firestore.collection('User').doc(userId).update(
               {'List': getTotalEmi},
             );
@@ -117,16 +117,14 @@ class LevelFiveController extends GetxController {
     userId = GetStorage().read('uId');
     DocumentSnapshot doc = await firestore.collection('User').doc(userId).get();
     totalEMIAmount = doc.get('total_emi_level_5');
-    print('Total emi amount $totalEMIAmount');
+
     getEmi = document['emi_amount'];
     getMonth = document['total_month'];
     totalEmiAndMonth = getEmi * getMonth;
     creditEmi = 5000 - totalEMIAmount;
-    print('Ttotal emi month $totalEmiAndMonth');
-    print('Ttotal emi month $creditEmi');
+
     checkForEmiCredit = creditEmi - totalEmiAndMonth;
     update();
-    print('CRedit ${checkForEmiCredit}');
   }
 
 

@@ -1,18 +1,23 @@
-import 'package:financial/controllers/LevelFiveController.dart';
-import 'package:financial/controllers/UserInfoController.dart';
-import 'package:financial/models/LevelFiveList.dart';
-import 'package:financial/utils/AllColors.dart';
-import 'package:financial/utils/AllStrings.dart';
-import 'package:financial/utils/AllTextStyle.dart';
-import 'package:financial/views/LevelFiveSetUpPage.dart';
+import 'package:financial/shareable_screens/background_widget.dart';
+import 'package:financial/shareable_screens/bill_payment_widget.dart';
+import 'package:financial/shareable_screens/fund_allocation_screen.dart';
+import 'package:financial/shareable_screens/game_question_container.dart';
+import 'package:financial/shareable_screens/insight_widget.dart';
+import 'package:financial/shareable_screens/mutual_fund_widget.dart';
+import 'package:financial/controllers/level_five_controller.dart';
+import 'package:financial/controllers/user_info_controller.dart';
+import 'package:financial/models/level_five_list.dart';
+import 'package:financial/utils/all_colors.dart';
+import 'package:financial/utils/all_strings.dart';
+import 'package:financial/utils/all_textStyle.dart';
+import 'package:financial/views/level_five_setUp_page.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:financial/ReusableScreen/CommanClass.dart';
-import 'package:financial/ReusableScreen/GlobleVariable.dart';
-import 'package:financial/models/QueModel.dart';
+import 'package:financial/shareable_screens/comman_functions.dart';
+import 'package:financial/shareable_screens/globle_variable.dart';
+import 'package:financial/models/que_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:sizer/sizer.dart';
 import 'dart:math';
 
@@ -26,15 +31,9 @@ class AllQueLevelFive extends StatefulWidget {
 }
 
 class _AllQueLevelFiveState extends State<AllQueLevelFive> {
-  int levelId = 0;
-  String level = '';
-  int qualityOfLife = 0;
-  int gameScore = 0;
-  int balance = 0;
-  var document;
+
   int priceOfOption = 0;
   String option = '';
-  var userId;
   int? bill;
 
   //get bill data
@@ -46,9 +45,9 @@ class _AllQueLevelFiveState extends State<AllQueLevelFive> {
   int homeLoanFund = 0;
   int transportLoanFund = 0;
   int fund = 0;
+  int investment = 0;
 
   //page controller
-  PageController controller = PageController();
   PageController controllerForInner = PageController();
   int currentIndex = 0;
   int totalMutualFund = 0;
@@ -58,32 +57,19 @@ class _AllQueLevelFiveState extends State<AllQueLevelFive> {
   int? randomNumberTotalPositive;
   int count = 0;
 
-  //for option selection
-  bool flag1 = false;
-  bool flag2 = false;
-  bool flagForKnow = false;
-  Color color = Colors.white;
 
-  //for Monthly Discretionary Fund
-  // List<String> fundName = ['Mutual Fund', 'Home EMI', 'Transport EMI'];
-  // List<int>  fundAllocation = [0, 0, 0];
   final _controller = Get.put<UserInfoController>(UserInfoController());
-  final storeValue = GetStorage();
 
   //for model
   QueModel? queModel;
   List<QueModel> list = [];
   List<int> innerList = [0, 1, 2];
 
-  int investment = 0;
-  int updateValue = 0;
 
-  Future<QueModel?> getLevelId() async {
+  getAllData() async {
     rentPrice = storeValue.read('rentPrice')!;
     transportPrice = storeValue.read('transportPrice')!;
     lifestylePrice = storeValue.read('lifestylePrice')!;
-    userId = storeValue.read('uId');
-    updateValue = storeValue.read('update');
     count = storeValue.read('count');
     if (count == null) {
       count = 0;
@@ -91,21 +77,16 @@ class _AllQueLevelFiveState extends State<AllQueLevelFive> {
 
     DocumentSnapshot snapshot =
         await firestore.collection('User').doc(userId).get();
-    level = snapshot.get('previous_session_info');
-    levelId = snapshot.get('level_id');
-    gameScore = snapshot.get('game_score');
-    balance = snapshot.get('account_balance');
+
     totalMutualFund = snapshot.get('mutual_fund');
     totalHomeLoan = snapshot.get('home_loan');
     totalTransportLoan = snapshot.get('transport_loan');
-    qualityOfLife = snapshot.get('quality_of_life');
     randomNumberTotalPositive = storeValue.read('randomNumberValue');
-    controller = PageController(initialPage: levelId);
     controllerForInner = PageController(
         initialPage: storeValue.read('level4or5innerPageViewId'));
 
     QuerySnapshot querySnapshot =
-        await FirebaseFirestore.instance.collection("Level_4").get();
+        await FirebaseFirestore.instance.collection("Level_5").get();
     for (int i = 0; i < querySnapshot.docs.length; i++) {
       var a = querySnapshot.docs[i];
       queModel = QueModel();
@@ -120,7 +101,7 @@ class _AllQueLevelFiveState extends State<AllQueLevelFive> {
   @override
   void initState() {
     super.initState();
-    getLevelId();
+    getLevelId().then((value) => getAllData());
     _displayFundAllocationBox();
   }
 
