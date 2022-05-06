@@ -1,4 +1,4 @@
-# financial
+# finshark
 
 A new Flutter project.
 
