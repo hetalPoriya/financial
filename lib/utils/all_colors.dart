@@ -59,4 +59,13 @@ class AllColors{
   static Color sliderBottomTextColor =Color(0xffcccccc);
 
   static Color rateText1Color = Color(0xff86F93F);
+
+  //settings page gradient
+  static Color settingsPageColor1 = Color(0xff9A92FF);
+  static Color settingsPageColor2 = Color(0xff8378F6);
+  static Color settingsPageColor3 = Color(0xff685AEC);
+
+  //leaderBoard
+  static Color leaderBoardTextColor = Color(0xff6165D7);
+  static Color leaderBoardConColor = Color(0xffF2E7FF);
 }

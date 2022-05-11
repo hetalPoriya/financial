@@ -529,6 +529,7 @@ class _AllQueLevelOneState extends State<AllQueLevelOne> {
           'level_1_balance': accountBalance,
           'level_1_qol': qol
         });
+        LocalNotifyManager.init();
         await localNotifyManager.configureLocalTimeZone();
         await localNotifyManager.flutterLocalNotificationsPlugin.cancel(1);
         await localNotifyManager.flutterLocalNotificationsPlugin.cancel(7);

@@ -710,8 +710,7 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
         );
       });
     }, () async {
-      // await flutterLocalNotificationsPlugin.cancel(23);
-      // await localNotifyManager.repeatNotificationLevel4();
+      LocalNotifyManager.init();
       await localNotifyManager.configureLocalTimeZone();
       await localNotifyManager.flutterLocalNotificationsPlugin.cancel(3);
       await localNotifyManager.flutterLocalNotificationsPlugin.cancel(9);

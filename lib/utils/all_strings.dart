@@ -227,4 +227,15 @@ class AllStrings {
   static String rateText2 = 'Tell us how we are doing';
   static String rateText3 = 'Got any feedback/suggestions?';
   //static String feedbackApp = 'Write your feedback/suggestions here';
+
+
+  //settins page
+  static String levels = 'Levels';
+  static String profileDes = 'View your level progress. Replay level and Pop Quiz.';
+  static String leaderBoard = 'Leaderboard';
+  static String leaderBoardDes = 'View your ranking! See where you stand on the finshark leaderboard.';
+  static String feedback = 'Feedback';
+  static String feedbackDes = 'Send us your feedback. Or request a new feature. ';
+  static String share = 'Share';
+  static String shareDes = 'Invite your friends and share us on social media.';
 }

@@ -1,4 +1,4 @@
-class ProfilePageModel {
+class LevelsModel {
   int? id;
   String? level;
   String? goal;
@@ -6,7 +6,7 @@ class ProfilePageModel {
   String? levelProgress;
   String? popQuizProgress;
 
-  ProfilePageModel(
+  LevelsModel(
       {this.id,
         this.level,
         this.goal,
@@ -14,7 +14,7 @@ class ProfilePageModel {
         this.levelProgress,
         this.popQuizProgress,});
 
-  factory ProfilePageModel.fromJson(Map<String, dynamic> json) => ProfilePageModel(
+  factory LevelsModel.fromJson(Map<String, dynamic> json) => LevelsModel(
     id: json["id"],
     level: json["level"],
     goal: json["goal"],

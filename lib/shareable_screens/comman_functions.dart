@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:financial/shareable_screens/globle_variable.dart';
+import 'package:financial/shareable_screens/gradient_text.dart';
 import 'package:financial/utils/all_colors.dart';
+import 'package:financial/utils/all_images.dart';
 import 'package:financial/utils/all_strings.dart';
 import 'package:financial/utils/all_textStyle.dart';
 import 'package:financial/views/coming_soon.dart';
@@ -10,10 +12,12 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
+import 'package:numeral/numeral.dart';
+import 'dart:math' as math;
 
 //button style for restart level or (creditbalance or debitbalance not enough) ok button
 Widget restartOrOkButton(String text, VoidCallback onPressed,
-    [Alignment? alignment]) =>
+        [Alignment? alignment]) =>
     Padding(
       padding: EdgeInsets.all(6.0),
       child: Align(
@@ -33,7 +37,6 @@ Widget restartOrOkButton(String text, VoidCallback onPressed,
             )),
       ),
     );
-
 
 level5BillPayment(Widget widget, String image) {
   return Padding(
@@ -772,3 +775,197 @@ buttonStyle(Color color, String text, VoidCallback onPressed,
                 ),
               )),
         ));
+
+leaderBoardWidget(
+        {int? rank,
+        String? userName,
+        int? gameScore,
+        int? savings,
+        int? netWorth,
+        int? creditScore,
+        int? lifestyleScore}) =>
+    Container(
+      height: 15.h,
+      width: 90.w,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(
+          6.w,
+        ),
+        color: Colors.white,
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 2.w),
+        child: Row(children: [
+          Expanded(
+            child: Container(
+              //color: AllColors.blue,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Image.asset(AllImages.circle, fit: BoxFit.contain),
+                  rank == 1
+                      ? Image.asset(AllImages.rank1, fit: BoxFit.contain)
+                      : rank == 2
+                          ? Image.asset(AllImages.rank2, fit: BoxFit.contain)
+                          : rank == 3
+                              ? Image.asset(AllImages.rank3,
+                                  fit: BoxFit.contain)
+                              : Text(rank.toString(),
+                                  style: AllTextStyles.leaderBoardName(
+                                      fontSize: 22.sp)),
+                ],
+              ),
+              height: 100.h,
+              width: 100.w,
+              //color: Colors.green,
+              alignment: Alignment.center,
+            ),
+          ),
+          Expanded(
+            child: Column(
+              children: [
+                Expanded(
+                  child: Container(
+                    //color: AllColors.red,
+                    child: Row(children: [
+                      Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 2.w),
+                            child: Text(
+                              userName.toString(),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: AllTextStyles.leaderBoardName(),
+                            ),
+                          ),
+                          flex: 2),
+                      Expanded(
+                          child: Container(
+                        // color: AllColors.red,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Game Score',
+                              style: AllTextStyles.workSansSmall(
+                                  fontSize: 6.sp, color: AllColors.lightPurple),
+                            ),
+                            GradientText(
+                                text: '${gameScore.toString()}'.toString(),
+                                style: AllTextStyles.gameScore(
+                                  fontSize: 20.sp,
+                                ),
+                                gradient: LinearGradient(
+                                    colors: [
+                                      AllColors.darkBlue,
+                                      AllColors.darkPink
+                                    ],
+                                    //transform: GradientRotation(math.pi / 2),
+                                    begin: Alignment.bottomRight,
+                                    end: Alignment.topRight)),
+                          ],
+                        ),
+                      )),
+                    ]),
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    child: Row(children: [
+                      leaderBoardBal(
+                          text: 'Savings',
+                          balance: savings,
+                          color: AllColors.darkYellow),
+                      leaderBoardBal(
+                          text: 'NetWorth',
+                          balance: netWorth,
+                          color: AllColors.orange),
+                      leaderBoardBal(
+                          text: 'Credit',
+                          balance: creditScore,
+                          color: AllColors.lightGreen),
+                      leaderBoardBal(
+                          text: 'Lifestyle',
+                          balance: lifestyleScore,
+                          color: AllColors.extraLightBlue),
+                    ]),
+                  ),
+                )
+              ],
+            ),
+            flex: 4,
+          ),
+
+          // Expanded(
+          //   child: Container(
+          //     child:
+          //         Text(userName.toString(), style: AllTextStyles.leaderBoardName()),
+          //     height: 100.h,
+          //     width: 100.w,
+          //     color: Colors.red,
+          //     alignment: Alignment.center,
+          //   ),
+          //   flex: 3,
+          // ),
+          // Expanded(
+          //   child: Container(
+          //     color: AllColors.green,
+          //     child: Text(gameScore.toString(),
+          //         style: AllTextStyles.robotoSmall()),
+          //     height: 100.h,
+          //     width: 100.w,
+          //     alignment: Alignment.centerRight,
+          //   ),
+          // ),
+        ]),
+      ),
+    );
+
+leaderBoardBal({String? text, int? balance, Color? color}) {
+  return Expanded(
+      child: Container(
+    // color: AllColors.red,
+    child: Column(children: [
+      Expanded(
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(2.w),
+            color: Colors.grey.shade50,
+          ),
+          alignment: Alignment.center,
+          width: 100.w,
+          child: FittedBox(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 1.w),
+              child: Text(
+                  balance.toString().length > 4
+                      ? Numeral(balance!.toInt().ceil())
+                          .format(fractionDigits: 1)
+                          .toString()
+                      :
+                  balance!.ceil().toString(),
+                  style: AllTextStyles.leaderBoardName(
+                    color: color,
+                  )),
+            ),
+          ),
+        ),
+        flex: 2,
+      ),
+      Expanded(
+        child: Container(
+          alignment: Alignment.center,
+          child: Padding(
+            padding: EdgeInsets.only(bottom: 1.w),
+            child: Text(
+              text.toString(),
+              style: AllTextStyles.workSansSmall(
+                  fontSize: 8.sp, color: AllColors.lightPurple),
+            ),
+          ),
+          //color: AllColors.red,
+        ),
+      ),
+    ]),
+  ));
+}

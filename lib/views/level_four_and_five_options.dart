@@ -12,7 +12,8 @@ import 'package:financial/utils/all_strings.dart';
 import 'package:financial/utils/all_textStyle.dart';
 import 'package:financial/views/all_que_level_five.dart';
 import 'package:financial/views/all_que_level_four.dart';
-import 'package:financial/views/profile_page.dart';
+import 'package:financial/views/levels.dart';
+import 'package:financial/views/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -74,7 +75,7 @@ class _LevelFourAndFiveOptionsState extends State<LevelFourAndFiveOptions>
     return SafeArea(
       child: Scaffold(
         body: DoubleBackToCloseApp(
-            snackBar:  SnackBar(
+            snackBar: SnackBar(
               content: Text(AllStrings.tapBack),
             ),
             child: Container(
@@ -109,8 +110,7 @@ class _LevelFourAndFiveOptionsState extends State<LevelFourAndFiveOptions>
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(14.w),
-                                              color:
-                                                  AllColors.darkOrange,
+                                              color: AllColors.darkOrange,
                                             ),
                                             child: Center(
                                                 child: _text(
@@ -137,7 +137,7 @@ class _LevelFourAndFiveOptionsState extends State<LevelFourAndFiveOptions>
                                                   .toString()
                                                   .contains('user_name')) {
                                                 Get.to(
-                                                  () => ProfilePage(),
+                                                  () => SettingsPage(),
                                                   duration: Duration(
                                                       milliseconds: 500),
                                                   transition:
@@ -153,7 +153,7 @@ class _LevelFourAndFiveOptionsState extends State<LevelFourAndFiveOptions>
                                                             merge: true)).then(
                                                         (value) => Get.to(
                                                               () =>
-                                                                  ProfilePage(),
+                                                                  SettingsPage(),
                                                               duration: Duration(
                                                                   milliseconds:
                                                                       500),
@@ -218,21 +218,22 @@ class _LevelFourAndFiveOptionsState extends State<LevelFourAndFiveOptions>
                                             data: SliderTheme.of(context)
                                                 .copyWith(
                                               activeTrackColor:
-                                              AllColors.sliderColor,
+                                                  AllColors.sliderColor,
                                               inactiveTrackColor:
-                                                 AllColors.sliderColor,
+                                                  AllColors.sliderColor,
                                               trackShape:
                                                   RoundedRectSliderTrackShape(),
                                               trackHeight: 2.w,
-                                              thumbColor:AllColors.preview1,
-                                              overlayColor:AllColors.sliderColor,
+                                              thumbColor: AllColors.preview1,
+                                              overlayColor:
+                                                  AllColors.sliderColor,
                                               tickMarkShape:
                                                   RoundSliderTickMarkShape(),
                                               activeTickMarkColor: Colors.white,
                                               inactiveTickMarkColor:
                                                   Colors.white,
                                               valueIndicatorColor:
-                                                 AllColors.preview1,
+                                                  AllColors.preview1,
                                               valueIndicatorTextStyle:
                                                   TextStyle(
                                                 color: Colors.white,
@@ -304,29 +305,29 @@ class _LevelFourAndFiveOptionsState extends State<LevelFourAndFiveOptions>
                                               children: [
                                                 _text(
                                                     '${_controller.bills[index1].options1}',
-                                                  AllColors.preview1,
+                                                    AllColors.preview1,
                                                     FontWeight.w700,
                                                     10.sp),
                                                 _text(
                                                     '${_controller.bills[index1].options2}',
-                                                  AllColors.preview1,
+                                                    AllColors.preview1,
                                                     FontWeight.w700,
                                                     10.sp),
                                                 _text(
                                                     '${_controller.bills[index1].options3}',
-                                                  AllColors.preview1,
+                                                    AllColors.preview1,
                                                     FontWeight.w700,
                                                     10.sp),
                                                 if (index1 == 0)
                                                   _text(
                                                       '${_controller.bills[index1].options4}',
-                                                  AllColors.preview1,
+                                                      AllColors.preview1,
                                                       FontWeight.w700,
                                                       10.sp),
                                                 if (index1 == 0)
                                                   _text(
                                                       '${_controller.bills[index1].options5}',
-                                                  AllColors.preview1,
+                                                      AllColors.preview1,
                                                       FontWeight.w700,
                                                       10.sp),
                                               ],
@@ -342,7 +343,8 @@ class _LevelFourAndFiveOptionsState extends State<LevelFourAndFiveOptions>
                                               decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(3.w),
-                                                color: AllColors.sliderDescriptionContainerColor,
+                                                color: AllColors
+                                                    .sliderDescriptionContainerColor,
                                               ),
                                               child: Center(
                                                 child: Padding(
@@ -350,7 +352,8 @@ class _LevelFourAndFiveOptionsState extends State<LevelFourAndFiveOptions>
                                                       horizontal: 1.h),
                                                   child: _text(
                                                       '${_controller.bills[index1].optionsValue![index].description}',
-                                                      AllColors.sliderDescriptionColor,
+                                                      AllColors
+                                                          .sliderDescriptionColor,
                                                       FontWeight.w400,
                                                       10.sp),
                                                 ),
@@ -528,15 +531,15 @@ class _LevelFourAndFiveOptionsState extends State<LevelFourAndFiveOptions>
                                                           Icons
                                                               .arrow_back_ios_outlined,
                                                           size: 18.0,
-                                                          color:
-                                                              AllColors
-                                                                  .darkPink,
+                                                          color: AllColors
+                                                              .darkPink,
                                                         )),
                                                         SizedBox(
                                                           width: 3.w,
                                                         ),
                                                         GradientText(
-                                                            text: AllStrings.prev,
+                                                            text:
+                                                                AllStrings.prev,
                                                             style: AllTextStyles
                                                                 .dialogStyleLarge(
                                                                     size:
@@ -784,7 +787,7 @@ class _LevelFourAndFiveOptionsState extends State<LevelFourAndFiveOptions>
                                                             .center,
                                                     children: [
                                                       GradientText(
-                                                          text:AllStrings.next,
+                                                          text: AllStrings.next,
                                                           style: AllTextStyles
                                                               .dialogStyleLarge(
                                                                   size: 16.sp),
@@ -807,8 +810,7 @@ class _LevelFourAndFiveOptionsState extends State<LevelFourAndFiveOptions>
                                                             .arrow_forward_ios_outlined,
                                                         size: 18.0,
                                                         color:
-                                                            AllColors
-                                                                .darkPink,
+                                                            AllColors.darkPink,
                                                       )),
                                                     ],
                                                   ),

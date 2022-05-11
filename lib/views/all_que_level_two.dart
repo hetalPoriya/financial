@@ -612,6 +612,7 @@ class _AllQueLevelTwoState extends State<AllQueLevelTwo> {
               .doc(userId)
               .update({'replay_level': false});
         }
+        LocalNotifyManager.init();
         await localNotifyManager.configureLocalTimeZone();
         await localNotifyManager.flutterLocalNotificationsPlugin.cancel(2);
         await localNotifyManager.flutterLocalNotificationsPlugin.cancel(8);

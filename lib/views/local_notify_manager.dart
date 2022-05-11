@@ -213,13 +213,12 @@ class LocalNotifyManager {
   //   return scheduledDate;
   // }
 
-  var androidChannel = AndroidNotificationDetails(
+  var androidChannel =const AndroidNotificationDetails(
     'CHANNEL_ID',
     'CHANNEL_NAME',
     importance: Importance.max,
     priority: Priority.high,
     playSound: true,
-    timeoutAfter: 5000,
     enableLights: true,
     styleInformation: BigTextStyleInformation(''),
   );
@@ -233,7 +232,7 @@ class LocalNotifyManager {
   tz.TZDateTime _nextInstanceOfElevenAm() {
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
     tz.TZDateTime scheduledDate =
-    tz.TZDateTime(tz.local, now.year, now.month, now.day, 9);
+    tz.TZDateTime(tz.local, now.year, now.month, now.day, 8);
     // tz.TZDateTime scheduledDate = tz.TZDateTime.from(
     //     DateTime(now.year, now.month, now.day, 10, 00), tz.local);
     if (scheduledDate.isBefore(now)) {
@@ -243,7 +242,7 @@ class LocalNotifyManager {
   }
   tz.TZDateTime _nextInstanceOfSaturdayElevenAM() {
     tz.TZDateTime scheduledDate = _nextInstanceOfElevenAm();
-    while (scheduledDate.weekday != DateTime.sunday) {
+    while (scheduledDate.weekday != DateTime.tuesday) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
     return scheduledDate;
@@ -252,7 +251,7 @@ class LocalNotifyManager {
   tz.TZDateTime _nextInstanceOfSevenPm() {
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
     tz.TZDateTime scheduledDate =
-    tz.TZDateTime(tz.local, now.year, now.month, now.day, 10);
+    tz.TZDateTime(tz.local, now.year, now.month, now.day, 9);
     // tz.TZDateTime scheduledDate = tz.TZDateTime.from(
     //     DateTime(now.year, now.month, now.day, 10, 02), tz.local);
     if (scheduledDate.isBefore(now)) {
@@ -262,13 +261,13 @@ class LocalNotifyManager {
   }
   tz.TZDateTime _nextInstanceOfWednesdaySevenPm() {
     tz.TZDateTime scheduledDate = _nextInstanceOfSevenPm();
-    while (scheduledDate.weekday != DateTime.saturday) {
+    while (scheduledDate.weekday != DateTime.wednesday) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
     return scheduledDate;
   }
 
-  functionForPushNotification(
+   functionForPushNotification(
       {int? id, String? title, String? body, tz.TZDateTime? tzDateTime}) async {
     var platformChannel = NotificationDetails(android: androidChannel);
     await flutterLocalNotificationsPlugin.zonedSchedule(
@@ -281,8 +280,8 @@ class LocalNotifyManager {
     );
   }
 
-  scheduleNotificationForLevelOneSaturdayElevenAm() async {
-    functionForPushNotification(
+  Future<void>  scheduleNotificationForLevelOneSaturdayElevenAm() async {
+    await functionForPushNotification(
         id: 1,
         title: AllStrings.notificationTitle,
         body: AllStrings.notificationBodyLevel1,
@@ -290,8 +289,8 @@ class LocalNotifyManager {
         // body: 'Level 1 First Body',
         tzDateTime: _nextInstanceOfSaturdayElevenAM());
   }
-  scheduleNotificationForLevelTwoSaturdayElevenAm() async {
-    functionForPushNotification(
+  Future<void>  scheduleNotificationForLevelTwoSaturdayElevenAm() async {
+    await functionForPushNotification(
         id: 2,
         title: AllStrings.notificationTitle,
         body: AllStrings.notificationBodyLevel2,
@@ -299,8 +298,8 @@ class LocalNotifyManager {
         // body: 'Level 2 First Body',
         tzDateTime: _nextInstanceOfSaturdayElevenAM());
   }
-  scheduleNotificationForLevelThreeSaturdayElevenAm() async {
-    functionForPushNotification(
+  Future<void>  scheduleNotificationForLevelThreeSaturdayElevenAm() async {
+    await functionForPushNotification(
         id: 3,
         title: AllStrings.notificationTitle,
         body: AllStrings.notificationBodyLevel3,
@@ -308,8 +307,8 @@ class LocalNotifyManager {
         // body: 'Level 3 First Body',
         tzDateTime: _nextInstanceOfSaturdayElevenAM());
   }
-  scheduleNotificationForLevelFourSaturdayElevenAm() async {
-    functionForPushNotification(
+  Future<void> scheduleNotificationForLevelFourSaturdayElevenAm() async {
+    await  functionForPushNotification(
         id: 4,
         title: AllStrings.notificationTitle,
         body: AllStrings.notificationBodyLevel4,
@@ -318,8 +317,8 @@ class LocalNotifyManager {
         tzDateTime: _nextInstanceOfSaturdayElevenAM());
   }
 
-  scheduleNotificationForLevelOneWednesdaySevenPm() async {
-    functionForPushNotification(
+  Future<void>  scheduleNotificationForLevelOneWednesdaySevenPm() async {
+    await functionForPushNotification(
         id: 7,
         title: AllStrings.notificationTitle,
         body: AllStrings.notificationBodyLevel1,
@@ -327,8 +326,8 @@ class LocalNotifyManager {
         // body: 'Level 1 Second Body',
         tzDateTime: _nextInstanceOfWednesdaySevenPm());
   }
-  scheduleNotificationForLevelTwoWednesdaySevenPm() async {
-    functionForPushNotification(
+  Future<void> scheduleNotificationForLevelTwoWednesdaySevenPm() async {
+    await functionForPushNotification(
         id: 8,
         title: AllStrings.notificationTitle,
         body: AllStrings.notificationBodyLevel2,
@@ -336,8 +335,8 @@ class LocalNotifyManager {
         // body: 'Level 2 Second Body',
         tzDateTime: _nextInstanceOfWednesdaySevenPm());
   }
-  scheduleNotificationForLevelThreeWednesdaySevenPm() async {
-    functionForPushNotification(
+  Future<void>  scheduleNotificationForLevelThreeWednesdaySevenPm() async {
+    await functionForPushNotification(
         id: 9,
         title: AllStrings.notificationTitle,
         body: AllStrings.notificationBodyLevel3,
@@ -345,8 +344,8 @@ class LocalNotifyManager {
         // body: 'Level 3 Second Body',
         tzDateTime: _nextInstanceOfWednesdaySevenPm());
   }
-  scheduleNotificationForLevelFourWednesdaySevenPm() async {
-    functionForPushNotification(
+  Future<void> scheduleNotificationForLevelFourWednesdaySevenPm() async {
+    await functionForPushNotification(
         id: 10,
         title: AllStrings.notificationTitle,
         body: AllStrings.notificationBodyLevel4,
@@ -398,3 +397,4 @@ class ReceiveNotification {
       required this.body,
       required this.payload});
 }
+

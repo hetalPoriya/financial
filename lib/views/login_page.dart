@@ -285,23 +285,61 @@ class _LoginPageState extends State<LoginPage> with WidgetsBindingObserver {
         .then((value) => _mailSendDialog());
   }
 
-  Future<UserCredential> signInWithGoogle() async {
-    // Trigger the authentication flow
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+  Future<UserCredential?> signInWithGoogle() async {
 
-    // Obtain the auth details from the request
-    final GoogleSignInAuthentication? googleAuth =
-        await googleUser?.authentication;
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+    final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
+    if (googleSignInAccount != null) {
+      final GoogleSignInAuthentication googleSignInAuthentication =
+      await googleSignInAccount.authentication;
+      final AuthCredential authCredential = GoogleAuthProvider.credential(
+          idToken: googleSignInAuthentication.idToken,
+          accessToken: googleSignInAuthentication.accessToken);
 
-    // Create a new credential
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
+      // Getting users credential
+      UserCredential result = await _auth.signInWithCredential(authCredential);
+      User? user = result.user;
 
-    // Once signed in, return the UserCredential
-    _verificationCompleted(credential);
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+      if (user != null) {
+        _verificationCompleted(authCredential);
+      }  else{
+        Fluttertoast.showToast(msg: 'Please try again');
+      }// if result not null we simply call the MaterialpageRoute,
+      // for go to the HomePage screen
+    }
+    // try {
+    //   final GoogleSignInAccount? googleSignInAccount =
+    //   await GoogleSignIn().signIn();
+    //   final GoogleSignInAuthentication googleSignInAuthentication =
+    //   await googleSignInAccount!.authentication;
+    //   final AuthCredential credential = GoogleAuthProvider.credential(
+    //     accessToken: googleSignInAuthentication.accessToken,
+    //     idToken: googleSignInAuthentication.idToken,
+    //   );
+    //   _verificationCompleted(credential);
+    //   await _auth.signInWithCredential(credential);
+    // } on FirebaseAuthException catch (e) {
+    //   print(e.message);
+    //   throw e;
+    // }
+
+    // // Trigger the authentication flow
+    // final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    //
+    // // Obtain the auth details from the request
+    // final GoogleSignInAuthentication? googleAuth =
+    //     await googleUser?.authentication;
+    //
+    // // Create a new credential
+    // final credential = GoogleAuthProvider.credential(
+    //   accessToken: googleAuth?.accessToken,
+    //   idToken: googleAuth?.idToken,
+    // );
+    //
+    // print('Credia $credential');
+    // // Once signed in, return the UserCredential
+    // _verificationCompleted(credential);
+    // return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
   _codeSendDialog(String phone, String verificationId) {
@@ -476,6 +514,7 @@ class _LoginPageState extends State<LoginPage> with WidgetsBindingObserver {
     });
     UserCredential result = await _auth.signInWithCredential(credential);
     User? user = result.user;
+    print('USERRRRRR $user');
     _login(user);
   }
 
@@ -553,7 +592,7 @@ class _LoginPageState extends State<LoginPage> with WidgetsBindingObserver {
       print('Called1');
       await localNotifyManager.scheduleNotificationForLevelOneSaturdayElevenAm();
       print('Called2');
-      await localNotifyManager.scheduleNotificationForLevelOneWednesdaySevenPm();
+      await localNotifyManager.scheduleNotificationForLevelTwoWednesdaySevenPm();
       print('Called3');
 
      // await localNotifyManager.repeatNotificationLevel1();

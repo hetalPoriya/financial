@@ -6,7 +6,10 @@ import 'package:financial/utils/all_colors.dart';
 import 'package:financial/utils/all_images.dart';
 import 'package:financial/utils/all_strings.dart';
 import 'package:financial/utils/all_textStyle.dart';
-import 'package:financial/views/profile_page.dart';
+import 'package:financial/views/levels.dart';
+import 'package:financial/views/settings_page.dart';
+import 'package:financial/views/settings_page.dart';
+import 'package:financial/views/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -144,7 +147,7 @@ class _GameScorePageState extends State<GameScorePage> {
                               Object? map = doc.data();
                               if (map.toString().contains('user_name')) {
                                 Get.to(
-                                  () => ProfilePage(),
+                                  () => SettingsPage(),
                                   duration: Duration(milliseconds: 500),
                                   transition: Transition.downToUp,
                                 );
@@ -153,7 +156,7 @@ class _GameScorePageState extends State<GameScorePage> {
                                     {'user_name': ''},
                                     SetOptions(
                                         merge: true)).then((value) => Get.to(
-                                      () => ProfilePage(),
+                                      () => SettingsPage(),
                                       duration: Duration(milliseconds: 500),
                                       transition: Transition.downToUp,
                                     ));
@@ -171,7 +174,7 @@ class _GameScorePageState extends State<GameScorePage> {
                       padding: EdgeInsets.only(left: 6.w, right: 8.w),
                       child: GestureDetector(
                           onTap: () async {
-                            Get.to(() => ProfilePage());
+                            Get.to(() => SettingsPage());
                           },
                           child: Image.asset(
                             AllImages.profileThreeLine,

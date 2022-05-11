@@ -20,7 +20,6 @@ class AllImages{
 
   //profile page
   static String profileThreeLine = 'assets/settings.png';
-  static String profileIcon = 'assets/profile.png';
   static String replayImage ='assets/replay.png';
   static String rightImage ='assets/right.png';
   static String popQuiz = 'assets/popQuiz.png';
@@ -58,4 +57,16 @@ class AllImages{
   static String netWorth = 'assets/netWorth.png';
   static String star = 'assets/star.png';
   static String iImage = 'assets/i.png';
+
+  //settings
+  static String levels = 'assets/levels.png';
+  static String settingSymbol = 'assets/settings_symbol.png';
+  static String share = 'assets/share.png';
+  static String feedback = 'assets/feedback.png';
+  static String leaderBoard = 'assets/leader_board.png';
+  static String circle = 'assets/circle.png';
+  static String rank1 = 'assets/rank1.png';
+  static String rank2 = 'assets/rank2.png';
+  static String rank3 = 'assets/rank3.png';
+
 }

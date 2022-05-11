@@ -46,7 +46,7 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
   int fund = 0;
   int count = 0;
 
-  final userInfo = Get.find<UserInfoController>();
+  final userInfo = Get.put<UserInfoController>(UserInfoController());
 
   PageController controllerForInner = PageController();
   int currentIndex = 0;
@@ -940,6 +940,7 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
         //       .update({'replay_level': false});
         // }
         Future.delayed(Duration(seconds: 2), () async {
+          LocalNotifyManager.init();
           await localNotifyManager.configureLocalTimeZone();
           await localNotifyManager.flutterLocalNotificationsPlugin.cancel(4);
           await localNotifyManager.flutterLocalNotificationsPlugin.cancel(10);

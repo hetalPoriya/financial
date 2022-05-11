@@ -6,6 +6,7 @@ import 'package:financial/views/all_que_level_six.dart';
 import 'package:financial/views/all_que_level_three.dart';
 import 'package:financial/views/all_que_level_two.dart';
 import 'package:financial/views/coming_soon.dart';
+import 'package:financial/views/leader_board.dart';
 import 'package:financial/views/level_five_setUp_page.dart';
 import 'package:financial/views/level_four_and_five_options.dart';
 import 'package:financial/views/level_four_setUp_page.dart';
@@ -18,8 +19,9 @@ import 'package:financial/views/level_two_setUp_page.dart';
 import 'package:financial/views/login_page.dart';
 import 'package:financial/views/on_boarding_page.dart';
 import 'package:financial/views/pop_quiz.dart';
-import 'package:financial/views/profile_page.dart';
+import 'package:financial/views/levels.dart';
 import 'package:financial/views/rate_us.dart';
+import 'package:financial/views/settings_page.dart';
 import 'package:financial/views/splash_screen.dart';
 import 'package:get/get.dart';
 
@@ -28,7 +30,7 @@ class RouteHelper{
   static  String splash = '/Splash';
   static  String onBoarding = '/OnBoarding';
   static  String login = '/Login';
-  static  String profile = '/Profile';
+  static  String levels = '/Levels';
   static  String level1 = '/Level1';
   static  String level2 = '/Level2';
   static  String level3= '/Level3';
@@ -48,6 +50,8 @@ class RouteHelper{
   static  String level4Options= '/LevelFourOptionsPage';
   static  String comingSoon= '/ComingSoon';
   static  String rateUs= '/RateUs';
+  static  String settings= '/Settings';
+  static  String leaderBoard= '/LeaderBoard';
 
   static List<GetPage> getPages = [
     GetPage(name: level1, page: () => AllQueLevelOne()),
@@ -69,9 +73,11 @@ class RouteHelper{
     GetPage(name: login, page: () => LoginPage()),
     GetPage(name: level1PopQuiz, page: () => LevelOnePopQuiz()),
     GetPage(name: popQuiz, page: () => PopQuiz()),
-    GetPage(name: profile, page: () => ProfilePage()),
+    GetPage(name: levels, page: () => Levels()),
     GetPage(name: comingSoon, page: () => ComingSoon()),
     GetPage(name: allDone, page: () => AllDone()),
     GetPage(name: rateUs, page: () => RateUs(onSubmit: () {},)),
+    GetPage(name: settings, page: () => SettingsPage()),
+    GetPage(name: leaderBoard, page: () => LeaderBoard(userName: '',)),
   ];
 }

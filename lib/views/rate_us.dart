@@ -18,8 +18,12 @@ class RateUs extends StatelessWidget {
   Widget build(BuildContext context) {
     var con = Get.put<UserInfoController>(UserInfoController());
     return SafeArea(
-      top: false,
+     // top: false,
       child: Scaffold(
+        appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0, title: Text('Feedback',
+            style: AllTextStyles.settingsAppTitle()),
+          centerTitle: true,),
+        extendBodyBehindAppBar: true,
         body: GetBuilder<UserInfoController>(builder: (userInfo) {
           return SingleChildScrollView(
             child: Container(
@@ -112,8 +116,8 @@ class RateUs extends StatelessWidget {
                                   msg: 'Please rate your experience ');
                             }
                           : () {
-                        userInfo.submit = true;
-                        userInfo.update();
+                              userInfo.submit = true;
+                              userInfo.update();
                               onSubmit();
                             },
                       child: Text(

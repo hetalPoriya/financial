@@ -5,7 +5,8 @@ import 'package:financial/utils/all_colors.dart';
 import 'package:financial/utils/all_images.dart';
 import 'package:financial/utils/all_strings.dart';
 import 'package:financial/utils/all_textStyle.dart';
-import 'package:financial/views/profile_page.dart';
+import 'package:financial/views/levels.dart';
+import 'package:financial/views/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -88,7 +89,7 @@ class ComingSoon extends StatelessWidget {
                   onPressed: () {
                     Future.delayed(
                         Duration(seconds: 1),
-                            () =>  Get.off(() => ProfilePage(),
+                            () =>  Get.to(() => SettingsPage(),
                           duration:Duration(milliseconds: 500),
                           transition: Transition.downToUp,));
                   },
