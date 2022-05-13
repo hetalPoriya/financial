@@ -17,11 +17,6 @@ int transportPrice = 0;
 int lifestylePrice = 0;
 int level4TotalPrice = 0;
 
-//to store bal,qol,gs
-// int balance = 0;
-// int qualityOfLife = 0;
-// int gameScore = 0;
-
 //counting for max 100 plus in credit score
 int creditCount = 100;
 

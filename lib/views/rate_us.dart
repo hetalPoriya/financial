@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'package:store_redirect/store_redirect.dart';
 
 class RateUs extends StatelessWidget {
   final Function onSubmit;
@@ -17,12 +18,17 @@ class RateUs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var con = Get.put<UserInfoController>(UserInfoController());
+    con.submit = false;
+
     return SafeArea(
-     // top: false,
+      // top: false,
       child: Scaffold(
-        appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0, title: Text('Feedback',
-            style: AllTextStyles.settingsAppTitle()),
-          centerTitle: true,),
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          title: Text('Feedback', style: AllTextStyles.settingsAppTitle()),
+          centerTitle: true,
+        ),
         extendBodyBehindAppBar: true,
         body: GetBuilder<UserInfoController>(builder: (userInfo) {
           return SingleChildScrollView(
@@ -118,6 +124,13 @@ class RateUs extends StatelessWidget {
                           : () {
                               userInfo.submit = true;
                               userInfo.update();
+                              Get.back();
+                              if (userInfo.star == 5)
+                                StoreRedirect.redirect(
+                                  androidAppId:
+                                      "com.finshark",
+                                  //iOSAppId: "585027354"
+                                );
                               onSubmit();
                             },
                       child: Text(

@@ -17,22 +17,23 @@ import 'dart:math' as math;
 
 //button style for restart level or (creditbalance or debitbalance not enough) ok button
 Widget restartOrOkButton(String text, VoidCallback onPressed,
-        [Alignment? alignment]) =>
+        {Alignment? alignment, Color? textColor, Color? buttonColor}) =>
     Padding(
       padding: EdgeInsets.all(6.0),
       child: Align(
-        alignment: alignment == null ? Alignment.centerRight : alignment,
+        alignment: alignment ?? Alignment.centerRight,
         child: ElevatedButton(
             onPressed: onPressed,
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.white),
+                backgroundColor:
+                    MaterialStateProperty.all(buttonColor ?? Colors.white),
                 shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(2.w)))),
+                    borderRadius: BorderRadius.circular(4.w)))),
             child: Padding(
               padding: EdgeInsets.all(1.w),
               child: Text(text,
                   style: AllTextStyles.dialogStyleSmall(
-                      color: AllColors.darkPurple,
+                      color: textColor ?? AllColors.darkPurple,
                       fontWeight: FontWeight.normal)),
             )),
       ),
@@ -85,16 +86,6 @@ Future<void> getUser(int levelId) async {
   documentSnapshot = await firestore.collection('User').doc(userId).get();
   level = documentSnapshot.get('previous_session_info');
 
-  // QuerySnapshot<Map<String, dynamic>>? l1 =
-  //     await firestore.collection('Level_1').get();
-  // QuerySnapshot<Map<String, dynamic>>? l2 =
-  //     await firestore.collection('Level_2').get();
-  // QuerySnapshot<Map<String, dynamic>>? l3 =
-  //     await firestore.collection('Level_3').get();
-  // QuerySnapshot<Map<String, dynamic>>? l4 =
-  //     await firestore.collection('Level_4').get();
-  // QuerySnapshot<Map<String, dynamic>>? l5 =
-  //     await firestore.collection('Level_5').get();
 
   snap.docs.forEach((document) async {
     documentSnapshot =
@@ -195,39 +186,61 @@ calculationForProgress(VoidCallback onPressed) async {
   savingAndQolDialog(abPer, qolPer, creditPer, investmentper, level, onPressed);
 }
 
-savingDialogText(String text1, String text2, String text3, Color color) =>
+savingDialogText(
+        {String? text1,
+        String? text2,
+        String? text3,
+        Color? color,
+        String? iconString}) =>
     Padding(
-      padding: EdgeInsets.symmetric(horizontal: 1.w, vertical: 1.w),
+      padding: EdgeInsets.symmetric(horizontal: 1.w, vertical: 2.w),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            '• ',
-            style: AllTextStyles.dialogStyleMedium(fontWeight: FontWeight.w500),
-            textAlign: TextAlign.start,
+          Expanded(
+            child: Container(
+              //color: AllColors.red,
+              alignment: Alignment.topCenter,
+              child: Image.asset(
+                iconString.toString(),
+                height: 5.h,
+                width: 8.w,
+                fit: BoxFit.contain,
+              ),
+            ),
           ),
-          Flexible(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 2.w),
-              child: RichText(
-                text: TextSpan(
-                    text: text1,
-                    style: AllTextStyles.dialogStyleMedium(
-                        fontWeight: FontWeight.w500),
-                    children: [
-                      TextSpan(
-                        text: text2,
-                        style: AllTextStyles.dialogStyleMedium(
-                            fontWeight: FontWeight.w500, color: color),
-                      ),
-                      TextSpan(
-                        text: text3,
-                        style: AllTextStyles.dialogStyleMedium(
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ]),
-                textAlign: TextAlign.left,
+          Expanded(
+            flex: 5,
+            child: Container(
+              //color: AllColors.green,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 2.w),
+                child: RichText(
+                  text: TextSpan(
+                      text: text1,
+                      style: AllTextStyles.leaderBoardName(
+                          color: AllColors.progressColor,
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.w700),
+                      children: [
+                        TextSpan(
+                          text: text2,
+                          style: AllTextStyles.leaderBoardName(
+                              color: color,
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.w700),
+                        ),
+                        TextSpan(
+                          text: text3,
+                          style: AllTextStyles.leaderBoardName(
+                              color: AllColors.progressColor,
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ]),
+                  textAlign: TextAlign.left,
+                ),
               ),
             ),
           ),
@@ -241,135 +254,161 @@ savingAndQolDialog(int abPer, int qolPer, int creditPer, int investmentPer,
   int lev = int.parse(level);
 
   Get.defaultDialog(
-    title: 'Level $lev Progress',
+    title: 'Level Progress',
     titlePadding: EdgeInsets.only(top: 2.h, bottom: 1.h),
     barrierDismissible: false,
     onWillPop: () {
       return Future.value(false);
     },
-    backgroundColor: AllColors.darkBlue2,
-    titleStyle: AllTextStyles.dialogStyleLarge(
-        size: 16.sp, fontWeight: FontWeight.w600),
-    content: Padding(
-      padding: EdgeInsets.only(right: 3.w, left: 3.w),
-      child: Column(
-        children: [
-          Text(AllStrings.levelProgressTitle,
-              style:
-                  AllTextStyles.dialogStyleMedium(fontWeight: FontWeight.w500),
-              textAlign: TextAlign.center),
-          SizedBox(
-            height: 1.h,
-          ),
-          // Text(
-          //     abPer > 0
-          //         ? 'Your savings are ${abPer.abs()}% higher than other players. '
-          //         : abPer < 0
-          //             ? 'Your savings are ${abPer.abs()}% lower than other players. '
-          //             : 'Your savings are ${abPer.abs()}% same as other players. ',
-          //     style: GoogleFonts.workSans(
-          //       fontSize: 14.sp,
-          //       color: Colors.white,
-          //       fontWeight: FontWeight.w500,
-          //     ),
-          //     textAlign: TextAlign.center),
-          if (levelForUser == 'Level_1' ||
-              levelForUser == 'Level_2' ||
-              levelForUser == 'Level_3' ||
-              levelForUser == 'Level_4' ||
-              levelForUser == 'Level_5')
-            abPer > 0
-                ? savingDialogText(
-                    AllStrings.savingsAre,
-                    '${abPer.abs()}% higher ',
-                    AllStrings.thanOthers,
-                    AllColors.lightGreen)
-                : abPer < 0
-                    ? savingDialogText(
-                        AllStrings.savingsAre,
-                        '${abPer.abs()}% lower ',
-                        AllStrings.thanOthers,
-                        AllColors.lightOrange)
-                    : abPer == 0
-                        ? savingDialogText('Your savings is ', 'the same ',
-                            AllStrings.asOthers, AllColors.white24)
-                        : null,
-          //
-          // SizedBox(
-          //   height: 1.h,
-          // ),
+    backgroundColor: Colors.white,
+    titleStyle: AllTextStyles.leaderBoardName(
+        color: AllColors.progressColorTitle,
+        fontSize: 18.sp,
+        fontWeight: FontWeight.w800),
+    content: Column(
+      children: [
+        Text(AllStrings.levelProgressTitle,
+            style: AllTextStyles.leaderBoardName(
+                color: AllColors.progressColor,
+                fontSize: 13.sp,
+                fontWeight: FontWeight.w800),
+            textAlign: TextAlign.center),
+        SizedBox(
+          height: 2.h,
+        ),
+        if (levelForUser == 'Level_1' ||
+            levelForUser == 'Level_2' ||
+            levelForUser == 'Level_3' ||
+            levelForUser == 'Level_4' ||
+            levelForUser == 'Level_5')
+          abPer > 0
+              ? savingDialogText(
+                  text1: AllStrings.savingsAre,
+                  text2: '${abPer.abs()}% higher ',
+                  text3: AllStrings.thanOthers,
+                  color: AllColors.lightGreen,
+                  iconString: AllImages.thumbsUp,
+                )
+              : abPer < 0
+                  ? savingDialogText(
+                      text1: AllStrings.savingsAre,
+                      text2: '${abPer.abs()}% lower ',
+                      text3: AllStrings.thanOthers,
+                      color: AllColors.lightOrange,
+                      iconString: AllImages.downArrow,
+                    )
+                  : abPer == 0
+                      ? savingDialogText(
+                          text1: 'Your savings is ',
+                          text2: 'the same ',
+                          text3: AllStrings.asOthers,
+                          color: Colors.black,
+                          iconString: AllImages.checkMark,
+                        )
+                      : null,
 
-          if (levelForUser == 'Level_1' ||
-              levelForUser == 'Level_2' ||
-              levelForUser == 'Level_3' ||
-              levelForUser == 'Level_4' ||
-              levelForUser == 'Level_5')
-            qolPer > 0
-                ? savingDialogText(
-                    AllStrings.lifestyleIs,
-                    '${qolPer.abs()}% higher ',
-                    AllStrings.thanOthers,
-                    AllColors.lightGreen)
-                : qolPer < 0
-                    ? savingDialogText(
-                        AllStrings.lifestyleIs,
-                        '${qolPer.abs()}% lower ',
-                        AllStrings.thanOthers,
-                        AllColors.lightOrange)
-                    : qolPer == 0
-                        ? savingDialogText(AllStrings.lifestyleIs, 'the same ',
-                            AllStrings.asOthers, AllColors.white24)
-                        : null,
+        if (levelForUser == 'Level_1' ||
+            levelForUser == 'Level_2' ||
+            levelForUser == 'Level_3' ||
+            levelForUser == 'Level_4' ||
+            levelForUser == 'Level_5')
+          qolPer > 0
+              ? savingDialogText(
+                  text1: AllStrings.lifestyleIs,
+                  text2: '${qolPer.abs()}% higher ',
+                  text3: AllStrings.thanOthers,
+                  color: AllColors.lightGreen,
+                  iconString: AllImages.thumbsUp,
+                )
+              : qolPer < 0
+                  ? savingDialogText(
+                      text1: AllStrings.lifestyleIs,
+                      text2: '${qolPer.abs()}% lower ',
+                      text3: AllStrings.thanOthers,
+                      color: AllColors.lightOrange,
+                      iconString: AllImages.downArrow,
+                    )
+                  : qolPer == 0
+                      ? savingDialogText(
+                          text1: AllStrings.lifestyleIs,
+                          text2: 'the same ',
+                          text3: AllStrings.asOthers,
+                          color: Colors.black,
+                          iconString: AllImages.checkMark,
+                        )
+                      : null,
 
-          // if (levelForUser == 'Level_3')
-          //   SizedBox(
-          //     height: 1.h,
-          //   ),
 
-          if (levelForUser == 'Level_3')
-            creditPer > 0
-                ? savingDialogText(
-                    AllStrings.creditScoreIs,
-                    '${creditPer.abs()}% higher ',
-                    AllStrings.thanOthers,
-                    AllColors.lightGreen)
-                : creditPer < 0
-                    ? savingDialogText(
-                        AllStrings.creditScoreIs,
-                        '${creditPer.abs()}% lower ',
-                        AllStrings.thanOthers,
-                        AllColors.lightOrange)
-                    : creditPer == 0
-                        ? savingDialogText(AllStrings.creditScoreIs,
-                            'the same ', AllStrings.asOthers, AllColors.white24)
-                        : null,
+        if (levelForUser == 'Level_3')
+          creditPer > 0
+              ? savingDialogText(
+                  text1: AllStrings.creditScoreIs,
+                  text2: '${creditPer.abs()}% higher ',
+                  text3: AllStrings.thanOthers,
+                  color: AllColors.lightGreen,
+                  iconString: AllImages.thumbsUp,
+                )
+              : creditPer < 0
+                  ? savingDialogText(
+                      text1: AllStrings.creditScoreIs,
+                      text2: '${creditPer.abs()}% lower ',
+                      text3: AllStrings.thanOthers,
+                      color: AllColors.lightOrange,
+                      iconString: AllImages.downArrow,
+                    )
+                  : creditPer == 0
+                      ? savingDialogText(
+                          text1: AllStrings.creditScoreIs,
+                          text2: 'the same ',
+                          text3: AllStrings.asOthers,
+                          color: Colors.black,
+                          iconString: AllImages.checkMark,
+                        )
+                      : null,
 
-          // if (levelForUser == 'Level_4' || levelForUser == 'Level_5')
-          //   SizedBox(
-          //     height: 1.h,
-          //   ),
 
-          if (levelForUser == 'Level_4' || levelForUser == 'Level_5')
-            investmentPer > 0
-                ? savingDialogText(
-                    AllStrings.investmentIs,
-                    '${investmentPer.abs()}% higher ',
-                    AllStrings.thanOthers,
-                    AllColors.lightGreen)
-                : investmentPer < 0
-                    ? savingDialogText(
-                        AllStrings.investmentIs,
-                        '${investmentPer.abs()}% lower ',
-                        AllStrings.thanOthers,
-                        AllColors.lightOrange)
-                    : investmentPer == 0
-                        ? savingDialogText(AllStrings.investmentIs, 'the same ',
-                            AllStrings.asOthers, AllColors.white24)
-                        : null,
-        ],
-      ),
+        if (levelForUser == 'Level_4' || levelForUser == 'Level_5')
+          investmentPer > 0
+              ? savingDialogText(
+                  text1: AllStrings.investmentIs,
+                  text2: '${investmentPer.abs()}% higher ',
+                  text3: AllStrings.thanOthers,
+                  color: AllColors.lightGreen,
+                  iconString: AllImages.thumbsUp,
+                )
+              : investmentPer < 0
+                  ? savingDialogText(
+                      text1: AllStrings.investmentIs,
+                      text2: '${investmentPer.abs()}% lower ',
+                      text3: AllStrings.thanOthers,
+                      color: AllColors.lightOrange,
+                      iconString: AllImages.downArrow,
+                    )
+                  : investmentPer == 0
+                      ? savingDialogText(
+                          text1: AllStrings.investmentIs,
+                          text2: 'the same ',
+                          text3: AllStrings.asOthers,
+                          color: Colors.black,
+                          iconString: AllImages.checkMark,
+                        )
+                      : null,
+
+        SizedBox(
+          height: 2.h,
+        ),
+        Text(
+          'Hint: Play till the end for higher scores',
+          style: AllTextStyles.workSansSmall(
+              color: AllColors.lightGrey2, fontSize: 8.sp),
+        )
+      ],
     ),
-    confirm: restartOrOkButton('Keep Going', onPressed, Alignment.center),
+    contentPadding: EdgeInsets.all(3.w),
+    confirm: restartOrOkButton('Keep Going', onPressed,
+        alignment: Alignment.center,
+        buttonColor: AllColors.progressColor,
+        textColor: Colors.white),
   );
 }
 
@@ -479,10 +518,10 @@ showDialogToShowIncreaseRent() {
   );
 }
 
-popQuizDialog(
-  VoidCallback onPlayPopQuizPressed,
-  VoidCallback onPlayNextLevelPressed,
-) {
+popQuizDialog({
+  VoidCallback? onPlayPopQuizPressed,
+  VoidCallback? onPlayNextLevelPressed,
+}) {
   return Get.defaultDialog(
     barrierDismissible: false,
     onWillPop: () {
@@ -532,7 +571,7 @@ popQuizDialog(
               ),
             ),
           ),
-        )
+        ),
       ],
     ),
     contentPadding: EdgeInsets.all(4.w),
@@ -566,33 +605,25 @@ inviteDialog() async {
         Container(
           child: ElevatedButton(
               onPressed: () async {
-                //bool value = documentSnapshot.get('replay_level');
-                // level = documentSnapshot.get('last_level');
-                // int myBal = documentSnapshot.get('account_balance');
-                // level = level.toString().substring(6, 7);
-                // int lev = int.parse(level);
-                // if (value == true) {
-                //   Future.delayed(
-                //       Duration(seconds: 1),
-                //       () => showDialogForReplay(lev, userId),);
-                // } else {
+
                 FlutterShare.share(
-                        title: 'https://finshark.page.link/finshark',
+                        title:
+                            'https://play.google.com/store/apps/details?id=com.finshark',
                         text: AllStrings.shareAppDesText,
-                        linkUrl: 'https://finshark.page.link/finshark',
-                        chooserTitle: 'https://finshark.page.link/finshark')
+                        linkUrl:
+                            'https://play.google.com/store/apps/details?id=com.finshark',
+                        chooserTitle:
+                            'https://play.google.com/store/apps/details?id=com.finshark')
                     .then((value) {
-                  // Future.delayed(Duration(seconds: 2), () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LevelThreeSetUpPage(controller: PageController()))));
+
                 }).then((value) async {
                   Get.back();
                   FirebaseFirestore.instance
                       .collection('User')
                       .doc(userId)
                       .update({
-                    //'previous_session_info': 'Level_5_setUp_page',
-                    if (value != true) 'last_level': 'Level_5_setUp_page',
+                    if (value != true) 'last_level': 'Level_4',
                     'previous_session_info': 'Coming_soon',
-                    //if (value != true) 'last_level': 'Level_5_setUp_page',
                   });
 
                   Get.offAll(
@@ -600,13 +631,9 @@ inviteDialog() async {
                     duration: Duration(milliseconds: 500),
                     transition: Transition.downToUp,
                   );
-                  // Get.off(
-                  //   () => LevelFiveSetUpPage(),
-                  //   duration: Duration(milliseconds: 500),
-                  //   transition: Transition.downToUp,
-                  // );
+
                 });
-                // }
+
               },
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Colors.white)),
@@ -634,10 +661,8 @@ inviteDialog() async {
             Get.back();
             var userId = GetStorage().read('uId');
             FirebaseFirestore.instance.collection('User').doc(userId).update({
-              //'previous_session_info': 'Level_5_setUp_page',
               if (value != true) 'last_level': 'Level_5_setUp_page',
               'previous_session_info': 'Coming_soon',
-              //if (value != true) 'last_level': 'Level_5_setUp_page',
             });
             Get.offAll(
               () => ComingSoon(),
@@ -720,43 +745,6 @@ buttonStyle(Color color, String text, VoidCallback onPressed,
               color: color, borderRadius: BorderRadius.circular(12.w)),
           child: TextButton(
               onPressed: onPressed,
-              // color == AllColors.green ? (){} : () async {
-              //   setState(() {
-              //     color = AllColors.green;
-              //   });
-              //   bool value = documentSnapshot.get('replay_level');
-              //   level = documentSnapshot.get('last_level');
-              //   level = level.toString().substring(6, 7);
-              //   int lev = int.parse(level);
-              //   if(lev == 1 && value == true){
-              //     firestore.collection('User').doc(userId).update({
-              //       'replay_level' : false
-              //     });
-              //   }
-              //   firestore
-              //       .collection('User')
-              //       .doc(userId)
-              //       .update({
-              //     if (value != true)'last_level': 'Level_2_setUp_page',
-              //     'previous_session_info': 'Level_2_setUp_page',
-              //   });
-              //   Future.delayed(
-              //       Duration(seconds: 3),
-              //           () =>  Get.off(() => LevelTwoSetUpPage(),
-              //         duration:Duration(milliseconds: 500),
-              //         transition: Transition.downToUp,));
-              //   // gameScore = documentSnapshot
-              //   //     .get('game_score');
-              //   // if (lev != 1 &&
-              //   //     value == true) {
-              //   //   Future.delayed(
-              //   //       Duration(seconds: 1),
-              //   //       () => showDialogForReplay(lev, userId),
-              //   //   );
-              //   // } else {
-              //
-              //   // }
-              // },
               child: Padding(
                 padding: EdgeInsets.only(left: left == null ? 3.w : left),
                 child: Center(
@@ -783,15 +771,18 @@ leaderBoardWidget(
         int? savings,
         int? netWorth,
         int? creditScore,
-        int? lifestyleScore}) =>
+        int? lifestyleScore,
+        Color? color,
+        bool? userOrNot}) =>
     Container(
-      height: 15.h,
+      padding: EdgeInsets.zero,
+      height: 16.h,
       width: 90.w,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(
           6.w,
         ),
-        color: Colors.white,
+        color: color,
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 2.w),
@@ -803,11 +794,11 @@ leaderBoardWidget(
                 alignment: Alignment.center,
                 children: [
                   Image.asset(AllImages.circle, fit: BoxFit.contain),
-                  rank == 1
+                  rank == 0
                       ? Image.asset(AllImages.rank1, fit: BoxFit.contain)
-                      : rank == 2
+                      : rank == 1
                           ? Image.asset(AllImages.rank2, fit: BoxFit.contain)
-                          : rank == 3
+                          : rank == 2
                               ? Image.asset(AllImages.rank3,
                                   fit: BoxFit.contain)
                               : Text(rank.toString(),
@@ -822,35 +813,46 @@ leaderBoardWidget(
             ),
           ),
           Expanded(
-            child: Column(
-              children: [
-                Expanded(
-                  child: Container(
-                    //color: AllColors.red,
-                    child: Row(children: [
-                      Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 2.w),
-                            child: Text(
-                              userName.toString(),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: AllTextStyles.leaderBoardName(),
-                            ),
-                          ),
-                          flex: 2),
-                      Expanded(
-                          child: Container(
-                        // color: AllColors.red,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Game Score',
-                              style: AllTextStyles.workSansSmall(
-                                  fontSize: 6.sp, color: AllColors.lightPurple),
-                            ),
-                            GradientText(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 2.w),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding:
+                          EdgeInsets.only(top: 1.w, right: 4.w,),
+                      child: Align(
+                        alignment: Alignment.bottomRight,
+                        child: Text(
+                          'Game Score',
+                          style: AllTextStyles.workSansSmall(
+                              fontSize: 6.sp, color: AllColors.lightPurple),
+                        ),
+                      ),
+                    ),
+                    flex: 1,
+                  ),
+                  Expanded(
+                    child: Container(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 2.w),
+                        child: Row(children: [
+                          Expanded(
+                              child: Text(
+                                userName.toString(),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: AllTextStyles.leaderBoardName(
+                                    color: userOrNot == true
+                                        ? AllColors.leaderBoardNameColor
+                                        : null),
+                              ),
+                              flex: 2),
+                          Expanded(
+                              child: Container(
+                            alignment: Alignment.center,
+                            // color: AllColors.red,
+                            child: GradientText(
                                 text: '${gameScore.toString()}'.toString(),
                                 style: AllTextStyles.gameScore(
                                   fontSize: 20.sp,
@@ -863,90 +865,97 @@ leaderBoardWidget(
                                     //transform: GradientRotation(math.pi / 2),
                                     begin: Alignment.bottomRight,
                                     end: Alignment.topRight)),
-                          ],
-                        ),
-                      )),
-                    ]),
+                          )),
+                        ]),
+                      ),
+                    ),
+                    flex: 3,
                   ),
-                ),
-                Expanded(
-                  child: Container(
-                    child: Row(children: [
-                      leaderBoardBal(
-                          text: 'Savings',
-                          balance: savings,
-                          color: AllColors.darkYellow),
-                      leaderBoardBal(
-                          text: 'NetWorth',
-                          balance: netWorth,
-                          color: AllColors.orange),
-                      leaderBoardBal(
-                          text: 'Credit',
-                          balance: creditScore,
-                          color: AllColors.lightGreen),
-                      leaderBoardBal(
-                          text: 'Lifestyle',
-                          balance: lifestyleScore,
-                          color: AllColors.extraLightBlue),
-                    ]),
+                  Expanded(
+                    child: Container(
+                      child: Row(children: [
+                        leaderBoardBal(
+                            i: 1,
+                            text: 'Savings',
+                            balance: savings,
+                            color: AllColors.darkYellow,
+                            userOrNot: userOrNot),
+                        leaderBoardBal(
+                            i: 2,
+                            text: 'NetWorth',
+                            balance: netWorth,
+                            color: AllColors.orange,
+                            userOrNot: userOrNot),
+                        leaderBoardBal(
+                            i: 3,
+                            text: 'Credit',
+                            balance: creditScore,
+                            color: AllColors.lightGreen,
+                            userOrNot: userOrNot),
+                        leaderBoardBal(
+                            i: 4,
+                            text: 'Lifestyle',
+                            balance: lifestyleScore,
+                            color: AllColors.extraLightBlue,
+                            userOrNot: userOrNot),
+                      ]),
+                    ),
+                    flex: 3,
                   ),
-                )
-              ],
+                ],
+              ),
             ),
             flex: 4,
           ),
 
-          // Expanded(
-          //   child: Container(
-          //     child:
-          //         Text(userName.toString(), style: AllTextStyles.leaderBoardName()),
-          //     height: 100.h,
-          //     width: 100.w,
-          //     color: Colors.red,
-          //     alignment: Alignment.center,
-          //   ),
-          //   flex: 3,
-          // ),
-          // Expanded(
-          //   child: Container(
-          //     color: AllColors.green,
-          //     child: Text(gameScore.toString(),
-          //         style: AllTextStyles.robotoSmall()),
-          //     height: 100.h,
-          //     width: 100.w,
-          //     alignment: Alignment.centerRight,
-          //   ),
-          // ),
         ]),
       ),
     );
 
-leaderBoardBal({String? text, int? balance, Color? color}) {
+leaderBoardBal(
+    {String? text, int? balance, Color? color, int? i, bool? userOrNot}) {
   return Expanded(
       child: Container(
+    padding: EdgeInsets.zero,
     // color: AllColors.red,
     child: Column(children: [
       Expanded(
         child: Container(
+          padding: EdgeInsets.zero,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(2.w),
-            color: Colors.grey.shade50,
-          ),
+              color: userOrNot == true
+                  ? AllColors.leaderBoardColor
+                  : Colors.grey.shade50,
+              borderRadius: userOrNot == true
+                  ? BorderRadius.zero
+                  : i == 1
+                      ? BorderRadius.only(
+                          topLeft: Radius.circular(2.w),
+                          bottomLeft: Radius.circular(2.w))
+                      : i == 4
+                          ? BorderRadius.only(
+                              bottomRight: Radius.circular(2.w),
+                              topRight: Radius.circular(2.w))
+                          : null),
           alignment: Alignment.center,
           width: 100.w,
           child: FittedBox(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 1.w),
-              child: Text(
-                  balance.toString().length > 4
-                      ? Numeral(balance!.toInt().ceil())
-                          .format(fractionDigits: 1)
-                          .toString()
-                      :
-                  balance!.ceil().toString(),
-                  style: AllTextStyles.leaderBoardName(
-                    color: color,
-                  )),
+              child: RichText(
+                text: TextSpan(children: [
+                  TextSpan(
+                    text: balance.toString().length > 4
+                        ? Numeral(balance!.toInt().ceil())
+                            .format(fractionDigits: 1)
+                            .toString()
+                        : balance?.ceil().toString(),
+                    style: AllTextStyles.dialogStyleMedium(
+                      color: color,
+                    ),
+                  )
+                ]),
+              ),
             ),
           ),
         ),
@@ -956,11 +965,11 @@ leaderBoardBal({String? text, int? balance, Color? color}) {
         child: Container(
           alignment: Alignment.center,
           child: Padding(
-            padding: EdgeInsets.only(bottom: 1.w),
+            padding: EdgeInsets.only(bottom: 01),
             child: Text(
               text.toString(),
               style: AllTextStyles.workSansSmall(
-                  fontSize: 8.sp, color: AllColors.lightPurple),
+                  fontSize: 8.sp, color: AllColors.lightGrey2),
             ),
           ),
           //color: AllColors.red,

@@ -1,11 +1,9 @@
 // @dart=2.9
 import 'package:country_code_picker/country_localizations.dart';
-import 'package:device_preview/device_preview.dart';
 import 'package:financial/helper/route_helper.dart';
 import 'package:financial/network/network_binding.dart';
 import 'package:financial/views/local_notify_manager.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -35,7 +33,7 @@ void main() async {
   //     builder: (context) => MyApp(), // Wrap your app
   //   ),
   // );
-   runApp(MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {

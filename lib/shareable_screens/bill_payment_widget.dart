@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:financial/shareable_screens/comman_functions.dart';
-import 'package:financial/shareable_screens/comman_functions.dart';
-import 'package:financial/shareable_screens/globle_variable.dart';
 import 'package:financial/shareable_screens/globle_variable.dart';
 import 'package:financial/utils/all_colors.dart';
 import 'package:financial/utils/all_images.dart';
@@ -170,17 +168,6 @@ class _BillPaymentWidgetState extends State<BillPaymentWidget> {
                           0.0,
                           0.0,
                           TextAlign.left),
-
-                      // if (level == 'Level_2' ||
-                      //     level == 'Level_3' ||
-                      //     level == 'Level_4')
-                      //   richText(
-                      //       widget.text3.toString(),
-                      //       '${'\$' + widget.forPlan3.toString()}',
-                      //       1.h,
-                      //       0.0,
-                      //       0.0,
-                      //       TextAlign.left),
 
                       level == 'Level_5'
                           ? level5BillPayment(

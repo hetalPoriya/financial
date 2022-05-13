@@ -697,6 +697,8 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
                                   );
                                 })
                               : StatefulBuilder(builder: (context, _setState) {
+                                  Color color = Colors.white;
+                                  flagForKnow = false;
                                   return InsightWidget(
                                     level: level,
                                     document: document,
@@ -825,15 +827,6 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
     setState1(() {
       balance = snap.get('account_balance');
     });
-    // if (index == snapshot.data!.docs.length - 1 && value == 2) {
-    //   firestore.collection('User').doc(userId).update({
-    //     'level_id': index + 1,
-    //     'level_4_id': index + 1,
-    //   }).then((value) => Future.delayed(
-    //       Duration(seconds: 1),
-    //           () => _levelCompleteSummary(
-    //           context, gameScore, balance, qualityOfLife)));
-    // }
     if (balance >= priceOfOption) {
       setState1(() {
         balance = balance - priceOfOption;
@@ -896,7 +889,7 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
 
   _playLevelOrPopQuiz() {
     return popQuizDialog(
-      () async {
+      onPlayPopQuizPressed: () async {
         var userId = storeValue.read('uId');
         DocumentSnapshot snap =
             await firestore.collection('User').doc(userId).get();
@@ -924,43 +917,13 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
           );
         });
       },
-      () async {
-        // SharedPreferences pref = await SharedPreferences.getInstance();
-        // var userId = storeValue.read('uId');
-        // DocumentSnapshot snap =
-        //     await firestore.collection('User').doc(userId).get();
-        // bool value = snap.get('replay_level');
-        // level = snap.get('last_level');
-        // level = level.toString().substring(6, 7);
-        // int lev = int.parse(level);
-        // if (lev == 2 && value == true) {
-        //   firestore
-        //       .collection('User')
-        //       .doc(userId)
-        //       .update({'replay_level': false});
-        // }
+      onPlayNextLevelPressed: () async {
         Future.delayed(Duration(seconds: 2), () async {
           LocalNotifyManager.init();
           await localNotifyManager.configureLocalTimeZone();
           await localNotifyManager.flutterLocalNotificationsPlugin.cancel(4);
           await localNotifyManager.flutterLocalNotificationsPlugin.cancel(10);
           inviteDialog();
-          // FirebaseFirestore.instance.collection('User').doc(userId).update({
-          //   //'previous_session_info': 'Level_5_setUp_page',
-          //   if (value != true) 'last_level': 'Level_5_setUp_page',
-          //   'previous_session_info': 'Coming_soon',
-          //   //if (value != true) 'last_level': 'Level_5_setUp_page',
-          // });
-          // Get.offAll(
-          //   () => ComingSoon(),
-          //   duration: Duration(milliseconds: 500),
-          //   transition: Transition.downToUp,
-          // );
-          // // Get.off(
-          // //   () => LevelFiveSetUpPage(),
-          // //   duration: Duration(milliseconds: 500),
-          // //   transition: Transition.downToUp,
-          // // );
         });
       },
     );

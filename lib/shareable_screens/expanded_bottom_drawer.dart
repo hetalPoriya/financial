@@ -8,6 +8,7 @@ import 'package:financial/utils/all_textStyle.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:sizer/sizer.dart';
+import 'package:intl/intl.dart';
 
 class ExpandedBottomDrawer extends StatefulWidget {
   ExpandedBottomDrawer({Key? key}) : super(key: key);
@@ -18,9 +19,8 @@ class ExpandedBottomDrawer extends StatefulWidget {
 
 class _ExpandedBottomDrawerState extends State<ExpandedBottomDrawer> {
   var userId;
-  // int? _qol;
-  // int? _gameS;
-  // int? _accountBal;
+
+  var format = NumberFormat.currency(locale: 'HI',decimalDigits: 0,name: '');
   int? creditScore;
   String level = '';
   int levelId = 0;
@@ -28,15 +28,10 @@ class _ExpandedBottomDrawerState extends State<ExpandedBottomDrawer> {
   List<BottomDrawer> info = [];
 
   getUserValue() async {
-    //SharedPreferences pref = await SharedPreferences.getInstance();
     userId = storeValue.read('uId');
     DocumentSnapshot querySnapshot =
         await FirebaseFirestore.instance.collection("User").doc(userId).get();
     setState(() {
-      // _qol = querySnapshot.get('quality_of_life');
-      // _accountBal = querySnapshot.get('account_balance');
-      // _gameS = querySnapshot.get('game_score');
-      // creditScore = querySnapshot.get('credit_score');
       level = querySnapshot.get('previous_session_info');
       levelId = querySnapshot.get('level_id');
       if (level == 'Level_1' || level == 'Level_2')
@@ -255,13 +250,30 @@ class _ExpandedBottomDrawerState extends State<ExpandedBottomDrawer> {
               ));
             default:
               return Container(
-                child: Text(
-                  text == 'account_balance'
-                      ? '${'\$${snapshot.data![text].toString()}'}'
-                      : '${snapshot.data![text].toString()}',
-                  style: AllTextStyles.dialogStyleExtraLarge(
-                      size: 16.sp, color: color),
-                ),
+                child: text == 'account_balance'
+                    ? RichText(
+                        text: TextSpan(
+                            text: '\$',
+                            style: AllTextStyles.dialogStyleMedium(
+                              color: color,
+                              size: 16.sp,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: format
+                                    .format(snapshot.data![text]),
+                                style: AllTextStyles.dialogStyleExtraLarge(
+                                    size: 16.sp, color: color),
+                              )
+                            ]),
+                      )
+                    : Text(
+                  text == 'game_score'
+                      ? snapshot.data![text].toString()
+                      : format.format(snapshot.data![text]),
+                        style: AllTextStyles.dialogStyleExtraLarge(
+                            size: 16.sp, color: color),
+                      ),
               );
           }
         },

@@ -110,6 +110,7 @@ class AllTextStyles {
 
   static settingsAppTitle() => GoogleFonts.inter(
       color: Colors.white, fontSize: 18.sp, fontWeight:FontWeight.w500);
+
   //leaderBoardStyle
   static leaderBoardName({FontWeight? fontWeight,double? fontSize,Color? color}) => GoogleFonts.inter(
       fontWeight: fontWeight ?? FontWeight.bold,

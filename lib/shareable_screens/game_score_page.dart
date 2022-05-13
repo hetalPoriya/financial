@@ -6,14 +6,10 @@ import 'package:financial/utils/all_colors.dart';
 import 'package:financial/utils/all_images.dart';
 import 'package:financial/utils/all_strings.dart';
 import 'package:financial/utils/all_textStyle.dart';
-import 'package:financial/views/levels.dart';
-import 'package:financial/views/settings_page.dart';
-import 'package:financial/views/settings_page.dart';
 import 'package:financial/views/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:sizer/sizer.dart';
 import 'dart:math' as math;
@@ -237,9 +233,6 @@ class _GameScorePageState extends State<GameScorePage> {
         child: StreamBuilder<DocumentSnapshot>(
           stream: firestore.collection('User').doc(userId).snapshots(),
           builder: (context, streamSnapshot) {
-            // firestore.collection('Game_score').doc(userId).set(
-            //     {'game_score': streamSnapshot.data?['game_score']},
-            //     SetOptions(merge: true));
             if (streamSnapshot.hasError) {
               return Text('It\'s Error!');
             }
@@ -254,19 +247,7 @@ class _GameScorePageState extends State<GameScorePage> {
                   ),
                 ),
               );
-            //  switch (streamSnapshot.connectionState) {
-            //    case ConnectionState.waiting:
-            // return Center(
-            //   child: SizedBox(
-            //     height: displayHeight(context) * .05,
-            //     width: displayWidth(context) * .08,
-            //     child: CircularProgressIndicator(
-            //       backgroundColor: Colors.white12,
-            //       color: Colors.white12,
-            //     ),
-            //   ),
-            // );
-            //default:
+
             return FittedBox(
               child: Padding(
                 padding: EdgeInsets.only(right: 5.w, left: 2.w),

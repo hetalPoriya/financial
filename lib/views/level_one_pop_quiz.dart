@@ -98,19 +98,7 @@ class _LevelOnePopQuizState extends State<LevelOnePopQuiz>
                     ),
                   ),
                 );
-              // switch (snapshot.connectionState) {
-              //   case ConnectionState.waiting:
-              //   // return Container(
-              //   //   decoration: boxDecoration,
-              //   //   child: Center(
-              //   //     child: SizedBox(
-              //   //       child: CircularProgressIndicator(
-              //   //         color: Colors.black,
-              //   //       ),
-              //   //     ),
-              //   //   ),
-              //   // );
-              //   default:
+
               return PageView.builder(
                   itemCount: snapshot.data?.docs.length,
                   controller: controller,

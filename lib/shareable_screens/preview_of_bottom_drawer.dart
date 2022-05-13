@@ -6,6 +6,7 @@ import 'package:financial/utils/all_images.dart';
 import 'package:financial/utils/all_textStyle.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:numeral/numeral.dart';
 import 'package:ripple_animation/ripple_animation.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:sizer/sizer.dart';
@@ -22,6 +23,7 @@ class PreviewOfBottomDrawer extends StatefulWidget {
 class _PreviewOfBottomDrawerState extends State<PreviewOfBottomDrawer>
     with SingleTickerProviderStateMixin {
   var userId;
+
   // int? _qol;
   // int? _accountBal;
   int? levelId;
@@ -37,7 +39,7 @@ class _PreviewOfBottomDrawerState extends State<PreviewOfBottomDrawer>
   getUserValue() async {
     userId = storeValue.read('uId');
     DocumentSnapshot querySnapshot =
-    await FirebaseFirestore.instance.collection("User").doc(userId).get();
+        await FirebaseFirestore.instance.collection("User").doc(userId).get();
 
     setState(() {
       //   _qol = querySnapshot.get('quality_of_life');
@@ -56,9 +58,9 @@ class _PreviewOfBottomDrawerState extends State<PreviewOfBottomDrawer>
     showCaseId = GetStorage().read('showCaseId');
     (showCase == false && showCaseId == 1)
         ? WidgetsBinding.instance?.addPostFrameCallback((_) async {
-          ShowCaseWidget.of(context)!.startShowCase([widget.keyValue!]);
-      GetStorage().write('showCase', true);
-    })
+            ShowCaseWidget.of(context)!.startShowCase([widget.keyValue!]);
+            GetStorage().write('showCase', true);
+          })
         : null;
   }
 
@@ -69,9 +71,9 @@ class _PreviewOfBottomDrawerState extends State<PreviewOfBottomDrawer>
         decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-               AllColors.preview1,
-               AllColors.preview2,
-               AllColors.preview3,
+                AllColors.preview1,
+                AllColors.preview2,
+                AllColors.preview3,
               ],
               begin: Alignment.bottomLeft,
               end: Alignment.bottomRight,
@@ -79,10 +81,10 @@ class _PreviewOfBottomDrawerState extends State<PreviewOfBottomDrawer>
             borderRadius: BorderRadius.vertical(top: Radius.circular(40.0))),
         child: (level == 'Level_1' && levelId == 0)
             ? Showcase(
-          child: previewWidget(),
-          description: 'Slide up to see detailed scores',
-          key: widget.keyValue!,
-        )
+                child: previewWidget(),
+                description: 'Slide up to see detailed scores',
+                key: widget.keyValue!,
+              )
             : previewWidget());
   }
 
@@ -102,8 +104,7 @@ class _PreviewOfBottomDrawerState extends State<PreviewOfBottomDrawer>
     return getValues('quality_of_life', AllColors.extraLightBlue);
   }
 
-  Widget bottomValue(Widget widget, String image) =>
-      Container(
+  Widget bottomValue(Widget widget, String image) => Container(
         width: 30.w,
         height: 9.h,
         //color: Colors.red,
@@ -135,8 +136,7 @@ class _PreviewOfBottomDrawerState extends State<PreviewOfBottomDrawer>
         ),
       );
 
-  Widget getValues(String text, Color color) =>
-      StreamBuilder<DocumentSnapshot>(
+  Widget getValues(String text, Color color) => StreamBuilder<DocumentSnapshot>(
         stream: firestore.collection('User').doc(userId).snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
@@ -146,26 +146,40 @@ class _PreviewOfBottomDrawerState extends State<PreviewOfBottomDrawer>
             case ConnectionState.waiting:
               return Center(
                   child: Padding(
-                    padding: EdgeInsets.only(bottom: 2.w),
-                    child: SizedBox(
-                      height: 3.h,
-                      width: 6.w,
-                      child: CircularProgressIndicator(
-                        backgroundColor: Colors.white10,
-                        color: Colors.white10,
-                      ),
-                    ),
-                  ));
+                padding: EdgeInsets.only(bottom: 2.w),
+                child: SizedBox(
+                  height: 3.h,
+                  width: 6.w,
+                  child: CircularProgressIndicator(
+                    backgroundColor: Colors.white10,
+                    color: Colors.white10,
+                  ),
+                ),
+              ));
             default:
               return Container(
-                child: Text(
-                  text == 'account_balance'
-                      ? '${'\$${snapshot.data![text].toString()}'}'
-                      : '${snapshot.data![text].toString()}',
-                  style: AllTextStyles.dialogStyleMedium(
-                      color: color,
-                      size:  16.sp,
+                child: RichText(
+                  text: TextSpan(children: [
+                    if (text == 'account_balance')
+                      TextSpan(
+                        text: '\$',
+                        style: AllTextStyles.dialogStyleMedium(
+                          color: color,
+                          size: 16.sp,
+                        ),
                       ),
+                    TextSpan(
+                      text: snapshot.data![text].toString().length >= 5
+                          ? Numeral(snapshot.data![text].toInt().ceil())
+                              .format(fractionDigits: 1)
+                              .toString()
+                          : snapshot.data![text].toString(),
+                      style: AllTextStyles.dialogStyleMedium(
+                        color: color,
+                        size: 16.sp,
+                      ),
+                    )
+                  ]),
                 ),
               );
           }
@@ -195,75 +209,64 @@ class _PreviewOfBottomDrawerState extends State<PreviewOfBottomDrawer>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               (levelId == 0 &&
-                  innerId == 0 &&
-                  (level == 'Level_1' || level == 'Level_2'))
+                      innerId == 0 &&
+                      (level == 'Level_1' || level == 'Level_2'))
                   ? RippleAnimation(
-                duration: Duration(seconds: 1),
-                ripplesCount: 6,
-                minRadius: 6.w,
-                repeat: false,
-                child: bottomValue(
-                  _savingBalance(),
-                  AllImages.saveMoney,
-                ),
-                color:AllColors.previewSaveMoney,
-              )
+                      duration: Duration(seconds: 1),
+                      ripplesCount: 6,
+                      minRadius: 6.w,
+                      repeat: false,
+                      child: bottomValue(
+                        _savingBalance(),
+                        AllImages.saveMoney,
+                      ),
+                      color: AllColors.previewSaveMoney,
+                    )
                   : bottomValue(
-                _savingBalance(),
-                  AllImages.saveMoney,
-              ),
+                      _savingBalance(),
+                      AllImages.saveMoney,
+                    ),
               if (level == "Level_3")
                 (levelId == 0 && innerId == 0)
                     ? RippleAnimation(
-                  duration: Duration(seconds: 1),
-                  ripplesCount: 6,
-                  minRadius: 6.w,
-                  repeat: false,
-                  child: bottomValue(
-                    _creditScore(),
-                      AllImages.creditScore
-                  ),
-                  color: AllColors.previewCreditScore,
-                )
-                    : bottomValue(
-                  _creditScore(),
-                    AllImages.creditScore
-                ),
+                        duration: Duration(seconds: 1),
+                        ripplesCount: 6,
+                        minRadius: 6.w,
+                        repeat: false,
+                        child:
+                            bottomValue(_creditScore(), AllImages.creditScore),
+                        color: AllColors.previewCreditScore,
+                      )
+                    : bottomValue(_creditScore(), AllImages.creditScore),
               if (level == 'Level_4' || level == 'Level_5')
                 (levelId == 0 && innerId == 0)
                     ? RippleAnimation(
-                  duration: Duration(seconds: 1),
-                  ripplesCount: 6,
-                  minRadius: 6.w,
-                  repeat: false,
-                  child: bottomValue(
-                    _netWorth(),
-                    AllImages.netWorth,
-                  ),
-                  color:AllColors.previewNetWorth,
-                )
+                        duration: Duration(seconds: 1),
+                        ripplesCount: 6,
+                        minRadius: 6.w,
+                        repeat: false,
+                        child: bottomValue(
+                          _netWorth(),
+                          AllImages.netWorth,
+                        ),
+                        color: AllColors.previewNetWorth,
+                      )
                     : bottomValue(
-                  _netWorth(),
-                  AllImages.netWorth,
-                ),
+                        _netWorth(),
+                        AllImages.netWorth,
+                      ),
               (levelId == 0 &&
-                  innerId == 0 &&
-                  (level == 'Level_1' || level == 'Level_2'))
+                      innerId == 0 &&
+                      (level == 'Level_1' || level == 'Level_2'))
                   ? RippleAnimation(
-                duration: Duration(seconds: 1),
-                ripplesCount: 6,
-                minRadius: 6.w,
-                repeat: false,
-                child: bottomValue(
-                  _qualityOfLife(),
-                  AllImages.symbol
-                ),
-                color: Colors.white,
-              )
-                  : bottomValue(
-                _qualityOfLife(),
-                AllImages.symbol
-              ),
+                      duration: Duration(seconds: 1),
+                      ripplesCount: 6,
+                      minRadius: 6.w,
+                      repeat: false,
+                      child: bottomValue(_qualityOfLife(), AllImages.symbol),
+                      color: Colors.white,
+                    )
+                  : bottomValue(_qualityOfLife(), AllImages.symbol),
             ],
           ),
         ),
@@ -271,4 +274,3 @@ class _PreviewOfBottomDrawerState extends State<PreviewOfBottomDrawer>
     );
   }
 }
-

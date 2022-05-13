@@ -68,4 +68,11 @@ class AllColors{
   //leaderBoard
   static Color leaderBoardTextColor = Color(0xff6165D7);
   static Color leaderBoardConColor = Color(0xffF2E7FF);
+  static Color leaderBoardColor = Color(0xffE0D5F6);
+  static Color leaderBoardNameColor = Color(0xffA1085C);
+
+  //level progress Color
+  static Color progressColor = Color(0xff8672E8);
+  static Color progressColorTitle = Color(0xffF6D378);
+
 }

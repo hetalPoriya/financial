@@ -43,175 +43,7 @@ class LocalNotifyManager {
     });
   }
 
-  // Future<void> showNotification() async {
-  //   var androidChannel =
-  //       AndroidNotificationDetails('CHANNEL_ID', 'CHANNEL_NAME',
-  //           importance: Importance.max,
-  //           priority: Priority.high,
-  //           playSound: true,
-  //           //sound: RawResourceAndroidNotificationSound('notification_sound')
-  //           //icon: '@mipmap/ic_launcher'
-  //           timeoutAfter: 5000,
-  //           enableLights: true);
-  //   var platformChannel = NotificationDetails(android: androidChannel);
-  //   await flutterLocalNotificationsPlugin.show(
-  //     0,
-  //     'Test 1',
-  //     'Body 1',
-  //     platformChannel,
-  //     payload: 'New payload',
-  //   );
-  // }
-  // Future<void> scheduleNotification() async {
-  //   var scheduleNotificationDataTime = DateTime.now().add(Duration(seconds: 5));
-  //   var androidChannel =
-  //       AndroidNotificationDetails('CHANNEL_ID', 'CHANNEL_NAME',
-  //           importance: Importance.max,
-  //           priority: Priority.high,
-  //           playSound: true,
-  //           //sound: RawResourceAndroidNotificationSound('notification_sound')
-  //           //icon: '@mipmap/ic_launcher'
-  //           timeoutAfter: 5000,
-  //           enableLights: true);
-  //   var platformChannel = NotificationDetails(android: androidChannel);
-  //   await flutterLocalNotificationsPlugin.zonedSchedule(
-  //       0,
-  //       'schedule title',
-  //       'schedule body',
-  //       tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
-  //       platformChannel,
-  //       payload: 'schedule payload',
-  //       androidAllowWhileIdle: true,
-  //       uiLocalNotificationDateInterpretation:
-  //           UILocalNotificationDateInterpretation.absoluteTime);
-  // }
 
-  Future<void> repeatNotificationLevel1() async {
-    var androidChannel =
-        AndroidNotificationDetails('CHANNEL_ID', 'CHANNEL_NAME',
-            importance: Importance.max,
-            priority: Priority.high,
-            playSound: true,
-            //sound: RawResourceAndroidNotificationSound('notification_sound')
-            //icon: '@mipmap/ic_launcher'
-            timeoutAfter: 5000,
-            enableLights: true);
-    var platformChannel = NotificationDetails(android: androidChannel);
-    await flutterLocalNotificationsPlugin.periodicallyShow(
-      21,
-      'repeat Level 1',
-      'repeat Level 1',
-      RepeatInterval.everyMinute,
-      platformChannel,
-      payload: 'repeat payload',
-      androidAllowWhileIdle: true,
-    );
-  }
-  Future<void> repeatNotificationLevel2() async {
-    var androidChannel =
-    AndroidNotificationDetails('CHANNEL_ID', 'CHANNEL_NAME',
-        importance: Importance.max,
-        priority: Priority.high,
-        playSound: true,
-        //sound: RawResourceAndroidNotificationSound('notification_sound')
-        //icon: '@mipmap/ic_launcher'
-        timeoutAfter: 5000,
-        enableLights: true);
-    var platformChannel = NotificationDetails(android: androidChannel);
-    await flutterLocalNotificationsPlugin.periodicallyShow(
-      22,
-      'repeat Level 2',
-      'repeat Level 2',
-      RepeatInterval.everyMinute,
-      platformChannel,
-      payload: 'repeat payload',
-      androidAllowWhileIdle: true,
-    );
-  }
-  Future<void> repeatNotificationLevel3() async {
-    var androidChannel =
-    AndroidNotificationDetails('CHANNEL_ID', 'CHANNEL_NAME',
-        importance: Importance.max,
-        priority: Priority.high,
-        playSound: true,
-        //sound: RawResourceAndroidNotificationSound('notification_sound')
-        //icon: '@mipmap/ic_launcher'
-        timeoutAfter: 5000,
-        enableLights: true);
-    var platformChannel = NotificationDetails(android: androidChannel);
-    await flutterLocalNotificationsPlugin.periodicallyShow(
-      23,
-      'repeat Level 3',
-      'repeat Level 3',
-      RepeatInterval.everyMinute,
-      platformChannel,
-      payload: 'repeat payload',
-      androidAllowWhileIdle: true,
-    );
-  }
-  Future<void> repeatNotificationLevel4() async {
-    var androidChannel =
-    AndroidNotificationDetails('CHANNEL_ID', 'CHANNEL_NAME',
-        importance: Importance.max,
-        priority: Priority.high,
-        playSound: true,
-        //sound: RawResourceAndroidNotificationSound('notification_sound')
-        //icon: '@mipmap/ic_launcher'
-        timeoutAfter: 5000,
-        enableLights: true);
-    var platformChannel = NotificationDetails(android: androidChannel);
-    await flutterLocalNotificationsPlugin.periodicallyShow(
-      24,
-      'repeat Level 4',
-      'repeat Level 4',
-      RepeatInterval.everyMinute,
-      platformChannel,
-      payload: 'repeat payload',
-      androidAllowWhileIdle: true,
-    );
-  }
-
-
-  // Future<void> dailyAtTimeNotification() async {
-  //   var androidChannel = AndroidNotificationDetails(
-  //     'CHANNEL_ID', 'CHANNEL_NAME',
-  //     importance: Importance.max,
-  //     priority: Priority.high,
-  //     playSound: true,
-  //     //sound: RawResourceAndroidNotificationSound('notification_sound')
-  //     //icon: '@mipmap/ic_launcher'
-  //     timeoutAfter: 5000,
-  //     enableLights: true,
-  //     styleInformation: BigTextStyleInformation(''),
-  //   );
-  //   var platformChannel = NotificationDetails(android: androidChannel);
-  //   await flutterLocalNotificationsPlugin.zonedSchedule(0, 'daily title',
-  //       'daily body', _nextInstanceOfSaturdayTenAM(), platformChannel,
-  //       payload: 'daily payload',
-  //       androidAllowWhileIdle: true,
-  //       uiLocalNotificationDateInterpretation:
-  //           UILocalNotificationDateInterpretation.absoluteTime,
-  //       matchDateTimeComponents: DateTimeComponents.dateAndTime);
-  // }
-  // tz.TZDateTime _nextInstanceOfTenAM() {
-  //   final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
-  //   // tz.TZDateTime scheduledDate =
-  //   //     tz.TZDateTime(tz.local, now.year, now.month, now.day, 18);
-  //   tz.TZDateTime scheduledDate = tz.TZDateTime.from(
-  //       DateTime(now.year, now.month, now.day, 10, 33), tz.local);
-  //   print('sss ${scheduledDate}');
-  //   if (scheduledDate.isBefore(now)) {
-  //     scheduledDate = scheduledDate.add(const Duration(days: 1));
-  //   }
-  //   return scheduledDate;
-  // }
-  // tz.TZDateTime _nextInstanceOfSaturdayTenAM() {
-  //   tz.TZDateTime scheduledDate = _nextInstanceOfTenAM();
-  //   while (scheduledDate.weekday != DateTime.thursday) {
-  //     scheduledDate = scheduledDate.add(const Duration(days: 1));
-  //   }
-  //   return scheduledDate;
-  // }
 
   var androidChannel =const AndroidNotificationDetails(
     'CHANNEL_ID',
@@ -232,7 +64,7 @@ class LocalNotifyManager {
   tz.TZDateTime _nextInstanceOfElevenAm() {
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
     tz.TZDateTime scheduledDate =
-    tz.TZDateTime(tz.local, now.year, now.month, now.day, 8);
+    tz.TZDateTime(tz.local, now.year, now.month, now.day, 11);
     // tz.TZDateTime scheduledDate = tz.TZDateTime.from(
     //     DateTime(now.year, now.month, now.day, 10, 00), tz.local);
     if (scheduledDate.isBefore(now)) {
@@ -242,7 +74,7 @@ class LocalNotifyManager {
   }
   tz.TZDateTime _nextInstanceOfSaturdayElevenAM() {
     tz.TZDateTime scheduledDate = _nextInstanceOfElevenAm();
-    while (scheduledDate.weekday != DateTime.tuesday) {
+    while (scheduledDate.weekday != DateTime.saturday) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
     return scheduledDate;
@@ -251,7 +83,7 @@ class LocalNotifyManager {
   tz.TZDateTime _nextInstanceOfSevenPm() {
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
     tz.TZDateTime scheduledDate =
-    tz.TZDateTime(tz.local, now.year, now.month, now.day, 9);
+    tz.TZDateTime(tz.local, now.year, now.month, now.day, 19);
     // tz.TZDateTime scheduledDate = tz.TZDateTime.from(
     //     DateTime(now.year, now.month, now.day, 10, 02), tz.local);
     if (scheduledDate.isBefore(now)) {
@@ -285,8 +117,6 @@ class LocalNotifyManager {
         id: 1,
         title: AllStrings.notificationTitle,
         body: AllStrings.notificationBodyLevel1,
-        // title: 'Level 1 First Title',
-        // body: 'Level 1 First Body',
         tzDateTime: _nextInstanceOfSaturdayElevenAM());
   }
   Future<void>  scheduleNotificationForLevelTwoSaturdayElevenAm() async {
@@ -294,8 +124,6 @@ class LocalNotifyManager {
         id: 2,
         title: AllStrings.notificationTitle,
         body: AllStrings.notificationBodyLevel2,
-        // title: 'Level 2 First Title',
-        // body: 'Level 2 First Body',
         tzDateTime: _nextInstanceOfSaturdayElevenAM());
   }
   Future<void>  scheduleNotificationForLevelThreeSaturdayElevenAm() async {
@@ -303,8 +131,6 @@ class LocalNotifyManager {
         id: 3,
         title: AllStrings.notificationTitle,
         body: AllStrings.notificationBodyLevel3,
-        // title: 'Level 3 First Title',
-        // body: 'Level 3 First Body',
         tzDateTime: _nextInstanceOfSaturdayElevenAM());
   }
   Future<void> scheduleNotificationForLevelFourSaturdayElevenAm() async {
@@ -312,8 +138,6 @@ class LocalNotifyManager {
         id: 4,
         title: AllStrings.notificationTitle,
         body: AllStrings.notificationBodyLevel4,
-        // title: 'Level 4 First Title',
-        // body: 'Level 4 First Body',
         tzDateTime: _nextInstanceOfSaturdayElevenAM());
   }
 
@@ -322,8 +146,6 @@ class LocalNotifyManager {
         id: 7,
         title: AllStrings.notificationTitle,
         body: AllStrings.notificationBodyLevel1,
-        // title: 'Level 1 Second Title',
-        // body: 'Level 1 Second Body',
         tzDateTime: _nextInstanceOfWednesdaySevenPm());
   }
   Future<void> scheduleNotificationForLevelTwoWednesdaySevenPm() async {
@@ -331,8 +153,6 @@ class LocalNotifyManager {
         id: 8,
         title: AllStrings.notificationTitle,
         body: AllStrings.notificationBodyLevel2,
-        // title: 'Level 2 Second Title',
-        // body: 'Level 2 Second Body',
         tzDateTime: _nextInstanceOfWednesdaySevenPm());
   }
   Future<void>  scheduleNotificationForLevelThreeWednesdaySevenPm() async {
@@ -340,8 +160,6 @@ class LocalNotifyManager {
         id: 9,
         title: AllStrings.notificationTitle,
         body: AllStrings.notificationBodyLevel3,
-        // title: 'Level 3 Second Title',
-        // body: 'Level 3 Second Body',
         tzDateTime: _nextInstanceOfWednesdaySevenPm());
   }
   Future<void> scheduleNotificationForLevelFourWednesdaySevenPm() async {
@@ -349,8 +167,6 @@ class LocalNotifyManager {
         id: 10,
         title: AllStrings.notificationTitle,
         body: AllStrings.notificationBodyLevel4,
-        // title: 'Level 4 Second Title',
-        // body: 'Level 4 Second Body',
         tzDateTime: _nextInstanceOfWednesdaySevenPm());
   }
 

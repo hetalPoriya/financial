@@ -27,11 +27,6 @@ class LevelSummaryForLevel1And2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Map<String, double> dataMap = {
-    //   AllStrings.spendOnNeed: ((need / 200) * 100).floor().toDouble(),
-    //   AllStrings.spendOnWant: ((want / 200) * 100).floor().toDouble(),
-    //   AllStrings.savings: ((accountBalance / 200) * 100).floor().toDouble(),
-    // };
 
     return Material(
       elevation: 1.h,
@@ -81,15 +76,7 @@ class LevelSummaryForLevel1And2 extends StatelessWidget {
                   height: 1.h,
                 ),
                 if(text1 != '')richText(text1.toString(), text2.toString(),paddingTop),
-                // Text(
-                //   AllStrings.level1And2CompleteText2,
-                //   style: AllTextStyles.dialogStyleMedium(
-                //       fontWeight: FontWeight.normal),
-                //   textAlign: TextAlign.center,
-                // ),
-                // SizedBox(
-                //   height: 2.h,
-                // ),
+
                 Container(
                   height: 31.h,
                   width: 80.w,
@@ -104,8 +91,6 @@ class LevelSummaryForLevel1And2 extends StatelessWidget {
                           fontWeight: FontWeight.normal, size: 11.sp),
                     ),
                     chartLegendSpacing: 3.h,
-                    // centerText: 'Finshark',
-                    // centerTextStyle: AllTextStyles.dialogStyleSmall(size: 10.sp),
                     ringStrokeWidth: 8.w,
                     colorList: [
                       AllColors.lightOrange,
@@ -126,18 +111,6 @@ class LevelSummaryForLevel1And2 extends StatelessWidget {
                 SizedBox(
                   height: 1.h,
                 ),
-                // richText(AllStrings.totalCash, '\$' + (200.toString()), 4.h),
-                // richText(AllStrings.spendOnNeed,
-                //     '${((need / 200) * 100).floor()}' + '%', 1.h),
-                // richText(AllStrings.spendOnWant,
-                //     '${((want / 200) * 100).floor()}' + '%', 1.h),
-                // richText(AllStrings.moneySaved,
-                //     '${((accountBalance / 200) * 100).floor()}' + '%', 1.h),
-                // buttonStyle(color, AllStrings.playNextLevel, onPressed),
-                //
-                // SizedBox(
-                //   height: 2.h,
-                // )
               ],
             ),
           ),

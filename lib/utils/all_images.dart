@@ -69,4 +69,9 @@ class AllImages{
   static String rank2 = 'assets/rank2.png';
   static String rank3 = 'assets/rank3.png';
 
+  //level progress
+  static String downArrow = 'assets/downArrow.png';
+  static String equalsSign = 'assets/equalsSign.png';
+  static String thumbsUp = 'assets/thumbsUp.png';
+  static String checkMark = 'assets/checkMark.png';
 }

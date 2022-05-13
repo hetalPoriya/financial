@@ -78,6 +78,6 @@ class RouteHelper{
     GetPage(name: allDone, page: () => AllDone()),
     GetPage(name: rateUs, page: () => RateUs(onSubmit: () {},)),
     GetPage(name: settings, page: () => SettingsPage()),
-    GetPage(name: leaderBoard, page: () => LeaderBoard(userName: '',)),
+    GetPage(name: leaderBoard, page: () => LeaderBoard(userName: '',userId: '',)),
   ];
 }

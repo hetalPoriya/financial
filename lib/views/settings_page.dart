@@ -89,20 +89,17 @@ class SettingsPage extends StatelessWidget {
                                   .doc(userId)
                                   .get();
                               String userName = shot.get('user_name');
-                              Get.to(() => LeaderBoard(userName: userName));
+                              Get.to(() => LeaderBoard(userName: userName,userId : userId));
                             }
                             if (settingsModel[index].id == 3) {
                               Get.to(() => RateUs(onSubmit: () {}));
                             }
                             if (settingsModel[index].id == 4) {
                               FlutterShare.share(
-                                      title:
-                                          'https://finshark.page.link/finshark',
-                                      text: AllStrings.shareAppDesText,
-                                      linkUrl:
-                                          'https://finshark.page.link/finshark',
-                                      chooserTitle:
-                                          'https://finshark.page.link/finshark')
+                                  title: 'https://play.google.com/store/apps/details?id=com.finshark',
+                                  text: AllStrings.shareAppDesText,
+                                  linkUrl: 'https://play.google.com/store/apps/details?id=com.finshark',
+                                  chooserTitle: 'https://play.google.com/store/apps/details?id=com.finshark')
                                   .then((value) {
                                 // Future.delayed(Duration(seconds: 2), () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LevelThreeSetUpPage(controller: PageController()))));
                               });

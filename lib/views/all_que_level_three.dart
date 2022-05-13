@@ -33,7 +33,6 @@ class AllQueLevelThree extends StatefulWidget {
 }
 
 class _AllQueLevelThreeState extends State<AllQueLevelThree> {
-
   int creditScore = 0;
   int score = 0;
   int priceOfOption = 0;
@@ -47,7 +46,7 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
 
   getAllData() async {
     QuerySnapshot querySnapshot =
-    await FirebaseFirestore.instance.collection("Level_3").get();
+        await FirebaseFirestore.instance.collection("Level_3").get();
     for (int i = 0; i < querySnapshot.docs.length; i++) {
       var a = querySnapshot.docs[i];
       queModel = QueModel();
@@ -273,6 +272,8 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
                                     );
                                   }))
                               : StatefulBuilder(builder: (context, _setState) {
+                                  Color color = Colors.white;
+                                  flagForKnow = false;
                                   return InsightWidget(
                                     level: level,
                                     document: document,
@@ -465,15 +466,17 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
                       onPressed: color == AllColors.green
                           ? () {}
                           : () async {
-                              _setState(() {
-                                color = AllColors.green;
-                              });
+
                               DocumentSnapshot doc = await firestore
                                   .collection('User')
                                   .doc(userId)
                                   .get();
                               balance = doc.get('account_balance');
-                              balance = balance - billPayment;
+                              _setState(() {
+                                color = AllColors.green;
+                                balance = balance - billPayment;
+                              });
+
                               if (balance < 0) {
                                 Future.delayed(
                                   Duration(milliseconds: 500),
@@ -516,11 +519,17 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
                       color: color,
                       onPressed: color == AllColors.green
                           ? () {}
-                          : () {
+                          : () async {
+                              DocumentSnapshot doc = await firestore
+                                  .collection('User')
+                                  .doc(userId)
+                                  .get();
+                              balance = doc.get('account_balance');
                               _setState(() {
                                 color = AllColors.green;
+                                balance = balance + 1000;
                               });
-                              balance = balance + 1000;
+
                               firestore.collection('User').doc(userId).update({
                                 'account_balance': balance,
                                 'game_score':
@@ -574,9 +583,16 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
                               _setState(() {
                                 color1 = AllColors.green;
                               });
+                              DocumentSnapshot doc = await firestore
+                                  .collection('User')
+                                  .doc(userId)
+                                  .get();
+                              balance = doc.get('account_balance');
                               if (totalAmount.ceil() != 0 &&
                                   balance >= totalAmount.ceil()) {
-                                balance = balance - totalAmount.ceil();
+                                _setState(() {
+                                  balance = balance - totalAmount.ceil();
+                                });
                                 score = snap.get('score');
                                 firestore
                                     .collection('User')
@@ -690,7 +706,7 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
     level = level.toString().substring(6, 7);
     int lev = int.parse(level);
 
-    return popQuizDialog(() {
+    return popQuizDialog(onPlayPopQuizPressed: () {
       Future.delayed(Duration(seconds: 2), () async {
         if (lev == 2 && value == true) {
           firestore
@@ -709,7 +725,7 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
           transition: Transition.downToUp,
         );
       });
-    }, () async {
+    }, onPlayNextLevelPressed: () async {
       LocalNotifyManager.init();
       await localNotifyManager.configureLocalTimeZone();
       await localNotifyManager.flutterLocalNotificationsPlugin.cancel(3);
@@ -969,19 +985,22 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
                               });
                               Future.delayed(
                                   Duration(seconds: 2),
-                                  () => Get.offAll(() => RateUs(onSubmit: () {
-                                        firestore
-                                            .collection('Feedback')
-                                            .doc()
-                                            .set({
-                                          'user_id': userId,
-                                          'level_name': level,
-                                          'rating': userInfo.star,
-                                          'feedback': userInfo.feedbackCon.text
-                                              .toString(),
-                                        }).then((value) =>
-                                                _playLevelOrPopQuiz());
-                                      }, )));
+                                  () => Get.offAll(() => RateUs(
+                                        onSubmit: () {
+                                          firestore
+                                              .collection('Feedback')
+                                              .doc()
+                                              .set({
+                                            'user_id': userId,
+                                            'level_name': level,
+                                            'rating': userInfo.star,
+                                            'feedback': userInfo
+                                                .feedbackCon.text
+                                                .toString(),
+                                          }).then((value) =>
+                                                  _playLevelOrPopQuiz());
+                                        },
+                                      )));
 
                               // }
                             },

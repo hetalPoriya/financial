@@ -476,43 +476,6 @@ class _LevelTwoAndThreeOptionsState extends State<LevelTwoAndThreeOptions>
                                                   curve: Curves.easeIn);
                                             }
 
-                                            // if(billsOfLevelTwoAndThree[
-                                            // index1]
-                                            //     .selectedOption == 1){
-                                            //   forPlan1 = billsOfLevelTwoAndThree[index1]
-                                            //       .sliderData![index]
-                                            //       .emi!;
-                                            //   pref.setInt('transportPrice',
-                                            //       transportPrice);
-                                            // }
-                                            // if (isSelected1 == true) {
-                                            //   forPlan4 = 50;
-                                            //   globalVar = globalVar + forPlan4;
-                                            //   pref.setInt('plan4', 50);
-                                            //   Navigator.pushReplacement(
-                                            //       context,
-                                            //       MaterialPageRoute(
-                                            //           builder: (context) =>
-                                            //               AllDone()));
-                                            // } else if (isSelected2 == true) {
-                                            //   forPlan4 = 80;
-                                            //   globalVar = globalVar + forPlan4;
-                                            //   pref.setInt('plan4', 80);
-                                            //   Navigator.pushReplacement(
-                                            //       context,
-                                            //       MaterialPageRoute(
-                                            //           builder: (context) =>
-                                            //               AllDone()));
-                                            // } else if (isSelected3 == true) {
-                                            //   forPlan4 = 120;
-                                            //   globalVar = globalVar + forPlan4;
-                                            //   pref.setInt('plan4', 120);
-                                            //   Navigator.pushReplacement(
-                                            //       context,
-                                            //       MaterialPageRoute(
-                                            //           builder: (context) =>
-                                            //               AllDone()));
-                                            // }
                                           },
                                     child: SlideTransition(
                                       position: Tween<Offset>(

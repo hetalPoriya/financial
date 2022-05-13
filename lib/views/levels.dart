@@ -1,20 +1,16 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:financial/shareable_screens/globle_variable.dart';
-import 'package:financial/shareable_screens/gradient_text.dart';
 import 'package:financial/models/profile_page_model.dart';
 import 'package:financial/models/que_model.dart';
-import 'package:financial/models/ranking_user.dart';
 import 'package:financial/utils/all_colors.dart';
 import 'package:financial/utils/all_images.dart';
 import 'package:financial/utils/all_strings.dart';
 import 'package:financial/utils/all_textStyle.dart';
-import 'package:financial/views/level_five_setUp_page.dart';
 import 'package:financial/views/level_four_setUp_page.dart';
 import 'package:financial/views/level_one_pop_quiz.dart';
 
 import 'package:financial/views/level_one_setUp_page.dart';
-import 'package:financial/views/level_six_setUp_page.dart';
 import 'package:financial/views/level_three_setUp_page.dart';
 import 'package:financial/views/level_two_setUp_page.dart';
 import 'package:financial/views/pop_quiz.dart';
@@ -610,23 +606,22 @@ class _LevelsState extends State<Levels> {
           transition: Transition.downToUp,
         );
       }
-
-      if (i == 5) {
-        getCredential.write('level4or5innerPageViewId', 0);
-        getCredential.write('count', 0);
-        Get.off(
-          () => LevelFiveSetUpPage(),
-          duration: Duration(milliseconds: 500),
-          transition: Transition.downToUp,
-        );
-      }
-
-      if (i == 6)
-        Get.off(
-          () => LevelSixSetUpPage(),
-          duration: Duration(milliseconds: 500),
-          transition: Transition.downToUp,
-        );
+      // if (i == 5) {
+      //   getCredential.write('level4or5innerPageViewId', 0);
+      //   getCredential.write('count', 0);
+      //   Get.off(
+      //     () => LevelFiveSetUpPage(),
+      //     duration: Duration(milliseconds: 500),
+      //     transition: Transition.downToUp,
+      //   );
+      // }
+      //
+      // if (i == 6)
+      //   Get.off(
+      //     () => LevelSixSetUpPage(),
+      //     duration: Duration(milliseconds: 500),
+      //     transition: Transition.downToUp,
+      //   );
     });
   }
 
@@ -677,19 +672,19 @@ class _LevelsState extends State<Levels> {
           duration: Duration(milliseconds: 500),
           transition: Transition.downToUp,
         );
-
-      if (i == 5)
-        Get.off(
-          () => LevelFiveSetUpPage(),
-          duration: Duration(milliseconds: 500),
-          transition: Transition.downToUp,
-        );
-      if (i == 6)
-        Get.off(
-          () => LevelFourSetUpPage(),
-          duration: Duration(milliseconds: 500),
-          transition: Transition.downToUp,
-        );
+      //
+      // if (i == 5)
+      //   Get.off(
+      //     () => LevelFiveSetUpPage(),
+      //     duration: Duration(milliseconds: 500),
+      //     transition: Transition.downToUp,
+      //   );
+      // if (i == 6)
+      //   Get.off(
+      //     () => LevelFourSetUpPage(),
+      //     duration: Duration(milliseconds: 500),
+      //     transition: Transition.downToUp,
+      //   );
     });
   }
 }

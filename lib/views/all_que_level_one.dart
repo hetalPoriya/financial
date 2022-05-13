@@ -416,87 +416,10 @@ class _AllQueLevelOneState extends State<AllQueLevelOne> {
                   ),
 
                   dataMap: dataMap,
-                  // onPressed: color == AllColors.green
-                  //     ? () {}
-                  //     : () async {
-                  //         _setState(() {
-                  //           color = AllColors.green;
-                  //         });
-                  //         bool value = documentSnapshot.get('replay_level');
-                  //         level = documentSnapshot.get('last_level');
-                  //         level = level.toString().substring(6, 7);
-                  //         int lev = int.parse(level);
-                  //         if (lev == 1 && value == true) {
-                  //           firestore
-                  //               .collection('User')
-                  //               .doc(userId)
-                  //               .update({'replay_level': false});
-                  //         }
-                  //         // firestore
-                  //         //     .collection('User')
-                  //         //     .doc(userId)
-                  //         //     .update({
-                  //         //   if (value != true)'last_level': 'Level_2_setUp_page',
-                  //         //   'previous_session_info': 'Level_2_setUp_page',
-                  //         // });
-                  //         Get.offAll(() => RateUs(onSubmit: () {
-                  //               firestore.collection('Feedback').doc().set({
-                  //                 'user_id': userInfo.userId,
-                  //                 'level_name': userInfo.level,
-                  //                 'rating': userInfo.star,
-                  //                 'feedback':
-                  //                     userInfo.feedbackCon.text.toString()
-                  //               }).then(
-                  //                 (v) => onSubmit(value, accountBalance, qol),
-                  //               );
-                  //             }));
-                  //       },
                   paddingTop: 0.h,
                   text1: '',
                 );
-                // return LevelSummary(
-                //   need: need,
-                //   want: want,
-                //   accountBalance: accountBalance,
-                //   color: color,
-                //   onPressed: color == AllColors.green
-                //       ? () {}
-                //       : () async {
-                //           _setState(() {
-                //             color = AllColors.green;
-                //           });
-                //           bool value = documentSnapshot.get('replay_level');
-                //           level = documentSnapshot.get('last_level');
-                //           level = level.toString().substring(6, 7);
-                //           int lev = int.parse(level);
-                //           if (lev == 1 && value == true) {
-                //             firestore
-                //                 .collection('User')
-                //                 .doc(userId)
-                //                 .update({'replay_level': false});
-                //           }
-                //           // firestore
-                //           //     .collection('User')
-                //           //     .doc(userId)
-                //           //     .update({
-                //           //   if (value != true)'last_level': 'Level_2_setUp_page',
-                //           //   'previous_session_info': 'Level_2_setUp_page',
-                //           // });
-                //           Get.offAll(() => RateUs(onSubmit: () {
-                //                 firestore.collection('Feedback').doc().set({
-                //                   'user_id': userInfo.userId,
-                //                   'level_name': userInfo.level,
-                //                   'rating': userInfo.star,
-                //                   'feedback':
-                //                       userInfo.feedbackCon.text.toString()
-                //                 }).then(
-                //                   (v) => onSubmit(value, accountBalance, qol),
-                //                 );
-                //               }, onSkip: () {
-                //                 onSubmit(value, accountBalance, qol);
-                //               }));
-                //         },
-                // );
+
               }),
               document: document,
               level: level,
@@ -508,7 +431,7 @@ class _AllQueLevelOneState extends State<AllQueLevelOne> {
     );
   }
 
-  onSubmit(bool value, int accountBalance, int qol) => popQuizDialog(() {
+  onSubmit(bool value, int accountBalance, int qol) => popQuizDialog(onPlayPopQuizPressed: () {
         firestore.collection('User').doc(userId).update({
           'previous_session_info': 'Level_1_Pop_Quiz',
           'level_id': 0,
@@ -521,7 +444,7 @@ class _AllQueLevelOneState extends State<AllQueLevelOne> {
                   duration: Duration(milliseconds: 500),
                   transition: Transition.downToUp,
                 ));
-      }, () async {
+      },onPlayNextLevelPressed:  () async {
         firestore.collection('User').doc(userId).update({
           'previous_session_info': 'Level_2_setUp_page',
           'level_id': 0,
@@ -544,7 +467,8 @@ class _AllQueLevelOneState extends State<AllQueLevelOne> {
                   duration: Duration(milliseconds: 500),
                   transition: Transition.downToUp,
                 ));
-      });
+      },
+  );
 }
 
 

@@ -325,11 +325,19 @@ class _AllQueLevelTwoState extends State<AllQueLevelTwo> {
                       color: color,
                       onPressed: color == AllColors.green
                           ? () {}
-                          : () {
+                          : () async {
+                        DocumentSnapshot doc =
+                            await firestore
+                            .collection('User')
+                            .doc(userId)
+                            .get();
+                        balance =
+                            doc.get('account_balance');
                               _setState(() {
                                 color = AllColors.green;
+                                balance = balance - billPayment;
                               });
-                              balance = balance - billPayment;
+
                               if (balance < 0) {
                                 Future.delayed(
                                   Duration(milliseconds: 500),
@@ -372,11 +380,19 @@ class _AllQueLevelTwoState extends State<AllQueLevelTwo> {
                       color: color,
                       onPressed: color == AllColors.green
                           ? () {}
-                          : () {
+                          : () async {
+                        DocumentSnapshot doc =
+                            await firestore
+                            .collection('User')
+                            .doc(userId)
+                            .get();
+                        balance =
+                            doc.get('account_balance');
                               _setState(() {
                                 color = AllColors.green;
+                                balance = balance + 1000;
                               });
-                              balance = balance + 1000;
+
                               firestore.collection('User').doc(userId).update({
                                 'account_balance': balance,
                                 'game_score':
@@ -570,7 +586,7 @@ class _AllQueLevelTwoState extends State<AllQueLevelTwo> {
     int bal = snap.get('account_balance');
     int qol = snap.get('quality_of_life');
     return popQuizDialog(
-      () async {
+     onPlayPopQuizPressed:  () async {
         // SharedPreferences pref = await SharedPreferences.getInstance();
         var userId = storeValue.read('uId');
         DocumentSnapshot snap =
@@ -598,7 +614,7 @@ class _AllQueLevelTwoState extends State<AllQueLevelTwo> {
           );
         });
       },
-      () async {
+    onPlayNextLevelPressed:   () async {
         var userId = storeValue.read('uId');
         DocumentSnapshot snap =
             await firestore.collection('User').doc(userId).get();
