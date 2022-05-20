@@ -49,7 +49,7 @@ class _BackgroundWidgetState extends State<BackgroundWidget> {
     int levelId = snapshot.get('level_id');
     if (level == 'Level_1' && levelId == 0) {
       showCase == false
-          ? WidgetsBinding.instance?.addPostFrameCallback((_) async {
+          ? WidgetsBinding.instance.addPostFrameCallback((_) async {
         ShowCaseWidget.of(context)!.startShowCase([one, two]);
         GetStorage().write('showCase', true);
       })

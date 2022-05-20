@@ -318,10 +318,10 @@ class _AllQueLevelTwoState extends State<AllQueLevelTwo> {
                       forPlan2: forPlan2.toString(),
                       forPlan3: forPlan3.toString(),
                       forPlan4: forPlan4.toString(),
-                      text1: 'Rent ',
-                      text2: 'TV & Internet ',
-                      text3: 'Groceries ',
-                      text4: 'Cellphone ',
+                      text1: 'Rent : ',
+                      text2: 'TV & Internet: ',
+                      text3: 'Groceries: ',
+                      text4: 'Cellphone: ',
                       color: color,
                       onPressed: color == AllColors.green
                           ? () {}
@@ -512,20 +512,23 @@ class _AllQueLevelTwoState extends State<AllQueLevelTwo> {
 
                               Future.delayed(
                                 Duration(seconds: 2),
-                                    () => Get.offAll(() => RateUs(onSubmit: () {
-                                  firestore
-                                      .collection('Feedback')
-                                      .doc()
-                                      .set({
-                                    'user_id': userInfo.userId,
-                                    'level_name': userInfo.level,
-                                    'rating': userInfo.star,
-                                    'feedback': userInfo.feedbackCon.text
-                                        .toString(),
-                                  }).then(
-                                        (value) => _playLevelOrPopQuiz(),
-                                  );
-                                })),
+                                    () => Get.offAll(() => RateUs(
+                                      onSubmit:() => _playLevelOrPopQuiz(),
+                                //         onSubmit: () {
+                                //   firestore
+                                //       .collection('Feedback')
+                                //       .doc()
+                                //       .set({
+                                //     'user_id': userInfo.userId,
+                                //     'level_name': userInfo.level,
+                                //     'rating': userInfo.star,
+                                //     'feedback': userInfo.feedbackCon.text
+                                //         .toString(),
+                                //   }).then(
+                                //         (value) => _playLevelOrPopQuiz(),
+                                //   );
+                                // }
+                                )),
                               );
                             },),
                             text1: 'Salary Earned : ',
@@ -581,53 +584,38 @@ class _AllQueLevelTwoState extends State<AllQueLevelTwo> {
   }
 
   _playLevelOrPopQuiz() async {
+    var userId = storeValue.read('uId');
     DocumentSnapshot snap =
         await firestore.collection('User').doc(userId).get();
     int bal = snap.get('account_balance');
     int qol = snap.get('quality_of_life');
+    bool value = snap.get('replay_level');
+    level = snap.get('last_level');
+    level = level.toString().substring(6, 7);
+    int lev = int.parse(level);
+    if (lev == 2 && value == true) {
+      firestore
+          .collection('User')
+          .doc(userId)
+          .update({'replay_level': false});
+    }
     return popQuizDialog(
      onPlayPopQuizPressed:  () async {
         // SharedPreferences pref = await SharedPreferences.getInstance();
-        var userId = storeValue.read('uId');
-        DocumentSnapshot snap =
-            await firestore.collection('User').doc(userId).get();
-        bool value = snap.get('replay_level');
-        level = snap.get('last_level');
-        level = level.toString().substring(6, 7);
-        int lev = int.parse(level);
-        if (lev == 2 && value == true) {
-          firestore
-              .collection('User')
-              .doc(userId)
-              .update({'replay_level': false});
-        }
         Future.delayed(Duration(seconds: 2), () {
           FirebaseFirestore.instance.collection('User').doc(userId).update({
             'previous_session_info': 'Level_2_Pop_Quiz',
             'level_id': 0,
             if (value != true) 'last_level': 'Level_2_Pop_Quiz',
           });
-          Get.off(
+          Get.offAll(
             () => PopQuiz(),
-            duration: Duration(milliseconds: 500),
-            transition: Transition.downToUp,
+            // duration: Duration(milliseconds: 500),
+            // transition: Transition.fade,
           );
         });
       },
     onPlayNextLevelPressed:   () async {
-        var userId = storeValue.read('uId');
-        DocumentSnapshot snap =
-            await firestore.collection('User').doc(userId).get();
-        bool value = snap.get('replay_level');
-        level = snap.get('last_level');
-        level = level.toString().substring(6, 7);
-        int lev = int.parse(level);
-        if (lev == 2 && value == true) {
-          firestore
-              .collection('User')
-              .doc(userId)
-              .update({'replay_level': false});
-        }
         LocalNotifyManager.init();
         await localNotifyManager.configureLocalTimeZone();
         await localNotifyManager.flutterLocalNotificationsPlugin.cancel(2);
@@ -641,10 +629,10 @@ class _AllQueLevelTwoState extends State<AllQueLevelTwo> {
             'level_2_balance': bal,
             'level_2_qol': qol
           });
-          Get.off(
+          Get.offAll(
             () => LevelThreeSetUpPage(),
-            duration: Duration(milliseconds: 500),
-            transition: Transition.downToUp,
+            // duration: Duration(milliseconds: 500),
+            // transition: Transition.fade,
           );
         });
       },

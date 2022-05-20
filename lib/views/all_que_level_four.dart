@@ -104,6 +104,7 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
 
   @override
   Widget build(BuildContext context) {
+    flagForKnow = false;
     return SafeArea(
         child: Container(
       width: 100.w,
@@ -697,8 +698,6 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
                                   );
                                 })
                               : StatefulBuilder(builder: (context, _setState) {
-                                  Color color = Colors.white;
-                                  flagForKnow = false;
                                   return InsightWidget(
                                     level: level,
                                     document: document,
@@ -762,8 +761,9 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
       number = 0;
     } else {
       number = randomNumberTotalPositive! <= 10
-          ? rnd.nextInt(5 + 5) - 5
-          : rnd.nextInt(6);
+          ? rnd.nextInt(15 + 5) - 15
+          : rnd.nextInt(16);
+      print('number ${number}');
       if (number <= 0) {
         storeValue.write('randomNumberValue', randomNumberTotalPositive! + 1);
       }
@@ -887,22 +887,22 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
         });
   }
 
-  _playLevelOrPopQuiz() {
+  _playLevelOrPopQuiz() async {
+    var userId = storeValue.read('uId');
+    DocumentSnapshot snap =
+        await firestore.collection('User').doc(userId).get();
+    bool value = snap.get('replay_level');
+    level = snap.get('last_level');
+    level = level.toString().substring(6, 7);
+    int lev = int.parse(level);
+    if (lev == 4 && value == true) {
+      firestore
+          .collection('User')
+          .doc(userId)
+          .update({'replay_level': false});
+    }
     return popQuizDialog(
       onPlayPopQuizPressed: () async {
-        var userId = storeValue.read('uId');
-        DocumentSnapshot snap =
-            await firestore.collection('User').doc(userId).get();
-        bool value = snap.get('replay_level');
-        level = snap.get('last_level');
-        level = level.toString().substring(6, 7);
-        int lev = int.parse(level);
-        if (lev == 2 && value == true) {
-          firestore
-              .collection('User')
-              .doc(userId)
-              .update({'replay_level': false});
-        }
         Future.delayed(Duration(seconds: 2), () {
           FirebaseFirestore.instance.collection('User').doc(userId).update({
             'previous_session_info': 'Level_4_Pop_Quiz',
@@ -910,10 +910,10 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
             if (value != true) 'last_level': 'Level_4_Pop_Quiz',
           });
           //Fluttertoast.showToast(msg: 'ComingSoon');
-          Get.off(
+          Get.offAll(
             () => PopQuiz(),
-            duration: Duration(milliseconds: 500),
-            transition: Transition.downToUp,
+            // duration: Duration(milliseconds: 500),
+            // transition: Transition.downToUp,
           );
         });
       },
@@ -994,19 +994,22 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
                               });
                               Future.delayed(
                                   Duration(milliseconds: 500),
-                                  () => Get.offAll(() => RateUs(onSubmit: () {
-                                        firestore
-                                            .collection('Feedback')
-                                            .doc()
-                                            .set({
-                                          'user_id': userInfo.userId,
-                                          'level_name': userInfo.level,
-                                          'rating': userInfo.star,
-                                          'feedback': userInfo.feedbackCon.text
-                                              .toString(),
-                                        }).then((value) =>
-                                                _playLevelOrPopQuiz());
-                                      })));
+                                  () => Get.offAll(() => RateUs(
+                                      onSubmit: () => _playLevelOrPopQuiz()
+                                       // {
+                                      //   firestore
+                                      //       .collection('Feedback')
+                                      //       .doc()
+                                      //       .set({
+                                      //     'user_id': userInfo.userId,
+                                      //     'level_name': userInfo.level,
+                                      //     'rating': userInfo.star,
+                                      //     'feedback': userInfo.feedbackCon.text
+                                      //         .toString(),
+                                      //   }).then((value) =>
+                                      //           _playLevelOrPopQuiz());
+                                      // }
+                                      )));
                             },
                     )
                   : buttonStyle(

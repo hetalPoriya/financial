@@ -1,5 +1,4 @@
-class AllImages{
-
+class AllImages {
   //onBoarding
   static String onBoardingLineOne = 'assets/line1.png';
   static String onBoardingLineTwo = 'assets/line2.png';
@@ -20,15 +19,12 @@ class AllImages{
 
   //profile page
   static String profileThreeLine = 'assets/settings.png';
-  static String replayImage ='assets/replay.png';
-  static String rightImage ='assets/right.png';
+  static String replayImage = 'assets/replay.png';
+  static String rightImage = 'assets/right.png';
   static String popQuiz = 'assets/popQuiz.png';
   static String lock = 'assets/lock.png';
 
   static String knowledgeImage = 'assets/knowledge_image.png';
-  static String house = 'assets/house.png';
-  static String car = 'assets/car.png';
-  static String lifeStyle = 'assets/lifestyle.png';
   static String masterGroup = 'assets/mastGroup.png';
   static String summaryGif = 'assets/summaryGif.gif';
 
@@ -49,7 +45,6 @@ class AllImages{
   static String level4SecondImage = 'assets/level_4_second_image.png';
   static String level4ThirdImage = 'assets/level_4_third_image.png';
 
-
   //bottom drawer
   static String saveMoney = 'assets/saveMoney.png';
   static String symbol = 'assets/symbol.png';
@@ -69,9 +64,23 @@ class AllImages{
   static String rank2 = 'assets/rank2.png';
   static String rank3 = 'assets/rank3.png';
 
+  // 🏡 Rent            $1350
+  // 📺 TV & Web    $250
+  // 🍞 Groceries     $120
+  // 📱Cellphone   $140 
+
   //level progress
   static String downArrow = 'assets/downArrow.png';
   static String equalsSign = 'assets/equalsSign.png';
   static String thumbsUp = 'assets/thumbsUp.png';
   static String checkMark = 'assets/checkMark.png';
+
+  //bill screens
+
+  //level 5
+  static String house = 'assets/house.png';
+  static String car = 'assets/car.png';
+  static String lifeStyle = 'assets/lifestyle.png';
+
+
 }

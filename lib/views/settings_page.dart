@@ -5,6 +5,7 @@ import 'package:financial/utils/all_colors.dart';
 import 'package:financial/utils/all_images.dart';
 import 'package:financial/utils/all_strings.dart';
 import 'package:financial/utils/all_textStyle.dart';
+import 'package:financial/views/coming_soon.dart';
 import 'package:financial/views/leader_board.dart';
 import 'package:financial/views/levels.dart';
 import 'package:financial/views/rate_us.dart';
@@ -47,8 +48,10 @@ class SettingsPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text('Dashboard',
-            style: AllTextStyles.settingsAppTitle()),
+        title: Padding(
+          padding: EdgeInsets.only(top: 2.h),
+          child: Text('Dashboard', style: AllTextStyles.settingsAppTitle()),
+        ),
         centerTitle: true,
       ),
       extendBodyBehindAppBar: true,
@@ -89,17 +92,21 @@ class SettingsPage extends StatelessWidget {
                                   .doc(userId)
                                   .get();
                               String userName = shot.get('user_name');
-                              Get.to(() => LeaderBoard(userName: userName,userId : userId));
+                              Get.to(() => LeaderBoard(
+                                  userName: userName, userId: userId));
                             }
                             if (settingsModel[index].id == 3) {
                               Get.to(() => RateUs(onSubmit: () {}));
                             }
                             if (settingsModel[index].id == 4) {
                               FlutterShare.share(
-                                  title: 'https://play.google.com/store/apps/details?id=com.finshark',
-                                  text: AllStrings.shareAppDesText,
-                                  linkUrl: 'https://play.google.com/store/apps/details?id=com.finshark',
-                                  chooserTitle: 'https://play.google.com/store/apps/details?id=com.finshark')
+                                      title:
+                                          'https://play.google.com/store/apps/details?id=com.finshark',
+                                      text: AllStrings.shareAppDesText,
+                                      linkUrl:
+                                          'https://play.google.com/store/apps/details?id=com.finshark',
+                                      chooserTitle:
+                                          'https://play.google.com/store/apps/details?id=com.finshark')
                                   .then((value) {
                                 // Future.delayed(Duration(seconds: 2), () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LevelThreeSetUpPage(controller: PageController()))));
                               });
@@ -112,6 +119,7 @@ class SettingsPage extends StatelessWidget {
                                 color: AllColors.purple,
                                 borderRadius: BorderRadius.circular(4.w)),
                             child: Row(children: [
+                              // GestureDetector(child: Text('Coming Soon '),onTap: (){Get.to(() => ComingSoon());}),
                               Expanded(
                                 child: Container(
                                     child: Image.asset(

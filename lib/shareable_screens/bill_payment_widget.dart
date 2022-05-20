@@ -26,19 +26,19 @@ class BillPaymentWidget extends StatefulWidget {
 
   const BillPaymentWidget(
       {Key? key,
-        required this.onPressed,
-        required this.color,
-        required this.billPayment,
-        this.forPlan1,
-        this.forPlan2,
-        this.forPlan3,
-        this.forPlan4,
-        this.forPlan5,
-        this.text1,
-        this.text2,
-        this.text3,
-        this.text4,
-        this.text5})
+      required this.onPressed,
+      required this.color,
+      required this.billPayment,
+      this.forPlan1,
+      this.forPlan2,
+      this.forPlan3,
+      this.forPlan4,
+      this.forPlan5,
+      this.text1,
+      this.text2,
+      this.text3,
+      this.text4,
+      this.text5})
       : super(key: key);
 
   @override
@@ -59,7 +59,7 @@ class _BillPaymentWidgetState extends State<BillPaymentWidget> {
     // rentPrice = storeValue.read('rentPrice');
     // transportPrice = storeValue.read('transportPrice');
     DocumentSnapshot snapshot =
-    await firestore.collection('User').doc(userId).get();
+        await firestore.collection('User').doc(userId).get();
     setState(() {
       level = snapshot.get('previous_session_info');
       homeLoan = snapshot.get('home_loan');
@@ -107,96 +107,69 @@ class _BillPaymentWidgetState extends State<BillPaymentWidget> {
                         style: AllTextStyles.dialogStyleExtraLarge(size: 22.sp),
                         textAlign: TextAlign.center,
                       ),
-
                       (level == 'Level_4' || level == 'Level_5')
                           ? normalText(AllStrings.level4And5TitleTextForBill)
                           : normalText(
-                        AllStrings.normalBillTitleText,
-                      ),
-
+                              AllStrings.normalBillTitleText,
+                            ),
                       (level == 'Level_5' && rentPrice != 0)
                           ? Column(
-                        children: [
-                          level5BillPayment(
-                              richText(
-                                  widget.text1.toString(),
-                                  '${'\$' + widget.forPlan1.toString()}',
-                                  2.h,
-                                  0.0,
-                                  0.0,
-                                  TextAlign.left),
-                              AllImages.house),
-                          Text(
-                            '${AllStrings.outstandingAmount} ${'\$$homeLoan'}',
-                            style: AllTextStyles.dialogStyleMedium(
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      )
-                          : richText(
-                          widget.text1.toString(),
-                          '${'\$' + widget.forPlan1.toString()}',
-                          2.h,
-                          0.0,
-                          0.0,
-                          TextAlign.left),
-
+                              children: [
+                                allLevelBillPaymentText(
+                                  image: AllImages.house,
+                                  text1: widget.text1.toString(),
+                                  text2: '${'\$' + widget.forPlan1.toString()}',
+                                ),
+                                Text(
+                                  '${AllStrings.outstandingAmount} ${'\$$homeLoan'}',
+                                  style: AllTextStyles.dialogStyleMedium(
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.grey.shade400),
+                                ),
+                              ],
+                            )
+                          : (level == 'Level_5' && rentPrice == 0)
+                              ? Container()
+                              : allLevelBillPaymentText(
+                                  text: level == 'Level_4' ? '🏠' : '🏡',
+                                  text1: widget.text1.toString(),
+                                  text2: '${'\$' + widget.forPlan1.toString()}',
+                                ),
                       (level == 'Level_5' && transportPrice != 0)
                           ? Column(
-                        children: [
-                          level5BillPayment(
-                            richText(
-                                widget.text2.toString(),
-                                '${'\$' + widget.forPlan2.toString()}',
-                                2.h,
-                                0.0,
-                                0.0,
-                                TextAlign.left),
-                            AllImages.car,
-                          ),
-                          Text(
-                            '${AllStrings.outstandingAmount} ${'\$$transportLoan'}',
-                            style: AllTextStyles.dialogStyleMedium(
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      )
-                          : richText(
-                          widget.text2.toString(),
-                          '${'\$' + widget.forPlan2.toString()}',
-                          1.h,
-                          0.0,
-                          0.0,
-                          TextAlign.left),
-
-                      level == 'Level_5'
-                          ? level5BillPayment(
-                        richText(
-                            widget.text3.toString(),
-                            '${'\$' + widget.forPlan3.toString()}',
-                            2.h,
-                            0.0,
-                            0.0,
-                            TextAlign.left),
-                        AllImages.lifeStyle,
-                      )
-                          : richText(
-                          widget.text3.toString(),
-                          '${'\$' + widget.forPlan3.toString()}',
-                          1.h,
-                          0.0,
-                          0.0,
-                          TextAlign.left),
-
+                              children: [
+                                allLevelBillPaymentText(
+                                  image: AllImages.car,
+                                  text1: widget.text2.toString(),
+                                  text2: '${'\$' + widget.forPlan2.toString()}',
+                                ),
+                                Text(
+                                  '${AllStrings.outstandingAmount} ${'\$$transportLoan'}',
+                                  style: AllTextStyles.dialogStyleMedium(
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.grey.shade400),
+                                ),
+                              ],
+                            )
+                          : (level == 'Level_5' && transportPrice == 0)
+                              ? Container()
+                              : allLevelBillPaymentText(
+                                  text: level == 'Level_4' ? '🚗' : '📺',
+                                  text1: widget.text2.toString(),
+                                  text2: '${'\$' + widget.forPlan2.toString()}',
+                                ),
+                      allLevelBillPaymentText(
+                        image: level == 'Level_5' ? AllImages.lifeStyle : null,
+                        text: level == 'Level_4' ? '🛍️' : '🍞',
+                        text1: widget.text3.toString(),
+                        text2: '${'\$' + widget.forPlan3.toString()}',
+                      ),
                       if (level != 'Level_4')
-                        richText(
-                            widget.text4.toString(),
-                            '${'\$' + widget.forPlan4.toString()}',
-                            1.h,
-                            0.0,
-                            0.0,
-                            TextAlign.left),
-
+                        allLevelBillPaymentText(
+                          text: level == 'Level_5' ? '💰' : '📱',
+                          text1: widget.text4.toString(),
+                          text2: '${'\$' + widget.forPlan4.toString()}',
+                        ),
                       if (level == 'Level_5')
                         richText(
                             widget.text5.toString(),
@@ -205,7 +178,6 @@ class _BillPaymentWidgetState extends State<BillPaymentWidget> {
                             0.0,
                             0.0,
                             TextAlign.left),
-
                       Padding(
                           padding: EdgeInsets.only(top: 4.h),
                           child: Container(
@@ -227,9 +199,9 @@ class _BillPaymentWidgetState extends State<BillPaymentWidget> {
                                         text: TextSpan(
                                             text: 'Pay now ',
                                             style:
-                                            AllTextStyles.dialogStyleLarge(
+                                                AllTextStyles.dialogStyleLarge(
                                               color: widget.color ==
-                                                  AllColors.green
+                                                      AllColors.green
                                                   ? Colors.white
                                                   : AllColors.darkBlue,
                                             ),
@@ -241,7 +213,7 @@ class _BillPaymentWidgetState extends State<BillPaymentWidget> {
                                                 style: AllTextStyles
                                                     .dialogStyleLarge(
                                                   color: widget.color ==
-                                                      AllColors.green
+                                                          AllColors.green
                                                       ? Colors.white
                                                       : AllColors.darkYellow,
                                                 ),

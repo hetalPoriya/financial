@@ -83,7 +83,7 @@ class _LevelTwoSetUpPageState extends State<LevelTwoSetUpPage> {
           setState(() {
             color = AllColors.green;
           });
-          Get.off(
+          Get.offAll(
             () => LevelTwoAndThreeOptions(),
             duration: Duration(seconds: 1),
             transition: Transition.downToUp,

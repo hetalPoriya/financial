@@ -57,7 +57,7 @@ class _PreviewOfBottomDrawerState extends State<PreviewOfBottomDrawer>
     showCase = GetStorage().read('showCase');
     showCaseId = GetStorage().read('showCaseId');
     (showCase == false && showCaseId == 1)
-        ? WidgetsBinding.instance?.addPostFrameCallback((_) async {
+        ? WidgetsBinding.instance.addPostFrameCallback((_) async {
             ShowCaseWidget.of(context)!.startShowCase([widget.keyValue!]);
             GetStorage().write('showCase', true);
           })

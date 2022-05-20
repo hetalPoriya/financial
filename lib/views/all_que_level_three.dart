@@ -70,7 +70,7 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
   @override
   Widget build(BuildContext context) {
     color = Colors.white;
-
+    flagForKnow = false;
     return SafeArea(
         child: Container(
       width: 100.w,
@@ -272,8 +272,6 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
                                     );
                                   }))
                               : StatefulBuilder(builder: (context, _setState) {
-                                  Color color = Colors.white;
-                                  flagForKnow = false;
                                   return InsightWidget(
                                     level: level,
                                     document: document,
@@ -425,8 +423,6 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
                 'level_id': index + 1,
                 'level_3_id': index + 1,
               });
-              controller.nextPage(
-                  duration: Duration(seconds: 1), curve: Curves.easeIn);
             } else {
               //  setState(() {
               scroll = false;
@@ -466,7 +462,6 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
                       onPressed: color == AllColors.green
                           ? () {}
                           : () async {
-
                               DocumentSnapshot doc = await firestore
                                   .collection('User')
                                   .doc(userId)
@@ -705,24 +700,21 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
     level = snap.get('last_level');
     level = level.toString().substring(6, 7);
     int lev = int.parse(level);
+    if (lev == 3 && value == true) {
+      firestore.collection('User').doc(userId).update({'replay_level': false});
+    }
 
     return popQuizDialog(onPlayPopQuizPressed: () {
       Future.delayed(Duration(seconds: 2), () async {
-        if (lev == 2 && value == true) {
-          firestore
-              .collection('User')
-              .doc(userId)
-              .update({'replay_level': false});
-        }
         firestore.collection("User").doc(userId).update({
           'previous_session_info': 'Level_3_Pop_Quiz',
           'level_id': 0,
           if (value != true) 'last_level': 'Level_3_Pop_Quiz',
         });
-        Get.off(
+        Get.offAll(
           () => PopQuiz(),
-          duration: Duration(milliseconds: 500),
-          transition: Transition.downToUp,
+          // duration: Duration(milliseconds: 500),
+          // transition: Transition.downToUp,
         );
       });
     }, onPlayNextLevelPressed: () async {
@@ -742,11 +734,11 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
         'level_3_creditScore': credit,
         if (value != true) 'last_level': 'Level_4_setUp_page',
         // 'previous_session_info': 'Coming_soon',
-      }).then((value) => Get.off(
+      }).then((value) => Get.offAll(
             () => LevelFourSetUpPage(),
             //() => ComingSoon(),
-            duration: Duration(milliseconds: 500),
-            transition: Transition.downToUp,
+            // duration: Duration(milliseconds: 500),
+            // transition: Transition.downToUp,
           ));
     });
   }
@@ -769,6 +761,7 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
       category) async {
     DocumentSnapshot doc = await firestore.collection('User').doc(userId).get();
     creditBal = doc['credit_card_balance'];
+    int price = priceOfOption;
     if (index == snapshot.data!.docs.length - 1) {
       firestore.collection('User').doc(userId).update({
         'level_id': index + 1,
@@ -789,69 +782,10 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
         double c = 2000 * 80 / 100;
         c = 2000 - c;
         if (creditBal <= c) {
-          return showDialog(
-              barrierDismissible: false,
-              context: context,
-              builder: (context) {
-                return WillPopScope(
-                  onWillPop: () {
-                    return Future.value(false);
-                  },
-                  child: AlertDialog(
-                    elevation: 3.0,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4.w)),
-                    actionsPadding: EdgeInsets.all(8.0),
-                    backgroundColor: AllColors.darkPurple,
-                    content: Text(
-                      AllStrings.creditCardUsed80,
-                      style: AllTextStyles.dialogStyleMedium(),
-                      textAlign: TextAlign.center,
-                    ),
-                    actions: [
-                      ElevatedButton(
-                          onPressed: () {
-                            if (creditBal >= priceOfOption) {
-                              firestore.collection('User').doc(userId).update({
-                                'score': FieldValue.increment(-50),
-                                'credit_score': FieldValue.increment(-50),
-                                'credit_card_balance':
-                                    FieldValue.increment(-priceOfOption),
-                                'credit_card_bill':
-                                    FieldValue.increment(priceOfOption),
-                              });
-                              Get.back();
-                              controller.nextPage(
-                                  duration: Duration(seconds: 1),
-                                  curve: Curves.easeIn);
-                            } else {
-                              int price = priceOfOption;
-                              _showDialogCreditBalNotEnough(
-                                  balance,
-                                  price,
-                                  controller,
-                                  gameScore,
-                                  qualityOfLife,
-                                  qol2,
-                                  scroll,
-                                  index);
-                            }
-                          },
-                          style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.white)),
-                          child: Text(
-                            'Ok',
-                            style: AllTextStyles.dialogStyleMedium(
-                              color: AllColors.darkPurple,
-                            ),
-                          )),
-                    ],
-                  ),
-                );
-              });
+          return showDialogWhenUse80Credit(balance, price, controller,
+              gameScore, qualityOfLife, qol2, scroll, index);
         }
-        if (creditBal >= priceOfOption) {
+     if (creditBal >= priceOfOption) {
           firestore.collection('User').doc(userId).update({
             'credit_card_bill': FieldValue.increment(priceOfOption),
             'quality_of_life': FieldValue.increment(qol2),
@@ -896,7 +830,6 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
           controller.nextPage(
               duration: Duration(seconds: 1), curve: Curves.easeIn);
         } else {
-          int price = priceOfOption;
           _showDialogCreditBalNotEnough(balance, price, controller, gameScore,
               qualityOfLife, qol2, scroll, index);
         }
@@ -924,6 +857,8 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
         } else {
           _showDialogDebitBalNotEnough(creditBill, balance, priceOfOption,
               controller, gameScore, qualityOfLife, qol2, scroll, index);
+          controller.nextPage(
+              duration: Duration(seconds: 1), curve: Curves.easeIn);
         }
       }
     } else {
@@ -986,20 +921,21 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
                               Future.delayed(
                                   Duration(seconds: 2),
                                   () => Get.offAll(() => RateUs(
-                                        onSubmit: () {
-                                          firestore
-                                              .collection('Feedback')
-                                              .doc()
-                                              .set({
-                                            'user_id': userId,
-                                            'level_name': level,
-                                            'rating': userInfo.star,
-                                            'feedback': userInfo
-                                                .feedbackCon.text
-                                                .toString(),
-                                          }).then((value) =>
-                                                  _playLevelOrPopQuiz());
-                                        },
+                                      onSubmit: () => _playLevelOrPopQuiz()
+                                      //     () {
+                                      //   firestore
+                                      //       .collection('Feedback')
+                                      //       .doc()
+                                      //       .set({
+                                      //     'user_id': userId,
+                                      //     'level_name': level,
+                                      //     'rating': userInfo.star,
+                                      //     'feedback': userInfo
+                                      //         .feedbackCon.text
+                                      //         .toString(),
+                                      //   }).then((value) =>
+                                      //           _playLevelOrPopQuiz());
+                                      // },
                                       )));
 
                               // }
@@ -1037,6 +973,71 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
         },
       )),
     );
+  }
+
+  showDialogWhenUse80Credit(int balance, int price, PageController controller,
+      int gameScore, int qualityOfLife, int qol2, bool scroll, int index) {
+    return showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) {
+          return WillPopScope(
+            onWillPop: () {
+              return Future.value(false);
+            },
+            child: AlertDialog(
+              elevation: 3.0,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.w)),
+              actionsPadding: EdgeInsets.all(8.0),
+              backgroundColor: AllColors.darkPurple,
+              content: Text(
+                AllStrings.creditCardUsed80,
+                style: AllTextStyles.dialogStyleMedium(),
+                textAlign: TextAlign.center,
+              ),
+              actions: [
+                ElevatedButton(
+                    onPressed: () {
+                      Get.back();
+                      if (creditBal >= priceOfOption) {
+                        firestore.collection('User').doc(userId).update({
+                          'score': FieldValue.increment(-50),
+                          'credit_score': FieldValue.increment(-50),
+                          'credit_card_balance':
+                              FieldValue.increment(-priceOfOption),
+                          'credit_card_bill':
+                              FieldValue.increment(priceOfOption),
+                        });
+                        controller.nextPage(
+                            duration: Duration(seconds: 1),
+                            curve: Curves.easeIn);
+                      } else {
+                        int price = priceOfOption;
+                        _showDialogCreditBalNotEnough(
+                            balance,
+                            price,
+                            controller,
+                            gameScore,
+                            qualityOfLife,
+                            qol2,
+                            scroll,
+                            index);
+                      }
+                    },
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.white)),
+                    child: Text(
+                      'Ok',
+                      style: AllTextStyles.dialogStyleMedium(
+                        color: AllColors.darkPurple,
+                      ),
+                    )),
+              ],
+            ),
+          );
+        });
   }
 }
 

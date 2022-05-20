@@ -39,21 +39,61 @@ Widget restartOrOkButton(String text, VoidCallback onPressed,
       ),
     );
 
-level5BillPayment(Widget widget, String image) {
+allLevelBillPaymentText(
+    {String? text, String? text1, String? text2, String? image}) {
   return Padding(
-    padding: EdgeInsets.symmetric(horizontal: 4.w),
+    padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.w),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Container(
-          child: Padding(
-            padding: EdgeInsets.only(top: 2.h),
-            child: Image.asset(image,
-                height: 4.h, width: 10.w, fit: BoxFit.contain),
+        Expanded(
+          child: Container(
+            alignment: Alignment.center,
+            height: 4.h,
+            width: 6.w,
+            //color: AllColors.red,
+            child: image != null
+                ? Image.asset(
+                    image.toString(),
+                    fit: BoxFit.contain,
+                  )
+                : Text(
+                    text.toString(),
+                    style: AllTextStyles.dialogStyleLarge(size: 20.sp),
+                  ),
+            // child: Image.asset(
+            //   image.toString(),
+            //   fit: BoxFit.contain,
+            //   height: 4.h,
+            //   width: 6.w,
+            // ),
           ),
+          flex: 1,
         ),
-        Container(
-          child: widget,
+        Expanded(
+          child: Container(
+            // height: 6.h,
+            //color: AllColors.green,
+            child: Text(
+              text1.toString(),
+              style: AllTextStyles.dialogStyleLarge(size: 16.sp),
+            ),
+          ),
+          flex: 2,
+        ),
+        Expanded(
+          child: Container(
+            //  height: 6.h,
+            //color: AllColors.red,
+            child: Text(
+              text2.toString(),
+              style: AllTextStyles.dialogStyleLarge(
+                size: 16.sp,
+                color: AllColors.darkYellow,
+              ),
+            ),
+          ),
+          flex: 1,
         ),
       ],
     ),
@@ -85,7 +125,6 @@ Future<void> getUser(int levelId) async {
 
   documentSnapshot = await firestore.collection('User').doc(userId).get();
   level = documentSnapshot.get('previous_session_info');
-
 
   snap.docs.forEach((document) async {
     documentSnapshot =
@@ -306,7 +345,6 @@ savingAndQolDialog(int abPer, int qolPer, int creditPer, int investmentPer,
                           iconString: AllImages.checkMark,
                         )
                       : null,
-
         if (levelForUser == 'Level_1' ||
             levelForUser == 'Level_2' ||
             levelForUser == 'Level_3' ||
@@ -337,8 +375,6 @@ savingAndQolDialog(int abPer, int qolPer, int creditPer, int investmentPer,
                           iconString: AllImages.checkMark,
                         )
                       : null,
-
-
         if (levelForUser == 'Level_3')
           creditPer > 0
               ? savingDialogText(
@@ -365,8 +401,6 @@ savingAndQolDialog(int abPer, int qolPer, int creditPer, int investmentPer,
                           iconString: AllImages.checkMark,
                         )
                       : null,
-
-
         if (levelForUser == 'Level_4' || levelForUser == 'Level_5')
           investmentPer > 0
               ? savingDialogText(
@@ -393,7 +427,6 @@ savingAndQolDialog(int abPer, int qolPer, int creditPer, int investmentPer,
                           iconString: AllImages.checkMark,
                         )
                       : null,
-
         SizedBox(
           height: 2.h,
         ),
@@ -419,9 +452,13 @@ showDialogToShowIncreaseRent() {
   transportPrice = storeValue.read('transportPrice')!;
   lifestylePrice = storeValue.read('lifestylePrice')!;
 
-  rentPrice = rentPrice + ((rentPrice * 5) ~/ 100).toInt();
-  transportPrice = transportPrice + ((transportPrice * 5) ~/ 100).toInt();
-  lifestylePrice = lifestylePrice + ((lifestylePrice * 5) ~/ 100).toInt();
+  // rentPrice = rentPrice + ((rentPrice * 5) ~/ 100).toInt();
+  // transportPrice = transportPrice + ((transportPrice * 5) ~/ 100).toInt();
+  // lifestylePrice = lifestylePrice + ((lifestylePrice * 5) ~/ 100).toInt();
+
+  rentPrice = rentPrice + ((rentPrice * 10) ~/ 100).toInt();
+  transportPrice = transportPrice + ((transportPrice * 10) ~/ 100).toInt();
+  lifestylePrice = lifestylePrice + ((lifestylePrice * 10) ~/ 100).toInt();
 
   storeValue.write('rentPrice', rentPrice);
   storeValue.write('transportPrice', transportPrice);
@@ -451,7 +488,7 @@ showDialogToShowIncreaseRent() {
             bottom: 4.w,
           ),
           child: Text(
-            'Due to inflation, rent, transport and other prices have gone up by 5% over the last year. Your revised monthly expenses this year will be: ',
+            AllStrings.billInflation,
             textAlign: TextAlign.center,
             style: AllTextStyles.dialogStyleMedium(),
           ),
@@ -586,7 +623,7 @@ inviteDialog() async {
   String level = snap.get('last_level');
   level = level.toString().substring(6, 7);
   int lev = int.parse(level);
-  if (lev == 2 && value == true) {
+  if (lev == 4 && value == true) {
     firestore.collection('User').doc(userId).update({'replay_level': false});
   }
 
@@ -605,7 +642,6 @@ inviteDialog() async {
         Container(
           child: ElevatedButton(
               onPressed: () async {
-
                 FlutterShare.share(
                         title:
                             'https://play.google.com/store/apps/details?id=com.finshark',
@@ -614,9 +650,8 @@ inviteDialog() async {
                             'https://play.google.com/store/apps/details?id=com.finshark',
                         chooserTitle:
                             'https://play.google.com/store/apps/details?id=com.finshark')
-                    .then((value) {
-
-                }).then((value) async {
+                    .then((value) {})
+                    .then((value) async {
                   Get.back();
                   FirebaseFirestore.instance
                       .collection('User')
@@ -628,12 +663,10 @@ inviteDialog() async {
 
                   Get.offAll(
                     () => ComingSoon(),
-                    duration: Duration(milliseconds: 500),
-                    transition: Transition.downToUp,
+                    // duration: Duration(milliseconds: 500),
+                    // transition: Transition.downToUp,
                   );
-
                 });
-
               },
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Colors.white)),
@@ -661,7 +694,7 @@ inviteDialog() async {
             Get.back();
             var userId = GetStorage().read('uId');
             FirebaseFirestore.instance.collection('User').doc(userId).update({
-              if (value != true) 'last_level': 'Level_5_setUp_page',
+              if (value != true) 'last_level': 'Level_4',
               'previous_session_info': 'Coming_soon',
             });
             Get.offAll(
@@ -819,8 +852,10 @@ leaderBoardWidget(
                 children: [
                   Expanded(
                     child: Padding(
-                      padding:
-                          EdgeInsets.only(top: 1.w, right: 4.w,),
+                      padding: EdgeInsets.only(
+                        top: 1.w,
+                        right: 4.w,
+                      ),
                       child: Align(
                         alignment: Alignment.bottomRight,
                         child: Text(
@@ -907,7 +942,6 @@ leaderBoardWidget(
             ),
             flex: 4,
           ),
-
         ]),
       ),
     );

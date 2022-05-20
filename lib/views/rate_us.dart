@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:financial/shareable_screens/globle_variable.dart';
 import 'package:financial/controllers/user_info_controller.dart';
 import 'package:financial/utils/all_colors.dart';
@@ -19,9 +20,9 @@ class RateUs extends StatelessWidget {
   Widget build(BuildContext context) {
     var con = Get.put<UserInfoController>(UserInfoController());
     con.submit = false;
-
+    con.star = 0;
+    con.update();
     return SafeArea(
-      // top: false,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
@@ -121,17 +122,59 @@ class RateUs extends StatelessWidget {
                               Fluttertoast.showToast(
                                   msg: 'Please rate your experience ');
                             }
-                          : () {
+                          : () async {
                               userInfo.submit = true;
                               userInfo.update();
-                              Get.back();
-                              if (userInfo.star == 5)
+                              if (userInfo.star == 5) {
                                 StoreRedirect.redirect(
-                                  androidAppId:
-                                      "com.finshark",
+                                  androidAppId: "com.finshark",
                                   //iOSAppId: "585027354"
                                 );
-                              onSubmit();
+                              }
+                              print('STATATA ${userInfo.star}');
+                              DocumentSnapshot snap = await firestore
+                                  .collection('User')
+                                  .doc(userInfo.userId)
+                                  .get();
+                              String level = snap.get('previous_session_info');
+                              level = level.toString().substring(0, 7);
+                              print('STATATA ${level}');
+                              firestore
+                                  .collection('Feedback')
+                                  .doc(userInfo.userId)
+                                  .set({
+                                'user_id': userInfo.userId,
+                                if (level == 'Level_1')
+                                  'level_1_feedback': userInfo.feedbackCon.text,
+                                if (level == 'Level_1')
+                                  'level_1_rating': userInfo.star,
+                                if (level == 'Level_2')
+                                  'level_2_feedback': userInfo.feedbackCon.text,
+                                if (level == 'Level_2')
+                                  'level_2_rating': userInfo.star,
+                                if (level == 'Level_3')
+                                  'level_3_feedback': userInfo.feedbackCon.text,
+                                if (level == 'Level_3')
+                                  'level_3_rating': userInfo.star,
+                                if (level == 'Level_4')
+                                  'level_4_feedback': userInfo.feedbackCon.text,
+                                if (level == 'Level_4')
+                                  'level_4_rating': userInfo.star,
+                                if (level == 'Level_5')
+                                  'level_5_feedback': userInfo.feedbackCon.text,
+                                if (level == 'Level_5')
+                                  'level_5_rating': userInfo.star,
+                                if (level == 'Level_6')
+                                  'level_6_feedback': userInfo.feedbackCon.text,
+                                if (level == 'Level_6')
+                                  'level_6_rating': userInfo.star,
+
+
+                              }, SetOptions(merge: true)).then(
+                                (v) => onSubmit(),
+                              );
+
+                              Get.back();
                             },
                       child: Text(
                         'Submit',

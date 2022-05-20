@@ -3,7 +3,8 @@ class AllStrings {
   static String levelOneText1 = ' Do you think you are smart with your money?';
   static String levelOneText2 = 'Let\'s test you';
   static String levelOneText3 =
-      'It\'s your birthday week and your generous Aunt has gifted you \$200!';
+      'It\’s your birthday week and you\’ve won a gift card worth \$200!';
+  //   'It\'s your birthday week and your generous Aunt has gifted you \$200!';
   static String levelOneText4 = 'Let\'s see how smartly you spend it.';
 
   //level2 SetupPage
@@ -92,8 +93,10 @@ class AllStrings {
   //bill payment
   static String billsDue = 'BILLS DUE!';
   static String level4And5TitleTextForBill = 'Your expenses this month.';
-  static String normalBillTitleText = 'Your monthly bills have been generated.';
+  //static String normalBillTitleText = 'Your monthly bills have been generated.';
+  static String normalBillTitleText = 'Monthly bills generated.';
   static String outstandingAmount = 'Outstanding Amount: ';
+  static String billInflation= 'Due to inflation, rent, transport and other prices have gone up by 10%. Your revised monthly expenses will now be:';
 
   //salary
   static String salaryTitle = 'Salary Credited';
@@ -178,7 +181,9 @@ class AllStrings {
   static String levelCompleteText =
       'Congratulations! You have completed this level successfully ';
   static String level1And2CompleteText = 'Budgeting Skills';
-  static String level1And2CompleteText2 = 'Here\'s a breakdown of your spending habits' ;
+  static String level1And2CompleteText2 =
+      'Here\'s a breakdown of your spending habits';
+
   static String level2LosingText =
       'Oops! You haven\’t managed to achieve your savings goal of 20%. Please try again! ';
 
@@ -208,34 +213,42 @@ class AllStrings {
 
   static String level4 = 'Building Up';
   static String level4Dec =
-      'Learn the concept of Time Value of Money and to use Compounding to grow your money.';
-  static String level4Goal = 'Goal : Achieve \$30k through investments';
+      'Fight off inflation. Learn to navigate the volatities of the stock market. ';
+  static String level4Goal = 'Goal : Achieve \$30k in savings and investments.';
 
-  static String level5 = 'Stock Play';
+  static String level5 = 'EMI Mania';
   static String level5Dec =
-      'Learn to Invest in Stocks and to build a portfolio.';
-  static String level5Goal = '';
+      'Learn to manage your EMIs as you buy your first house and car.';
+  static String level5Goal = 'Goal : Paying off your loans in time.';
 
-  static String level6 = ' Super Sprint';
+  static String level6 = 'Stock Play';
   static String level6Dec =
-      'Play in multiplayer mode and outscore your friends.';
+      'Learn to Invest in Stocks and to build a portfolio.';
   static String level6Goal = '';
+
+  static String level7 = ' Super Sprint';
+  static String level7Dec =
+      'Play in multiplayer mode and outscore your friends.';
+  static String level7Goal = '';
 
   //rate use
   static String rateText1 = 'Enjoying the'
       ' game?';
   static String rateText2 = 'Tell us how we are doing';
   static String rateText3 = 'Got any feedback/suggestions?';
-  //static String feedbackApp = 'Write your feedback/suggestions here';
 
+  //static String feedbackApp = 'Write your feedback/suggestions here';
 
   //settins page
   static String levels = 'Levels';
-  static String profileDes = 'View your level progress. Replay level and Pop Quiz.';
+  static String profileDes =
+      'View your level progress. Replay level and Pop Quiz.';
   static String leaderBoard = 'Leaderboard';
-  static String leaderBoardDes = 'View your ranking! See where you stand on the finshark leaderboard.';
+  static String leaderBoardDes =
+      'View your ranking! See where you stand on the finshark leaderboard.';
   static String feedback = 'Feedback';
-  static String feedbackDes = 'Send us your feedback. Or request a new feature. ';
+  static String feedbackDes =
+      'Send us your feedback. Or request a new feature. ';
   static String share = 'Share';
   static String shareDes = 'Invite your friends and share us on social media.';
 }

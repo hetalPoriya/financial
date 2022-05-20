@@ -6,13 +6,16 @@ import 'package:financial/views/local_notify_manager.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:new_version/new_version.dart';
 import 'package:sizer/sizer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  FlutterBranchSdk.validateSDKIntegration();
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
   const AndroidInitializationSettings initializationSettingsAndroid =
@@ -25,6 +28,7 @@ void main() async {
   );
   await localNotifyManager.configureLocalTimeZone();
   await Firebase.initializeApp();
+
   await GetStorage.init();
 
   // runApp(
@@ -46,6 +50,12 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    _checkVersion();
+  }
+
+  _checkVersion() {
+    final newVersion = NewVersion(androidId: 'com.finshark');
+    newVersion.showAlertIfNecessary(context: context);
   }
 
   @override

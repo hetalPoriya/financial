@@ -51,7 +51,7 @@ class _GameScorePageState extends State<GameScorePage> {
     showCaseId = GetStorage().read('showCaseId');
     showCase = GetStorage().read('showCase');
     (showCase == false && showCaseId == 0 && level == 'Level_1')
-        ? WidgetsBinding.instance?.addPostFrameCallback((_) async {
+        ? WidgetsBinding.instance.addPostFrameCallback((_) async {
             ShowCaseWidget.of(context)!.startShowCase([widget.keyValue!]);
             GetStorage().write('showCaseId', 1);
           })
@@ -61,102 +61,117 @@ class _GameScorePageState extends State<GameScorePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        // SizedBox(
-        //   height: forPortrait * .08,
-        // ),
-        Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                height: 17.w,
-                width: 56.w,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.w),
-                    color: Colors.white),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      height: 17.w,
-                      width: 14.w,
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 4.w),
-                        child: Container(
-                            child: Image.asset(
-                          AllImages.star,
-                          width: 10.w,
-                          height: 6.h,
-                          fit: BoxFit.contain,
-                        )),
-                      ),
-                    ),
-                    Spacer(),
-                    Container(
+    return SafeArea(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // SizedBox(
+          //   height: forPortrait * .08,
+          // ),
+          Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  height: 17.w,
+                  width: 56.w,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.w),
+                      color: Colors.white),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
                         height: 17.w,
-                        width: 42.w,
-                        //  color: Colors.green,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              height: 1.w,
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Container(
-                                child: Text('GAME SCORE',
-                                    style:AllTextStyles.dialogStyleSmall(fontWeight: FontWeight.w500,color:AllColors.extraDarkPurple ),
-                                    maxLines: 1),
-                                alignment: Alignment.center,
+                        width: 14.w,
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 4.w),
+                          child: Container(
+                              child: Image.asset(
+                            AllImages.star,
+                            width: 10.w,
+                            height: 6.h,
+                            fit: BoxFit.contain,
+                          )),
+                        ),
+                      ),
+                      Spacer(),
+                      Container(
+                          height: 17.w,
+                          width: 42.w,
+                          //  color: Colors.green,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: 1.w,
                               ),
-                            ),
-                            gameScore(),
-                            SizedBox(
-                              height: 1.w,
-                            ),
-                          ],
-                        )),
-                    Spacer(),
-                  ],
+                              Expanded(
+                                flex: 1,
+                                child: Container(
+                                  child: Text('GAME SCORE',
+                                      style:AllTextStyles.dialogStyleSmall(fontWeight: FontWeight.w500,color:AllColors.extraDarkPurple ),
+                                      maxLines: 1),
+                                  alignment: Alignment.center,
+                                ),
+                              ),
+                              gameScore(),
+                              SizedBox(
+                                height: 1.w,
+                              ),
+                            ],
+                          )),
+                      Spacer(),
+                    ],
+                  ),
                 ),
-              ),
-              (level == 'Level_1' && levelId == 0)
-                  ? Showcase(
-                      description: AllStrings.showCaseProfilePageText,
-                      descTextStyle: AllTextStyles.workSansSmall(fontSize: 12.sp),
-                      animationDuration: Duration(milliseconds: 500),
-                      key: widget.keyValue!,
-                      child: Padding(
+                (level == 'Level_1' && levelId == 0)
+                    ? Showcase(
+                        description: AllStrings.showCaseProfilePageText,
+                        descTextStyle: AllTextStyles.workSansSmall(fontSize: 12.sp),
+                        animationDuration: Duration(milliseconds: 500),
+                        key: widget.keyValue!,
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 6.w, right: 8.w),
+                          child: GestureDetector(
+                              onTap: () async {
+                                DocumentSnapshot doc = await FirebaseFirestore
+                                    .instance
+                                    .collection('User')
+                                    .doc(userId)
+                                    .get();
+                                Object? map = doc.data();
+                                if (map.toString().contains('user_name')) {
+                                  Get.to(
+                                    () => SettingsPage(),
+                                    duration: Duration(milliseconds: 500),
+                                    transition: Transition.downToUp,
+                                  );
+                                } else {
+                                  firestore.collection('User').doc(userId).set(
+                                      {'user_name': ''},
+                                      SetOptions(
+                                          merge: true)).then((value) => Get.to(
+                                        () => SettingsPage(),
+                                        duration: Duration(milliseconds: 500),
+                                        transition: Transition.downToUp,
+                                      ));
+                                }
+                              },
+                              child: Image.asset(
+                                AllImages.profileThreeLine,
+                                width: 6.w,
+                                height: 15.w,
+                                fit: BoxFit.contain,
+                              )),
+                        ),
+                      )
+                    : Padding(
                         padding: EdgeInsets.only(left: 6.w, right: 8.w),
                         child: GestureDetector(
                             onTap: () async {
-                              DocumentSnapshot doc = await FirebaseFirestore
-                                  .instance
-                                  .collection('User')
-                                  .doc(userId)
-                                  .get();
-                              Object? map = doc.data();
-                              if (map.toString().contains('user_name')) {
-                                Get.to(
-                                  () => SettingsPage(),
-                                  duration: Duration(milliseconds: 500),
-                                  transition: Transition.downToUp,
-                                );
-                              } else {
-                                firestore.collection('User').doc(userId).set(
-                                    {'user_name': ''},
-                                    SetOptions(
-                                        merge: true)).then((value) => Get.to(
-                                      () => SettingsPage(),
-                                      duration: Duration(milliseconds: 500),
-                                      transition: Transition.downToUp,
-                                    ));
-                              }
+                              Get.to(() => SettingsPage());
                             },
                             child: Image.asset(
                               AllImages.profileThreeLine,
@@ -165,63 +180,50 @@ class _GameScorePageState extends State<GameScorePage> {
                               fit: BoxFit.contain,
                             )),
                       ),
-                    )
-                  : Padding(
-                      padding: EdgeInsets.only(left: 6.w, right: 8.w),
-                      child: GestureDetector(
-                          onTap: () async {
-                            Get.to(() => SettingsPage());
-                          },
-                          child: Image.asset(
-                            AllImages.profileThreeLine,
-                            width: 6.w,
-                            height: 15.w,
-                            fit: BoxFit.contain,
-                          )),
-                    ),
-            ],
+              ],
+            ),
           ),
-        ),
-        if (level == 'Level_2_Pop_Quiz' && level == 'Level_3_Pop_Quiz')
-          Padding(
-              padding: EdgeInsets.only(
-            top: 0.h,
-          )),
+          if (level == 'Level_2_Pop_Quiz' && level == 'Level_3_Pop_Quiz')
+            Padding(
+                padding: EdgeInsets.only(
+              top: 0.h,
+            )),
 
-        if ((level == "Level_1" || level == "") &&
-            widget.document['card_type'] == 'GameQuestion')
-          Padding(
-              padding: EdgeInsets.only(
-                top: 2.h,
-              ),
-              child: widget.document['day'] == 0
-                  ? _text('DAY 1/7')
-                  : _text('DAY ' + widget.document['day'].toString() + '/7')),
+          if ((level == "Level_1" || level == "") &&
+              widget.document['card_type'] == 'GameQuestion')
+            Padding(
+                padding: EdgeInsets.only(
+                  top: 2.h,
+                ),
+                child: widget.document['day'] == 0
+                    ? _text('DAY 1/7')
+                    : _text('DAY ' + widget.document['day'].toString() + '/7')),
 
-        if ((level == "Level_2" || level == 'Level_3') &&
-            (widget.document.toString() == 'GameQuestion' ||
-                widget.document['card_type'] == 'GameQuestion'))
-          Padding(
-              padding: EdgeInsets.only(
-                top: 2.h,
-              ),
-              child: widget.document.toString() == 'GameQuestion' ||
-                      widget.document['week'] == null
-                  ? _text('WEEK 1/24')
-                  : _text(
-                      'WEEK ' + widget.document['week'].toString() + '/24')),
+          if ((level == "Level_2" || level == 'Level_3') &&
+              (widget.document.toString() == 'GameQuestion' ||
+                  widget.document['card_type'] == 'GameQuestion'))
+            Padding(
+                padding: EdgeInsets.only(
+                  top: 2.h,
+                ),
+                child: widget.document.toString() == 'GameQuestion' ||
+                        widget.document['week'] == null
+                    ? _text('WEEK 1/24')
+                    : _text(
+                        'WEEK ' + widget.document['week'].toString() + '/24')),
 
-        if ((level == "Level_4" || level == "Level_5") &&
-            widget.document['card_type'] == 'GameQuestion')
-          Padding(
-              padding: EdgeInsets.only(
-                top: 2.h,
-              ),
-              child: widget.document['month'] == 0
-                  ? _text('MONTH 1/30')
-                  : _text(
-                      'MONTH ' + widget.document['month'].toString() + '/30')),
-      ],
+          if ((level == "Level_4" || level == "Level_5") &&
+              widget.document['card_type'] == 'GameQuestion')
+            Padding(
+                padding: EdgeInsets.only(
+                  top: 2.h,
+                ),
+                child: widget.document['month'] == 0
+                    ? _text('MONTH 1/30')
+                    : _text(
+                        'MONTH ' + widget.document['month'].toString() + '/30')),
+        ],
+      ),
     );
   }
 

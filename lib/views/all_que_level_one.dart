@@ -401,17 +401,20 @@ class _AllQueLevelOneState extends State<AllQueLevelOne> {
                                   .doc(userId)
                                   .update({'replay_level': false});
                             }
-                            Get.offAll(() => RateUs(onSubmit: () {
-                                  firestore.collection('Feedback').doc().set({
-                                    'user_id': userInfo.userId,
-                                    'level_name': userInfo.level,
-                                    'rating': userInfo.star,
-                                    'feedback':
-                                        userInfo.feedbackCon.text.toString()
-                                  }).then(
-                                    (v) => onSubmit(value, accountBalance, qol),
-                                  );
-                                }));
+                            Get.offAll(() => RateUs(
+                                onSubmit:() => onSubmit(value, accountBalance, qol)));
+                                //     () {
+                                //   firestore.collection('Feedback').doc().set({
+                                //     'user_id': userInfo.userId,
+                                //     'level_name': userInfo.level,
+                                //     'rating': userInfo.star,
+                                //     'feedback':
+                                //         userInfo.feedbackCon.text.toString()
+                                //   }).then(
+                                //     (v) =>
+                                //         onSubmit(value, accountBalance, qol),
+                                //   );
+                                // }));
                           },
                   ),
 
@@ -439,10 +442,10 @@ class _AllQueLevelOneState extends State<AllQueLevelOne> {
         });
         Future.delayed(
             Duration(seconds: 1),
-            () => Get.off(
+            () =>  Get.offAll(
                   () => LevelOnePopQuiz(),
-                  duration: Duration(milliseconds: 500),
-                  transition: Transition.downToUp,
+                  // duration: Duration(milliseconds: 500),
+                  // transition: Transition.downToUp,
                 ));
       },onPlayNextLevelPressed:  () async {
         firestore.collection('User').doc(userId).update({
@@ -462,10 +465,10 @@ class _AllQueLevelOneState extends State<AllQueLevelOne> {
             .scheduleNotificationForLevelTwoWednesdaySevenPm();
         Future.delayed(
             Duration(seconds: 1),
-            () => Get.off(
+            () => Get.offAll(
                   () => LevelTwoSetUpPage(),
-                  duration: Duration(milliseconds: 500),
-                  transition: Transition.downToUp,
+                  // duration: Duration(milliseconds: 500),
+                  // transition: Transition.fade,
                 ));
       },
   );
