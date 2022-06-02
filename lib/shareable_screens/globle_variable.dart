@@ -38,7 +38,8 @@ BoxDecoration boxDecoration = BoxDecoration(
   end: Alignment.bottomLeft,
 ));
 
-
+String country = '';
+bool popQuizPointChanges= false;
 String level = '';
 int levelId = 0;
 int gameScore = 0;
@@ -51,7 +52,7 @@ int billPayment = 0;
 // page controller
 PageController controller = PageController();
 
-//store streambuilder value
+//store streamBuilder value
 var document;
 
 // for option selection
@@ -61,7 +62,8 @@ bool scroll = true;
 bool flagForKnow = false;
 final storeValue = GetStorage();
 
-
+//for investment graph
+List<int> incDesPer = [];
 // LocalNotifyManager localNotifyManager = LocalNotifyManager.init();
 
 

@@ -13,6 +13,7 @@ import 'package:financial/models/que_model.dart';
 import 'package:financial/utils/all_colors.dart';
 import 'package:financial/utils/all_strings.dart';
 import 'package:financial/utils/all_textStyle.dart';
+import 'package:financial/views/coming_soon.dart';
 import 'package:financial/views/level_four_setUp_page.dart';
 import 'package:financial/views/local_notify_manager.dart';
 import 'package:financial/views/pop_quiz.dart';
@@ -20,6 +21,7 @@ import 'package:financial/views/rate_us.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'dart:math';
 
@@ -69,15 +71,26 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
     rentPrice = storeValue.read('rentPrice')!;
     transportPrice = storeValue.read('transportPrice')!;
     lifestylePrice = storeValue.read('lifestylePrice')!;
+
     count = storeValue.read('count');
     if (count == null) {
       count = 0;
     }
-
+    var pref = await SharedPreferences.getInstance();
     DocumentSnapshot snapshot =
         await firestore.collection('User').doc(userId).get();
     totalMutualFund = snapshot.get('mutual_fund');
+    int levelId = snapshot.get('level_id');
+    if (levelId == 0) {
+      print('eeneeee');
+      incDesPer = [];
+      pref.remove('graphValue');
+    }else{
+      List<String>? savedStrList = await pref.getStringList('graphValue');
+      incDesPer = savedStrList?.map((i) => int.parse(i)).toList() ?? [];
+    }
     randomNumberTotalPositive = storeValue.read('randomNumberValue');
+    print('Random Value $randomNumberTotalPositive');
     controllerForInner = PageController(
         initialPage: storeValue.read('level4or5innerPageViewId'));
 
@@ -152,7 +165,7 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
                               if (updateValue == 8) {
                                 updateValue = 0;
                                 storeValue.write('update', 0);
-                                calculationForProgress(() {
+                                calculationForProgress(onPressed: () {
                                   Get.back();
                                 });
                               }
@@ -385,62 +398,69 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
                                                       text2: 'Transport ',
                                                       text3: 'Lifestyle ',
                                                       text4: ' Total Bill ',
-                                                      onPressed: color ==
-                                                              AllColors.green
-                                                          ? () {}
-                                                          : () async {
-                                                              DocumentSnapshot
-                                                                  snap =
-                                                                  await firestore
-                                                                      .collection(
-                                                                          'User')
-                                                                      .doc(
-                                                                          userId)
-                                                                      .get();
-                                                              _setState(() {
-                                                                color =
-                                                                    AllColors
-                                                                        .green;
-                                                                balance = snap.get(
-                                                                    'account_balance');
-                                                                bill = snap.get(
-                                                                    'bill_payment');
-                                                                qualityOfLife =
-                                                                    snap.get(
-                                                                        'quality_of_life');
-                                                                balance =
-                                                                    balance -
-                                                                        bill!;
-                                                              });
-                                                              if (balance >=
-                                                                  0) {
-                                                                firestore
-                                                                    .collection(
-                                                                        'User')
-                                                                    .doc(userId)
-                                                                    .update({
-                                                                  'account_balance':
-                                                                      balance,
-                                                                  'game_score':
-                                                                      gameScore +
+                                                      onPressed:
+                                                          color ==
+                                                                  AllColors
+                                                                      .green
+                                                              ? () {}
+                                                              : () async {
+                                                                  DocumentSnapshot
+                                                                      snap =
+                                                                      await firestore
+                                                                          .collection(
+                                                                              'User')
+                                                                          .doc(
+                                                                              userId)
+                                                                          .get();
+                                                                  _setState(() {
+                                                                    color =
+                                                                        AllColors
+                                                                            .green;
+                                                                    balance =
+                                                                        snap.get(
+                                                                            'account_balance');
+                                                                    bill = snap.get(
+                                                                        'bill_payment');
+                                                                    qualityOfLife =
+                                                                        snap.get(
+                                                                            'quality_of_life');
+                                                                    balance =
+                                                                        balance -
+                                                                            bill!;
+                                                                  });
+                                                                  if (balance >=
+                                                                      0) {
+                                                                    firestore
+                                                                        .collection(
+                                                                            'User')
+                                                                        .doc(
+                                                                            userId)
+                                                                        .update({
+                                                                      'account_balance':
+                                                                          balance,
+                                                                      'game_score': gameScore +
                                                                           balance +
                                                                           qualityOfLife,
-                                                                  'quality_of_life':
-                                                                      FieldValue
-                                                                          .increment(
+                                                                      'quality_of_life':
+                                                                          FieldValue.increment(
                                                                               billPayment),
-                                                                }).then((value) {
-                                                                  controllerForInner.nextPage(
-                                                                      duration: Duration(
-                                                                          seconds:
-                                                                              1),
-                                                                      curve: Curves
-                                                                          .easeIn);
-                                                                });
-                                                              } else {
-                                                                _showDialogForRestartLevel();
-                                                              }
-                                                            },
+                                                                      'level_4_balance':
+                                                                          balance,
+                                                                      'level_4_qol':
+                                                                          FieldValue.increment(
+                                                                              billPayment),
+                                                                    }).then((value) {
+                                                                      controllerForInner.nextPage(
+                                                                          duration: Duration(
+                                                                              seconds:
+                                                                                  1),
+                                                                          curve:
+                                                                              Curves.easeIn);
+                                                                    });
+                                                                  } else {
+                                                                    _showDialogForRestartLevel();
+                                                                  }
+                                                                },
                                                     );
                                                   })
                                                 : StatefulBuilder(builder:
@@ -624,6 +644,8 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
                                                                   });
                                                                   if (balance >=
                                                                       0) {
+                                                                    print(
+                                                                        'BalanceMy1 $balance');
                                                                     firestore
                                                                         .collection(
                                                                             'User')
@@ -636,13 +658,22 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
                                                                       'mutual_fund':
                                                                           FieldValue.increment(
                                                                               fundAllocation[0]),
+                                                                      'level_4_investment':
+                                                                          FieldValue.increment(
+                                                                              fundAllocation[0]),
                                                                       'investment':
                                                                           FieldValue.increment(
-                                                                              fundAllocation[0])
+                                                                              fundAllocation[0]),
+                                                                      'level_4_balance':
+                                                                          balance,
+                                                                      'level_4_qol':
+                                                                          qualityOfLife,
                                                                     }).then((value) {
                                                                       balance =
                                                                           balance +
                                                                               2000;
+                                                                      print(
+                                                                          'BalanceMy $balance');
                                                                       firestore
                                                                           .collection(
                                                                               'User')
@@ -651,6 +682,8 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
                                                                           .update({
                                                                         'account_balance':
                                                                             FieldValue.increment(2000),
+                                                                        'level_4_balance':
+                                                                            balance,
                                                                         'game_score': gameScore +
                                                                             balance +
                                                                             qualityOfLife,
@@ -671,7 +704,7 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
                                                                               index + 1,
                                                                         }).then((value) => Future.delayed(
                                                                             Duration(seconds: 1),
-                                                                            () => calculationForProgress(() {
+                                                                            () => calculationForProgress(onPressed: () {
                                                                                   Get.back();
                                                                                   _levelCompleteSummary();
                                                                                 })));
@@ -736,10 +769,13 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
 
   _showDialogForRestartLevel() {
     restartLevelDialog(
-      () {
+      onPressed: () {
         firestore.collection('User').doc(userId).update({
           'previous_session_info': 'Level_4_setUp_page',
           'level_id': 0,
+          'level_4_investment': 0,
+          'level_4_balance': 0,
+          'level_4_qol': 0
         }).then((value) => Get.off(
               () => LevelFourSetUpPage(),
               duration: Duration(milliseconds: 500),
@@ -751,10 +787,13 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
 
   _showDialogOfMutualFund(StateSetter setStateWidget) async {
     Color color = Colors.white;
+    var prefs = await SharedPreferences.getInstance();
+
     DocumentSnapshot doc = await firestore.collection('User').doc(userId).get();
     int number = 0;
     investment = 0;
     randomNumberTotalPositive = storeValue.read('randomNumberValue');
+    print('Random Value $randomNumberTotalPositive');
     totalMutualFund = doc.get('mutual_fund');
     investment = doc.get('investment');
     if (totalMutualFund == 0) {
@@ -765,18 +804,24 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
           : rnd.nextInt(16);
       print('number ${number}');
       if (number <= 0) {
+        print('Enter Under');
         storeValue.write('randomNumberValue', randomNumberTotalPositive! + 1);
       }
     }
     setStateWidget(() {
       lastMonthIncDecPer = (investment * number) ~/ 100;
       lastMonthIncDecValue = investment + (lastMonthIncDecPer);
+      incDesPer.add(lastMonthIncDecValue);
+      List<String> stringsList=  incDesPer.map((i)=>i.toString()).toList();
+      prefs.setStringList("graphValue", stringsList);
+      print('IncDec $incDesPer');
     });
 
-    firestore
-        .collection('User')
-        .doc(userId)
-        .update({'investment': lastMonthIncDecValue});
+    firestore.collection('User').doc(userId).update({
+      'investment': lastMonthIncDecValue,
+    });
+
+
     //.update({'mutual_fund': lastMonthIncDecValue});
     return Get.generalDialog(
         barrierDismissible: false,
@@ -788,9 +833,12 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
             child: BackgroundWidget(
                 level: level,
                 document: document,
-                container: StatefulBuilder(
+                container:
+                    //Container()
+                    StatefulBuilder(
                   builder: (context, _setState) {
                     return MutualFundWidget(
+                      perf: prefs,
                       color: color,
                       lastMonthIncDecPer: lastMonthIncDecPer,
                       lastMonthIncDecValue: lastMonthIncDecValue,
@@ -800,6 +848,7 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
                       onPressed: color == AllColors.green
                           ? () {}
                           : () {
+
                               _setState(() {
                                 color = AllColors.green;
                               });
@@ -843,6 +892,8 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
         'want': category == 'Want'
             ? FieldValue.increment(priceOfOption)
             : FieldValue.increment(0),
+        'level_4_balance': FieldValue.increment(-priceOfOption),
+        'level_4_qol': FieldValue.increment(qol2),
       }).then((value) {
         controllerForInner.nextPage(
             duration: Duration(seconds: 1), curve: Curves.easeIn);
@@ -896,37 +947,47 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
     level = level.toString().substring(6, 7);
     int lev = int.parse(level);
     if (lev == 4 && value == true) {
-      firestore
-          .collection('User')
-          .doc(userId)
-          .update({'replay_level': false});
+      firestore.collection('User').doc(userId).update({'replay_level': false});
     }
     return popQuizDialog(
       onPlayPopQuizPressed: () async {
-        Future.delayed(Duration(seconds: 2), () {
-          FirebaseFirestore.instance.collection('User').doc(userId).update({
-            'previous_session_info': 'Level_4_Pop_Quiz',
-            'level_id': 0,
-            if (value != true) 'last_level': 'Level_4_Pop_Quiz',
+        Future.delayed(Duration(seconds: 1), () async {
+          inviteDialog().then((value) {
+            _whenLevelComplete(value: value, levelOrPopQuiz: 'Level_4_Pop_Quiz')
+                .then((value) => Get.offAll(PopQuiz()));
           });
-          //Fluttertoast.showToast(msg: 'ComingSoon');
-          Get.offAll(
-            () => PopQuiz(),
-            // duration: Duration(milliseconds: 500),
-            // transition: Transition.downToUp,
-          );
         });
       },
       onPlayNextLevelPressed: () async {
-        Future.delayed(Duration(seconds: 2), () async {
-          LocalNotifyManager.init();
-          await localNotifyManager.configureLocalTimeZone();
-          await localNotifyManager.flutterLocalNotificationsPlugin.cancel(4);
-          await localNotifyManager.flutterLocalNotificationsPlugin.cancel(10);
-          inviteDialog();
+        Future.delayed(Duration(seconds: 1), () async {
+          inviteDialog().then((value) {
+            _whenLevelComplete(value: value, levelOrPopQuiz: 'Coming_soon')
+                .then((value) => Get.offAll(ComingSoon()));
+          });
         });
       },
     );
+  }
+
+  Future _whenLevelComplete({bool? value, String? levelOrPopQuiz}) {
+    return firestore.collection('User').doc(userId).update({
+      'previous_session_info': levelOrPopQuiz,
+      'account_balance': 0,
+      'bill_payment': 0,
+      'level_id': 0,
+      'quality_of_life': 0,
+      'need': 0,
+      'want': 0,
+      'mutual_fund': 0,
+      'home_loan': 0,
+      'transport_loan': 0,
+      'investment': 0,
+      if (value != true) 'last_level': levelOrPopQuiz,
+    });
+    // LocalNotifyManager.init();
+    // await localNotifyManager.configureLocalTimeZone();
+    // await localNotifyManager.flutterLocalNotificationsPlugin.cancel(4);
+    // await localNotifyManager.flutterLocalNotificationsPlugin.cancel(10);
   }
 
   summary(DocumentSnapshot<Object?> documentSnapshot) {
@@ -961,26 +1022,37 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               (accountBalance + netWorth) >= 30000
-                  ? normalText(AllStrings.level4SummaryTitleWhenComplete)
-                  : normalText(AllStrings.level4SummaryTitleWhenLose),
-              richText(AllStrings.salaryEarned, '\$' + 60000.toString(), 2.h),
+                  ? normalText(text: AllStrings.level4SummaryTitleWhenComplete)
+                  : normalText(text: AllStrings.level4SummaryTitleWhenLose),
               richText(
-                  AllStrings.totalMfInvestment, mutualFund.toString(), 1.h),
+                  text1: AllStrings.salaryEarned,
+                  text2: AllStrings.countrySymbol + 60000.toString(),
+                  paddingTop: 2.h),
+              richText(
+                  text1: AllStrings.totalMfInvestment,
+                  text2: mutualFund.toString(),
+                  paddingTop: 1.h),
               // (((netWorth - mutualFund) / mutualFund) * 100 == null)
               netWorth == 0 && mutualFund == 0
-                  ? richText(AllStrings.returnOnInvestment, 0.toString(), 1.h)
+                  ? richText(
+                      text1: AllStrings.returnOnInvestment,
+                      text2: 0.toString(),
+                      paddingTop: 1.h)
                   : richText(
-                      AllStrings.returnOnInvestment,
-                      '${(((netWorth - mutualFund) / mutualFund) * 100).floor()}' +
-                          '%',
-                      1.h),
-              richText(AllStrings.moneySaved,
-                  '${((accountBalance / 60000) * 100).floor()}' + '%', 1.h),
+                      text1: AllStrings.returnOnInvestment,
+                      text2:
+                          '${(((netWorth - mutualFund) / mutualFund) * 100).floor()}' +
+                              '%',
+                      paddingTop: 1.h),
+              richText(
+                  text1: AllStrings.moneySaved,
+                  text2: '${((accountBalance / 60000) * 100).floor()}' + '%',
+                  paddingTop: 1.h),
               (accountBalance + netWorth) >= 30000
                   ? buttonStyle(
-                      color,
-                      AllStrings.playNextLevel,
-                      color == AllColors.green
+                      color: color,
+                      text: AllStrings.playNextLevel,
+                      onPressed: color == AllColors.green
                           ? () {}
                           : () async {
                               bool? value;
@@ -996,7 +1068,7 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
                                   Duration(milliseconds: 500),
                                   () => Get.offAll(() => RateUs(
                                       onSubmit: () => _playLevelOrPopQuiz()
-                                       // {
+                                      // {
                                       //   firestore
                                       //       .collection('Feedback')
                                       //       .doc()
@@ -1013,9 +1085,9 @@ class _AllQueLevelFourState extends State<AllQueLevelFour> {
                             },
                     )
                   : buttonStyle(
-                      color,
-                      AllStrings.tryAgain,
-                      () {
+                      color: color,
+                      text: AllStrings.tryAgain,
+                      onPressed: () {
                         _setState(() {
                           color = AllColors.green;
                         });

@@ -6,6 +6,7 @@ class AllColors{
   static Color white24 = Color(0xffffffe6);
   static Color lightGreen = Color(0xff28D38B);
   static Color green = Color(0xff00C673);
+
   static Color lightPurple = Color(0xffC3A7FF);
   static Color purple = Color(0xff6448E8);
   static Color darkPurple = Color(0xff6646E6);
@@ -75,4 +76,11 @@ class AllColors{
   static Color progressColor = Color(0xff8672E8);
   static Color progressColorTitle = Color(0xffF6D378);
 
+  //credit score
+  static Color creditScore350to450 = Color(0xffFF0000);
+  static Color creditScore450to550 = Color(0xffFF7800);
+  static Color creditScore550to650 = Color(0xffFFA500);
+  static Color creditScore650to750 = Color(0xffFEEE00);
+  static Color creditScore750to850 = Color(0xffCFDA00);
+  static Color creditScore850to950 = Color(0xff3ECF00);
 }

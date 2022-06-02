@@ -75,7 +75,7 @@ class LevelSummaryForLevel1And2 extends StatelessWidget {
                 SizedBox(
                   height: 1.h,
                 ),
-                if(text1 != '')richText(text1.toString(), text2.toString(),paddingTop),
+                if(text1 != '')richText(text1: text1.toString(),text2:  text2.toString(),paddingTop: paddingTop),
 
                 Container(
                   height: 31.h,

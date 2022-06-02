@@ -1239,11 +1239,14 @@ class _LoginPageState extends State<LoginPage> with WidgetsBindingObserver {
     });
   }
 
-  Future<String> getCountry() async{
+  Future<String> getCountry() async {
     Network n = new Network("http://ip-api.com/json");
     String locationSTR = (await n.getData());
     locationx = jsonDecode(locationSTR);
-    print('cpuntry ${ locationx["country"]}');
+    country = locationx["country"];
+    print('cpuntry ${locationx["country"]}');
+    print('cpuntry ${locationx["zip"]}');
+    print('cpuntry ${locationx["city"]}');
     return locationx["country"];
   }
 
@@ -1319,8 +1322,8 @@ class _LoginPageState extends State<LoginPage> with WidgetsBindingObserver {
     super.initState();
     //listenDynamicLinks();
     getCountry();
-    localNotifyManager.setOnNotificationReceive(onNotificationReceive);
-    localNotifyManager.setNotificationClick(onNotificationClick);
+    // localNotifyManager.setOnNotificationReceive(onNotificationReceive);
+    // localNotifyManager.setNotificationClick(onNotificationClick);
     Future.delayed(Duration.zero, () {
       this.firebaseCloudMessagingListeners(context);
     });
@@ -1753,7 +1756,10 @@ class _LoginPageState extends State<LoginPage> with WidgetsBindingObserver {
             'level_3_creditScore': 0,
             'user_name': '',
             'device_token': getToken,
-            'country_code': locationx["country"],
+            'pop_quiz_point_changed': 0,
+            'country': locationx["country"],
+            'zip': locationx["zip"],
+            'city': locationx["city"],
           })
           .then((value) => {
                 print('Add'),
@@ -1768,14 +1774,14 @@ class _LoginPageState extends State<LoginPage> with WidgetsBindingObserver {
 
       Get.back();
 
-      await localNotifyManager.configureLocalTimeZone();
-      print('Called1');
-      await localNotifyManager
-          .scheduleNotificationForLevelOneSaturdayElevenAm();
-      print('Called2');
-      await localNotifyManager
-          .scheduleNotificationForLevelTwoWednesdaySevenPm();
-      print('Called3');
+      // await localNotifyManager.configureLocalTimeZone();
+      // print('Called1');
+      // await localNotifyManager
+      //     .scheduleNotificationForLevelOneSaturdayElevenAm();
+      // print('Called2');
+      // await localNotifyManager
+      //     .scheduleNotificationForLevelTwoWednesdaySevenPm();
+      // print('Called3');
 
       // await localNotifyManager.repeatNotificationLevel1();
 

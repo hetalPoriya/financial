@@ -16,8 +16,12 @@ import 'package:numeral/numeral.dart';
 import 'dart:math' as math;
 
 //button style for restart level or (creditbalance or debitbalance not enough) ok button
-Widget restartOrOkButton(String text, VoidCallback onPressed,
-        {Alignment? alignment, Color? textColor, Color? buttonColor}) =>
+Widget restartOrOkButton(
+        {String? text,
+        VoidCallback? onPressed,
+        Alignment? alignment,
+        Color? textColor,
+        Color? buttonColor}) =>
     Padding(
       padding: EdgeInsets.all(6.0),
       child: Align(
@@ -31,7 +35,7 @@ Widget restartOrOkButton(String text, VoidCallback onPressed,
                     borderRadius: BorderRadius.circular(4.w)))),
             child: Padding(
               padding: EdgeInsets.all(1.w),
-              child: Text(text,
+              child: Text(text.toString(),
                   style: AllTextStyles.dialogStyleSmall(
                       color: textColor ?? AllColors.darkPurple,
                       fontWeight: FontWeight.normal)),
@@ -47,26 +51,29 @@ allLevelBillPaymentText(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Expanded(
-          child: Container(
-            alignment: Alignment.center,
-            height: 4.h,
-            width: 6.w,
-            //color: AllColors.red,
-            child: image != null
-                ? Image.asset(
-                    image.toString(),
-                    fit: BoxFit.contain,
-                  )
-                : Text(
-                    text.toString(),
-                    style: AllTextStyles.dialogStyleLarge(size: 20.sp),
-                  ),
-            // child: Image.asset(
-            //   image.toString(),
-            //   fit: BoxFit.contain,
-            //   height: 4.h,
-            //   width: 6.w,
-            // ),
+          child: Padding(
+            padding: EdgeInsets.only(right: 1.w),
+            child: Container(
+              alignment: Alignment.centerRight,
+              height: 4.h,
+              width: 6.w,
+              //color: AllColors.red,
+              child: image != null
+                  ? Image.asset(
+                      image.toString(),
+                      fit: BoxFit.contain,
+                    )
+                  : Text(
+                      text.toString(),
+                      style: AllTextStyles.dialogStyleLarge(size: 20.sp),
+                    ),
+              // child: Image.asset(
+              //   image.toString(),
+              //   fit: BoxFit.contain,
+              //   height: 4.h,
+              //   width: 6.w,
+              // ),
+            ),
           ),
           flex: 1,
         ),
@@ -79,7 +86,7 @@ allLevelBillPaymentText(
               style: AllTextStyles.dialogStyleLarge(size: 16.sp),
             ),
           ),
-          flex: 2,
+          flex: 3,
         ),
         Expanded(
           child: Container(
@@ -100,70 +107,102 @@ allLevelBillPaymentText(
   );
 }
 
-Future<void> getUser(int levelId) async {
+Future<void> getUser({int? levelId}) async {
+
   int countForUser = 0;
-
-  int accountBalanceForUser = 0;
-  int totalBalanceForUser = 0;
-
-  int creditScoreForUser = 0;
-  int totalCreditForUser = 0;
-
-  int qolForUser = 0;
-  int totalQolForUser = 0;
-
-  int investmentForUser = 0;
-  int totalInvestmentForUser = 0;
+  num totalBalanceForUser = 0;
+  num totalCreditForUser = 0;
+  num totalQolForUser = 0;
+  num totalInvestmentForUser = 0;
 
   String level = '';
   var storeValue = GetStorage();
   var userId;
 
   userId = storeValue.read('uId');
-  QuerySnapshot snap = await firestore.collection('User').get();
-  DocumentSnapshot documentSnapshot;
-
-  documentSnapshot = await firestore.collection('User').doc(userId).get();
+  DocumentSnapshot documentSnapshot = await firestore.collection('User').doc(userId).get();
   level = documentSnapshot.get('previous_session_info');
+  level = level.substring(0, 7);
 
-  snap.docs.forEach((document) async {
-    documentSnapshot =
-        await firestore.collection('User').doc(document.id).get();
-    //levelForUser = documentSnapshot.get('previous_session_info');
-    if ((documentSnapshot.data() as Map<String, dynamic>)
-        .containsKey("level_1_balance")) {
-      if (documentSnapshot.get('level_$levelId\_balance') != 0 &&
-          document.id != userId) {
-        countForUser = countForUser + 1;
-        accountBalanceForUser = documentSnapshot.get('level_$levelId\_balance');
-        qolForUser = documentSnapshot.get('level_$levelId\_qol');
+  // snap.docs.forEach((document) async {
+  //   documentSnapshot =
+  //       await firestore.collection('User').doc(document.id).get();
+  //   //levelForUser = documentSnapshot.get('previous_session_info');
+  //   if ((documentSnapshot.data() as Map<String, dynamic>)
+  //       .containsKey("level_1_balance")) {
+  //     if (documentSnapshot.get('level_$levelId\_balance') != 0 &&
+  //         document.id != userId) {
+  //       countForUser = countForUser + 1;
+  //       accountBalanceForUser = documentSnapshot.get('level_$levelId\_balance');
+  //       qolForUser = documentSnapshot.get('level_$levelId\_qol');
+  //
+  //       totalBalanceForUser = totalBalanceForUser + accountBalanceForUser;
+  //       totalQolForUser = totalQolForUser + qolForUser;
+  //
+  //       if (level == 'Level_3') {
+  //         creditScoreForUser =
+  //             documentSnapshot.get('level_$levelId\_creditScore');
+  //         totalCreditForUser = totalCreditForUser + creditScoreForUser;
+  //       }
+  //
+  //       if (level == 'Level_4' || level == 'Level_5') {
+  //         investmentForUser =
+  //             documentSnapshot.get('level_$levelId\_investment');
+  //         totalInvestmentForUser = totalInvestmentForUser + investmentForUser;
+  //       }
+  //     }
+  //
+  //     storeValue.write('tBalance', totalBalanceForUser);
+  //     storeValue.write('tQol', totalQolForUser);
+  //     storeValue.write('tInvestment', totalInvestmentForUser);
+  //     storeValue.write('tCredit', totalCreditForUser);
+  //     storeValue.write('tUser', countForUser);
+  //
+  //     print('TOtal Balance $totalQolForUser');
+  //     print('abc $countForUser');
+  //     //print('sum=$sum');
+  //   }
+  // });
 
-        totalBalanceForUser = totalBalanceForUser + accountBalanceForUser;
-        totalQolForUser = totalQolForUser + qolForUser;
+  firestore.collection("User").get().then((querySnapshot) {
+    querySnapshot.docs.forEach((result) {
+      if (result.data().containsKey('level_1_balance')) {
+        if (result.id != userId &&
+            result.data()['level_$levelId\_balance'] != 0) {
+          // print('ysss');
+          countForUser = countForUser + 1;
 
-        if (level == 'Level_3') {
-          creditScoreForUser =
-              documentSnapshot.get('level_$levelId\_creditScore');
-          totalCreditForUser = totalCreditForUser + creditScoreForUser;
+          totalBalanceForUser += result.data()['level_$levelId\_balance'];
+          totalQolForUser += result.data()['level_$levelId\_qol'];
+          // print('UserBalance $totalBalanceForUser');
+          // print('UserQol $totalQolForUser');
+          // print('UserCount $countForUser');
+
+          if (level == 'Level_3') {
+            totalCreditForUser += result.data()['level_3_creditScore'];
+            // print('UserScore $totalCreditForUser');
+          }
+          if (level == 'Level_4') {
+            totalInvestmentForUser +=
+                result.data()['level_$levelId\_investment'];
+            // print('UserInvest $totalInvestmentForUser');
+          }
         }
-
-        if (level == 'Level_4' || level == 'Level_5') {
-          investmentForUser =
-              documentSnapshot.get('level_$levelId\_investment');
-          totalInvestmentForUser = totalInvestmentForUser + investmentForUser;
-        }
+      } else {
+        // print('NO');
       }
 
       storeValue.write('tBalance', totalBalanceForUser);
       storeValue.write('tQol', totalQolForUser);
-      storeValue.write('tInvestment', totalInvestmentForUser);
-      storeValue.write('tCredit', totalCreditForUser);
+      if (level == 'Level_4' || level == 'Level_5')
+        storeValue.write('tInvestment', totalInvestmentForUser);
+      if (level == 'Level_3') storeValue.write('tCredit', totalCreditForUser);
       storeValue.write('tUser', countForUser);
-    }
+    });
   });
 }
 
-calculationForProgress(VoidCallback onPressed) async {
+calculationForProgress({VoidCallback? onPressed}) async {
   int abPer = 0;
   int qolPer = 0;
   int creditPer = 0;
@@ -192,13 +231,11 @@ calculationForProgress(VoidCallback onPressed) async {
   investment = documentSnapshot.get('investment');
 
   totalBalanceForUser = (totalBalanceForUser / countForUser).round();
-
   totalQolForUser = (totalQolForUser / countForUser).round();
   totalCreditForUser = (totalCreditForUser / countForUser).round();
   totalInvestmentForUser = (totalInvestmentForUser / countForUser).round();
 
   abPer = accountBalance - totalBalanceForUser;
-
   totalBalanceForUser == 0
       ? abPer = 0
       : abPer = ((abPer / totalBalanceForUser) * 100).floor();
@@ -222,7 +259,13 @@ calculationForProgress(VoidCallback onPressed) async {
             ((investmentper / totalInvestmentForUser) * 100).floor();
   }
 
-  savingAndQolDialog(abPer, qolPer, creditPer, investmentper, level, onPressed);
+  savingAndQolDialog(
+      abPer: abPer,
+      qolPer: qolPer,
+      creditPer: creditPer,
+      investmentPer: investmentper,
+      levelForUser: level,
+      onPressed: onPressed!);
 }
 
 savingDialogText(
@@ -287,10 +330,15 @@ savingDialogText(
       ),
     );
 
-savingAndQolDialog(int abPer, int qolPer, int creditPer, int investmentPer,
-    String levelForUser, VoidCallback onPressed) {
-  String level = levelForUser.substring(6, 7);
-  int lev = int.parse(level);
+savingAndQolDialog(
+    {int? abPer,
+    int? qolPer,
+    int? creditPer,
+    int? investmentPer,
+    String? levelForUser,
+    VoidCallback? onPressed}) {
+  String? level = levelForUser?.substring(6, 7);
+  int lev = int.parse(level.toString());
 
   Get.defaultDialog(
     title: 'Level Progress',
@@ -320,7 +368,7 @@ savingAndQolDialog(int abPer, int qolPer, int creditPer, int investmentPer,
             levelForUser == 'Level_3' ||
             levelForUser == 'Level_4' ||
             levelForUser == 'Level_5')
-          abPer > 0
+          abPer! > 0
               ? savingDialogText(
                   text1: AllStrings.savingsAre,
                   text2: '${abPer.abs()}% higher ',
@@ -350,7 +398,7 @@ savingAndQolDialog(int abPer, int qolPer, int creditPer, int investmentPer,
             levelForUser == 'Level_3' ||
             levelForUser == 'Level_4' ||
             levelForUser == 'Level_5')
-          qolPer > 0
+          qolPer! > 0
               ? savingDialogText(
                   text1: AllStrings.lifestyleIs,
                   text2: '${qolPer.abs()}% higher ',
@@ -376,7 +424,7 @@ savingAndQolDialog(int abPer, int qolPer, int creditPer, int investmentPer,
                         )
                       : null,
         if (levelForUser == 'Level_3')
-          creditPer > 0
+          creditPer! > 0
               ? savingDialogText(
                   text1: AllStrings.creditScoreIs,
                   text2: '${creditPer.abs()}% higher ',
@@ -402,7 +450,7 @@ savingAndQolDialog(int abPer, int qolPer, int creditPer, int investmentPer,
                         )
                       : null,
         if (levelForUser == 'Level_4' || levelForUser == 'Level_5')
-          investmentPer > 0
+          investmentPer! > 0
               ? savingDialogText(
                   text1: AllStrings.investmentIs,
                   text2: '${investmentPer.abs()}% higher ',
@@ -438,7 +486,9 @@ savingAndQolDialog(int abPer, int qolPer, int creditPer, int investmentPer,
       ],
     ),
     contentPadding: EdgeInsets.all(3.w),
-    confirm: restartOrOkButton('Keep Going', onPressed,
+    confirm: restartOrOkButton(
+        text: 'Keep Going',
+        onPressed: onPressed,
         alignment: Alignment.center,
         buttonColor: AllColors.progressColor,
         textColor: Colors.white),
@@ -502,7 +552,7 @@ showDialogToShowIncreaseRent() {
                   AllTextStyles.dialogStyleMedium(fontWeight: FontWeight.w500),
               children: [
                 TextSpan(
-                  text: '\$' + rentPrice.toString(),
+                  text: AllStrings.countrySymbol + rentPrice.toString(),
                   style: AllTextStyles.dialogStyleMedium(
                     fontWeight: FontWeight.w500,
                     color: AllColors.darkYellow,
@@ -519,7 +569,7 @@ showDialogToShowIncreaseRent() {
                   AllTextStyles.dialogStyleMedium(fontWeight: FontWeight.w500),
               children: [
                 TextSpan(
-                  text: '\$' + transportPrice.toString(),
+                  text: AllStrings.countrySymbol + transportPrice.toString(),
                   style: AllTextStyles.dialogStyleMedium(
                     fontWeight: FontWeight.w500,
                     color: AllColors.darkYellow,
@@ -536,7 +586,7 @@ showDialogToShowIncreaseRent() {
                   AllTextStyles.dialogStyleMedium(fontWeight: FontWeight.w500),
               children: [
                 TextSpan(
-                  text: '\$' + lifestylePrice.toString(),
+                  text: AllStrings.countrySymbol + lifestylePrice.toString(),
                   style: AllTextStyles.dialogStyleMedium(
                     fontWeight: FontWeight.w500,
                     color: AllColors.darkYellow,
@@ -547,8 +597,8 @@ showDialogToShowIncreaseRent() {
       ],
     ),
     confirm: restartOrOkButton(
-      'Ok',
-      () {
+      text: 'Ok',
+      onPressed: () {
         Get.back();
       },
     ),
@@ -616,7 +666,14 @@ popQuizDialog({
   );
 }
 
-inviteDialog() async {
+getCountryName(AsyncSnapshot snapshot){
+  return  snapshot.data!.data().toString().contains('country')
+      ? snapshot.data!['country'] == 'India'
+      ? '\u{20B9}' : snapshot.data!['country'] == 'Europe'? '\€'
+      : '\$'
+      : '\$';
+}
+Future inviteDialog() async {
   var userId = GetStorage().read('uId');
   DocumentSnapshot snap = await firestore.collection('User').doc(userId).get();
   bool value = snap.get('replay_level');
@@ -659,6 +716,8 @@ inviteDialog() async {
                       .update({
                     if (value != true) 'last_level': 'Level_4',
                     'previous_session_info': 'Coming_soon',
+                    'level_id': 0,
+                    'account_balance': 0,
                   });
 
                   Get.offAll(
@@ -696,6 +755,8 @@ inviteDialog() async {
             FirebaseFirestore.instance.collection('User').doc(userId).update({
               if (value != true) 'last_level': 'Level_4',
               'previous_session_info': 'Coming_soon',
+              'level_id': 0,
+              'account_balance': 0,
             });
             Get.offAll(
               () => ComingSoon(),
@@ -711,7 +772,7 @@ inviteDialog() async {
   );
 }
 
-restartLevelDialog(VoidCallback onPressed) {
+restartLevelDialog({VoidCallback? onPressed}) {
   return Get.defaultDialog(
     title: '',
     titlePadding: EdgeInsets.zero,
@@ -722,15 +783,20 @@ restartLevelDialog(VoidCallback onPressed) {
     },
     backgroundColor: AllColors.darkPurple,
     middleTextStyle: AllTextStyles.dialogStyleMedium(),
-    confirm: restartOrOkButton('Restart level', onPressed),
+    confirm: restartOrOkButton(text: 'Restart level', onPressed: onPressed),
   );
 }
 
-richText(String text1, String text2, double paddingTop,
-        [double? paddingLeft, double? paddingRight, TextAlign? textAlign]) =>
+richText(
+        {String? text1,
+        String? text2,
+        double? paddingTop,
+        double? paddingLeft,
+        double? paddingRight,
+        TextAlign? textAlign}) =>
     Padding(
       padding: EdgeInsets.only(
-          top: paddingTop,
+          top: paddingTop ?? 0,
           left: paddingLeft == null ? 0.0 : paddingLeft,
           right: paddingRight == null ? 0.0 : paddingRight),
       child: Center(
@@ -753,10 +819,10 @@ richText(String text1, String text2, double paddingTop,
       ),
     );
 
-normalText(String text, [double? fontSize, FontWeight? fontWeight]) => Padding(
+normalText({String? text, double? fontSize, FontWeight? fontWeight}) => Padding(
       padding: EdgeInsets.only(top: 3.h, left: 3.w, right: 3.w),
       child: Text(
-        text,
+        text.toString(),
         style: AllTextStyles.dialogStyleMedium(
           size: fontSize == null ? 16.sp : fontSize.toDouble(),
           fontWeight: fontWeight == null ? FontWeight.w500 : fontWeight,
@@ -766,10 +832,14 @@ normalText(String text, [double? fontSize, FontWeight? fontWeight]) => Padding(
       ),
     );
 
-buttonStyle(Color color, String text, VoidCallback onPressed,
-        [TextAlign? textAlign, double? left]) =>
+buttonStyle(
+        {Color? color,
+        String? text,
+        VoidCallback? onPressed,
+        TextAlign? textAlign,
+        double? left,double? topPadding}) =>
     Padding(
-        padding: EdgeInsets.only(top: 4.h),
+        padding: EdgeInsets.only(top: topPadding ?? 4.h),
         child: Container(
           alignment: Alignment.centerLeft,
           width: 62.w,
@@ -783,7 +853,7 @@ buttonStyle(Color color, String text, VoidCallback onPressed,
                 child: Center(
                   child: FittedBox(
                     child: Text(
-                      text,
+                      text.toString(),
                       style: AllTextStyles.dialogStyleLarge(
                         color: color == AllColors.green
                             ? Colors.white

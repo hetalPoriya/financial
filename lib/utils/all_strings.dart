@@ -1,9 +1,18 @@
+import 'package:financial/shareable_screens/globle_variable.dart';
+
 class AllStrings {
+
+  static String countrySymbol =   country == 'India'
+      ? '\u{20B9}' : country == 'Europe'? '\€'
+      : '\$';
+
+
   //level1 SetupPage
   static String levelOneText1 = ' Do you think you are smart with your money?';
   static String levelOneText2 = 'Let\'s test you';
   static String levelOneText3 =
-      'It\’s your birthday week and you\’ve won a gift card worth \$200!';
+      'It\’s your birthday week and you\’ve won a gift card worth ${countrySymbol}200!';
+
   //   'It\'s your birthday week and your generous Aunt has gifted you \$200!';
   static String levelOneText4 = 'Let\'s see how smartly you spend it.';
 
@@ -18,7 +27,7 @@ class AllStrings {
 
   //level3 SetupPage
   static String levelThreeText1 =
-      'You\’ve just been given your first credit card. It has a credit limit of \$2000.';
+      'You\’ve just been given your first credit card. It has a credit limit of ${countrySymbol}2000.';
   static String levelThreeText2 =
       'A high Credit Score shows you can be trusted to pay back the money you owe. A good score helps you get home and other loans cheaper!';
   static String levelThreeText3 =
@@ -26,11 +35,11 @@ class AllStrings {
 
   //level4 SetupPage
   static String levelFourText1 =
-      'You\'ve just been promoted at your job and you\'ll now be earning \$2000 a month. ';
+      'You\'ve just been promoted at your job and you\'ll now be earning ${countrySymbol}2000 a month. ';
   static String levelFourText2 =
       'Your goal in this level is to grow your savings by investing in Mutual Funds and Fixed Deposits. ';
   static String levelFourText3 =
-      'Your target is to get at least \$30k in your account so that you can use it as down payment to buy a new house!';
+      'Your target is to get at least ${countrySymbol}30k in your account so that you can use it as down payment to buy a new house!';
 
   static String tapBack = 'Tap back to exit';
   static String optionAlreadySelected = 'Sorry, you already selected option';
@@ -44,7 +53,7 @@ class AllStrings {
   static String dialogForResLev1Text1 =
       'Oops! You’ve run out of money\!. \n You seem to have fallen prey to mental accounting. Mental accounting is when we value the same amount of money differently because of certain mental associations.';
   static String dialogForResLev1Text2 =
-      'For example, when we receive a \$200 gift, we are more prone to spend it on '
+      'For example, when we receive a ${countrySymbol}200 gift, we are more prone to spend it on '
       'discretionary wants, because in our mind, that money is \'free money\'. '
       'We might be more careful with spending the same amount, had we earned it.';
 
@@ -93,22 +102,28 @@ class AllStrings {
   //bill payment
   static String billsDue = 'BILLS DUE!';
   static String level4And5TitleTextForBill = 'Your expenses this month.';
+
   //static String normalBillTitleText = 'Your monthly bills have been generated.';
   static String normalBillTitleText = 'Monthly bills generated.';
   static String outstandingAmount = 'Outstanding Amount: ';
-  static String billInflation= 'Due to inflation, rent, transport and other prices have gone up by 10%. Your revised monthly expenses will now be:';
+  static String billInflation =
+      'Due to inflation, rent, transport and other prices have gone up by 10%. Your revised monthly expenses will now be:';
 
   //salary
   static String salaryTitle = 'Salary Credited';
   static String salaryBody =
-      'Monthly salary of \$1000 has been credited to your account.';
+      'Monthly salary of ${countrySymbol}1000 has been credited to your account.';
 
   //mutual fund
   static String mutualFund = 'Mutual Fund';
   static String mutualFundDecreaseText =
-      'Due to a fall in stock markets your Mutual Fund value has decreased by ';
+      'Your investments are down by ';
   static String mutualFundIncreaseText =
-      'Stock markets are going up! Your Mutual Fund has increased by ';
+      'Your investments are up by ';
+  // static String mutualFundDecreaseText =
+  //     'Due to a fall in stock markets your Mutual Fund value has decreased by ';
+  // static String mutualFundIncreaseText =
+  //     'Stock markets are going up! Your Mutual Fund has increased by ';
 
   //level progress
   static String levelProgressTitle =
@@ -140,16 +155,16 @@ class AllStrings {
   static String moneySaved = 'Money Saved : ';
   static String tryAgain = 'Try Again';
   static String level5SummaryTitleWhenComplete =
-      "Congratulations you\'ve managed to save up \$30K! You now have enough savings to pay the down payment for a house or car. Go to the next level to make your first big purchase!";
+      "Congratulations you\'ve managed to save up ${countrySymbol}30K! You now have enough savings to pay the down payment for a house or car. Go to the next level to make your first big purchase!";
   static String level5SummaryTitleWhenLose =
-      "Oops! Unfortunately you haven\'t managed to achieve your goal of \$30k."
+      "Oops! Unfortunately you haven\'t managed to achieve your goal of ${countrySymbol}30k."
       "Purchasing a house or car needs you to pay an upfront booking amount. But don\'t lose hope. You can try again!";
 
   //level 4 summary text
   static String level4SummaryTitleWhenComplete =
-      "Congratulations you\'ve managed to save up \$30K! You now have enough savings to pay the down payment for a house or car. Go to the next level to make your first big purchase!";
+      "Congratulations you\'ve managed to save up ${countrySymbol}30K! You now have enough savings to pay the down payment for a house or car. Go to the next level to make your first big purchase!";
   static String level4SummaryTitleWhenLose =
-      "Oops! Unfortunately you haven\'t managed to achieve your goal of \$30k."
+      "Oops! Unfortunately you haven\'t managed to achieve your goal of ${countrySymbol}30k."
       "Purchasing a house or car needs you to pay an upfront booking amount. But don\'t lose hope. You can try again!";
 
   //level 3
@@ -199,7 +214,8 @@ class AllStrings {
   static String level1 = 'Honey Pot';
   static String level1Dec =
       'Be smart with your money. Learn to differentiate between Needs and Wants.';
-  static String level1Goal = 'Goal : Don’t run out of your \$200 budget.';
+  static String level1Goal = 'Goal : Don’t run out of your ${countrySymbol}200 budget.';
+
 
   static String level2 = 'Smart Savers';
   static String level2Dec =
@@ -214,7 +230,7 @@ class AllStrings {
   static String level4 = 'Building Up';
   static String level4Dec =
       'Fight off inflation. Learn to navigate the volatities of the stock market. ';
-  static String level4Goal = 'Goal : Achieve \$30k in savings and investments.';
+  static String level4Goal = 'Goal : Achieve ${countrySymbol}30k in savings and investments.';
 
   static String level5 = 'EMI Mania';
   static String level5Dec =
@@ -251,4 +267,11 @@ class AllStrings {
       'Send us your feedback. Or request a new feature. ';
   static String share = 'Share';
   static String shareDes = 'Invite your friends and share us on social media.';
+
+  //credit summary
+  static String creditSumTitle = '  Credit Profile';
+  static String creditSumDes =
+      'Your credit card usage is high. Your credit score has fallen to poor category.';
+
+
 }

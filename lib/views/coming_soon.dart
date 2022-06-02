@@ -121,10 +121,10 @@ class ComingSoon extends StatelessWidget {
                     //             .add(Duration(days: 365))
                     //             .millisecondsSinceEpoch),
                     //     lp);
-                    firestore
-                        .collection('User')
-                        .doc(userId)
-                        .update({'replay_level': true});
+                    // firestore
+                    //     .collection('User')
+                    //     .doc(userId)
+                    //     .update({'replay_level': true});
                     Future.delayed(
                         Duration(seconds: 1),
                         () => Get.to(

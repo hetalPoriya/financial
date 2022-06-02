@@ -1,36 +1,41 @@
 // @dart=2.9
+
+
 import 'package:country_code_picker/country_localizations.dart';
+import 'package:devicelocale/devicelocale.dart';
 import 'package:financial/helper/route_helper.dart';
 import 'package:financial/network/network_binding.dart';
 import 'package:financial/views/local_notify_manager.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:new_version/new_version.dart';
 import 'package:sizer/sizer.dart';
+import 'dart:io' show Platform;
+
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   FlutterBranchSdk.validateSDKIntegration();
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
-  const AndroidInitializationSettings initializationSettingsAndroid =
-      AndroidInitializationSettings('@mipmap/ic_launcher');
-  final InitializationSettings initializationSettings = InitializationSettings(
-    android: initializationSettingsAndroid,
-  );
-  await flutterLocalNotificationsPlugin.initialize(
-    initializationSettings,
-  );
-  await localNotifyManager.configureLocalTimeZone();
+  // FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  //     FlutterLocalNotificationsPlugin();
+  // const AndroidInitializationSettings initializationSettingsAndroid =
+  //     AndroidInitializationSettings('@mipmap/ic_launcher');
+  // final InitializationSettings initializationSettings = InitializationSettings(
+  //   android: initializationSettingsAndroid,
+  // );
+  // await flutterLocalNotificationsPlugin.initialize(
+  //   initializationSettings,
+  // );
+  // await localNotifyManager.configureLocalTimeZone();
   await Firebase.initializeApp();
-
   await GetStorage.init();
-
   // runApp(
   //   DevicePreview(
   //     enabled: !kReleaseMode,
@@ -48,15 +53,23 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   @override
-  void initState() {
+  void initState()  {
     super.initState();
-    _checkVersion();
+    _checkVersion(context);
   }
 
-  _checkVersion() {
-    final newVersion = NewVersion(androidId: 'com.finshark');
-    newVersion.showAlertIfNecessary(context: context);
+  _checkVersion(BuildContext context) async {
+    try{
+      print('CalledVersion');
+      NewVersion(
+       // iOSId: 'com.version check.iOS',//dummy IOS bundle ID
+        androidId: 'com.finshark',//dummy android ID
+      ).showAlertIfNecessary(context: context);
+    }catch(e){
+      debugPrint("error=====>${e.toString()}");
+    }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +78,10 @@ class _MyAppState extends State<MyApp> {
       DeviceOrientation.portraitDown,
     ]);
     return Sizer(builder: (context, orientation, deviceType) {
+      print('lcoalll ${ Get.deviceLocale}');
+
       return GetMaterialApp(
+        locale: Get.deviceLocale,
         // supportedLocales: [
         //   Locale("af"),
         //   Locale("am"),

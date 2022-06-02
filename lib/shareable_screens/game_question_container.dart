@@ -1,6 +1,7 @@
 import 'package:financial/shareable_screens/comman_functions.dart';
 import 'package:financial/utils/all_colors.dart';
 import 'package:flutter/material.dart';
+import 'globle_variable.dart';
 import 'package:sizer/sizer.dart';
 
 class GameQuestionContainer extends StatelessWidget {
@@ -18,17 +19,17 @@ class GameQuestionContainer extends StatelessWidget {
 
   const GameQuestionContainer(
       {Key? key,
-        required this.onPressed1,
-        required this.onPressed2,
-        required this.option1,
-        required this.description,
-        required this.option2,
-        required this.textStyle1,
-        required this.color1,
-        required this.color2,
-        required this.textStyle2,
-        this.document,
-        required this.level})
+      required this.onPressed1,
+      required this.onPressed2,
+      required this.option1,
+      required this.description,
+      required this.option2,
+      required this.textStyle1,
+      required this.color1,
+      required this.color2,
+      required this.textStyle2,
+      this.document,
+      required this.level})
       : super(key: key);
 
   @override
@@ -52,7 +53,7 @@ class GameQuestionContainer extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(top: 3.h, left: 3.w, right: 3.w),
                 child: Center(
-                  child: normalText(description.toString()),
+                  child: normalText(text: description.toString()),
                 ),
               ),
               Padding(
@@ -72,7 +73,13 @@ class GameQuestionContainer extends StatelessWidget {
                         child: Center(
                           child: FittedBox(
                             child: Text(
-                              option1.toString(),
+                              option1.toString().replaceAll(
+                                  '\$',
+                                  country == 'India'
+                                      ? '\u{20B9}'
+                                      : country == 'Europe'
+                                          ? '\€'
+                                          : '\$'),
                               style: textStyle1,
                               overflow: TextOverflow.clip,
                             ),
@@ -98,7 +105,13 @@ class GameQuestionContainer extends StatelessWidget {
                         child: Center(
                           child: FittedBox(
                             child: Text(
-                              option2.toString(),
+                              option2.toString().replaceAll(
+                                  '\$',
+                                  country == 'India'
+                                      ? '\u{20B9}'
+                                      : country == 'Europe'
+                                          ? '\€'
+                                          : '\$'),
                               style: textStyle2,
                               overflow: TextOverflow.clip,
                               textAlign: TextAlign.left,

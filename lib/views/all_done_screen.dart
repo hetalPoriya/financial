@@ -22,14 +22,14 @@ class AllDone extends StatefulWidget {
 }
 
 class _AllDoneState extends State<AllDone> {
-
   Color color = Colors.white;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: DoubleBackToCloseApp(
-            snackBar:  SnackBar(
+            snackBar: SnackBar(
               content: Text(AllStrings.tapBack),
             ),
             child: Container(
@@ -68,7 +68,7 @@ class _AllDoneState extends State<AllDone> {
                     height: 8.h,
                     width: 75.w,
                     decoration: BoxDecoration(
-                        color:color,
+                        color: color,
                         borderRadius: BorderRadius.circular(12.w)),
                     child: TextButton(
                       onPressed: () {
@@ -81,8 +81,10 @@ class _AllDoneState extends State<AllDone> {
                           text: AllStrings.letsGo,
                           style: AllTextStyles.dialogStyleLarge(
                               size: 16.sp, fontWeight: FontWeight.w700),
-                          gradient:  LinearGradient(
-                              colors: color == AllColors.green ? [Colors.white,Colors.white] :[Colors.white, AllColors.purple],
+                          gradient: LinearGradient(
+                              colors: color == AllColors.green
+                                  ? [Colors.white, Colors.white]
+                                  : [Colors.white, AllColors.purple],
                               transform: GradientRotation(math.pi / 2))),
                     ),
                   ),
@@ -123,8 +125,10 @@ class _AllDoneState extends State<AllDone> {
                 'need': 0,
                 'want': 0,
                 'level_2_id': 0,
+                'level_2_qol': 0,
+                'level_2_balance': 0,
               }),
-              getUser(2).then((value) => Get.offNamed('/Level2')),
+              getUser(levelId: 2).then((value) => Get.offNamed('/Level2')),
             },
           if (level == 'Level_3_setUp_page')
             {
@@ -144,8 +148,11 @@ class _AllDoneState extends State<AllDone> {
                 'need': 0,
                 'want': 0,
                 'level_3_id': 0,
+                'level_3_creditScore': 350,
+                'level_3_qol': 0,
+                'level_3_balance': 0,
               }),
-              getUser(3).then((value) => Get.offNamed('/Level3')),
+              getUser(levelId: 3).then((value) => Get.offNamed('/Level3')),
             }
         });
   }

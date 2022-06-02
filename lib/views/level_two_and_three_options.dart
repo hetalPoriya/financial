@@ -287,7 +287,7 @@ class _LevelTwoAndThreeOptionsState extends State<LevelTwoAndThreeOptions>
                                                                 Spacer(),
                                                                 RichText(
                                                                     text: TextSpan(
-                                                                        text: '${'\$${billsOfLevelTwoAndThree[index1].sliderData![index].rent}\/'}',
+                                                                        text: '${'${AllStrings.countrySymbol}${billsOfLevelTwoAndThree[index1].sliderData![index].rent}\/'}',
                                                                         style: AllTextStyles.workSansSmall(
                                                                           fontWeight:
                                                                               FontWeight.w600,

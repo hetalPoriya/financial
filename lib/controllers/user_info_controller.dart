@@ -9,7 +9,6 @@ class UserInfoController extends GetxController
     with GetSingleTickerProviderStateMixin {
   List<String> fundName = ['Mutual Fund', 'Home EMI', 'Transport EMI'].obs;
   List<int> fundAllocation = [0, 0, 0].obs;
-
   DocumentSnapshot? snapshot;
 
   //to get user id

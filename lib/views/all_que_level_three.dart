@@ -20,6 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 import 'local_notify_manager.dart';
 
@@ -117,7 +118,7 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
                               if (updateValue == 8) {
                                 updateValue = 0;
                                 storeValue.write('update', 0);
-                                calculationForProgress(() {
+                                calculationForProgress(onPressed: () {
                                   Get.back();
                                 });
                               }
@@ -297,8 +298,8 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
                                           'level_3_id': index + 1,
                                         }).then((value) => Future.delayed(
                                                 Duration(seconds: 1),
-                                                () =>
-                                                    calculationForProgress(() {
+                                                () => calculationForProgress(
+                                                        onPressed: () {
                                                       Get.back();
                                                       _levelCompleteSummary();
                                                     })));
@@ -326,14 +327,17 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
 
   _showDialogForRestartLevel() {
     restartLevelDialog(
-      () {
+      onPressed: () {
         firestore.collection('User').doc(userId).update({
           'previous_session_info': 'Level_3_setUp_page',
           'bill_payment': 0,
           'credit_card_bill': 500,
           'account_balance': 0,
           'quality_of_life': 0,
-          'level_id': 0
+          'level_id': 0,
+          'level_3_balance': 0,
+          'level_3_qol': 0,
+          'level_3_creditScore': 0,
         });
         Get.off(
           () => LevelThreeSetUpPage(),
@@ -364,14 +368,16 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
       backgroundColor: AllColors.darkPurple,
       middleTextStyle: AllTextStyles.dialogStyleMedium(),
       confirm: restartOrOkButton(
-        'Ok',
-        () {
+        text: 'Ok',
+        onPressed: () {
           Future.delayed(Duration(seconds: 1), () => Get.back()).then((value) {
             if (balance >= price) {
               balance = ((balance - price) as int?)!;
               firestore.collection('User').doc(userId).update({
                 'account_balance': balance,
                 'quality_of_life': FieldValue.increment(qol2),
+                'level_3_balance': balance,
+                'level_3_qol': FieldValue.increment(qol2),
                 'game_score': gameScore + balance + qualityOfLife,
                 'level_id': index + 1,
                 'level_3_id': index + 1,
@@ -411,8 +417,8 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
       backgroundColor: AllColors.darkPurple,
       middleTextStyle: AllTextStyles.dialogStyleMedium(),
       confirm: restartOrOkButton(
-        'Ok',
-        () {
+        text: 'Ok',
+        onPressed: () {
           Future.delayed(Duration(seconds: 1), () => Get.back()).then((value) {
             if (creditBal >= price) {
               firestore.collection('User').doc(userId).update({
@@ -485,6 +491,8 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
                                   'account_balance': balance,
                                   'game_score':
                                       gameScore + balance + qualityOfLife,
+                                  'level_3_balance': balance,
+                                  'level_3_qol': qualityOfLife,
                                 });
                                 Future.delayed(
                                     Duration(seconds: 1), () => Get.back());
@@ -529,6 +537,8 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
                                 'account_balance': balance,
                                 'game_score':
                                     gameScore + balance + qualityOfLife,
+                                'level_3_balance': balance,
+                                'level_3_qol': qualityOfLife,
                               });
                               Future.delayed(
                                   Duration(seconds: 1), () => Get.back());
@@ -546,6 +556,7 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
     balance = snap.get('account_balance');
     payableBill = snap.get('payable_bill');
     creditBill = snap.get('credit_card_bill');
+    int credit = snap.get('credit_score');
     Color color1 = Colors.white;
     Color color2 = Colors.white;
 
@@ -599,7 +610,10 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
                                   'game_score':
                                       gameScore + balance + qualityOfLife,
                                   'score': FieldValue.increment(40),
-                                  'credit_score': (score + 200 + 40)
+                                  'credit_score': (score + 200 + 40),
+                                  'level_3_balance': balance,
+                                  'level_3_qol': qualityOfLife,
+                                  'level_3_creditScore': (score + 200 + 40),
                                 });
                                 Future.delayed(
                                     Duration(seconds: 1), () => Get.back());
@@ -637,7 +651,9 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
                                   'game_score':
                                       gameScore + balance + qualityOfLife,
                                   'score': FieldValue.increment(40),
-                                  'credit_score': (score + value.ceil() + 40)
+                                  'credit_score': (score + value.ceil() + 40),
+                                  'level_3_creditScore':
+                                      (score + value.ceil() + 40)
                                 });
                                 Future.delayed(
                                     Duration(seconds: 1), () => Get.back());
@@ -694,9 +710,6 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
     DocumentSnapshot snap =
         await firestore.collection('User').doc(userId).get();
     bool value = snap.get('replay_level');
-    int bal = snap.get('account_balance');
-    int qol = snap.get('quality_of_life');
-    int credit = snap.get('credit_score');
     level = snap.get('last_level');
     level = level.toString().substring(6, 7);
     int lev = int.parse(level);
@@ -705,42 +718,47 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
     }
 
     return popQuizDialog(onPlayPopQuizPressed: () {
-      Future.delayed(Duration(seconds: 2), () async {
-        firestore.collection("User").doc(userId).update({
-          'previous_session_info': 'Level_3_Pop_Quiz',
-          'level_id': 0,
-          if (value != true) 'last_level': 'Level_3_Pop_Quiz',
-        });
-        Get.offAll(
-          () => PopQuiz(),
-          // duration: Duration(milliseconds: 500),
-          // transition: Transition.downToUp,
-        );
+      Future.delayed(Duration(seconds: 1), () async {
+        _whenLevelComplete(value: value, levelOrPopQuiz: 'Level_3_Pop_Quiz')
+            .then((value) => Get.offAll(
+                  () => PopQuiz(),
+                ));
       });
     }, onPlayNextLevelPressed: () async {
-      LocalNotifyManager.init();
-      await localNotifyManager.configureLocalTimeZone();
-      await localNotifyManager.flutterLocalNotificationsPlugin.cancel(3);
-      await localNotifyManager.flutterLocalNotificationsPlugin.cancel(9);
-      await localNotifyManager
-          .scheduleNotificationForLevelFourSaturdayElevenAm();
-      await localNotifyManager
-          .scheduleNotificationForLevelFourWednesdaySevenPm();
-      firestore.collection('User').doc(userId).update({
-        'previous_session_info': 'Level_4_setUp_page',
-        'level_id': 0,
-        'level_3_balance': bal,
-        'level_3_qol': qol,
-        'level_3_creditScore': credit,
-        if (value != true) 'last_level': 'Level_4_setUp_page',
-        // 'previous_session_info': 'Coming_soon',
-      }).then((value) => Get.offAll(
-            () => LevelFourSetUpPage(),
-            //() => ComingSoon(),
-            // duration: Duration(milliseconds: 500),
-            // transition: Transition.downToUp,
-          ));
+      Future.delayed(Duration(seconds: 1), () async {
+        _whenLevelComplete(value: value, levelOrPopQuiz: 'Level_4_setUp_page')
+            .then((value) => Get.offAll(
+                  () => LevelFourSetUpPage(),
+                ));
+      });
     });
+  }
+
+  Future _whenLevelComplete({bool? value, String? levelOrPopQuiz}) {
+    return firestore.collection('User').doc(userId).update({
+      'bill_payment': 0,
+      'credit_card_bill': 0,
+      'previous_session_info': levelOrPopQuiz,
+      'credit_card_balance': 0,
+      'account_balance': 0,
+      'level_id': 0,
+      'credit_score': 0,
+      'quality_of_life': 0,
+      'payable_bill': 0,
+      'score': 0,
+      'need': 0,
+      'want': 0,
+      'level_3_id': 0,
+      if (value != true) 'last_level': levelOrPopQuiz,
+    });
+    // LocalNotifyManager.init();
+    // await localNotifyManager.configureLocalTimeZone();
+    // await localNotifyManager.flutterLocalNotificationsPlugin.cancel(3);
+    // await localNotifyManager.flutterLocalNotificationsPlugin.cancel(9);
+    // await localNotifyManager
+    //     .scheduleNotificationForLevelFourSaturdayElevenAm();
+    // await localNotifyManager
+    //     .scheduleNotificationForLevelFourWednesdaySevenPm();
   }
 
   _optionSelect(
@@ -761,20 +779,30 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
       category) async {
     DocumentSnapshot doc = await firestore.collection('User').doc(userId).get();
     creditBal = doc['credit_card_balance'];
+    int credit = doc['credit_score'];
+
     int price = priceOfOption;
     if (index == snapshot.data!.docs.length - 1) {
       firestore.collection('User').doc(userId).update({
         'level_id': index + 1,
         'level_3_id': index + 1,
+        'level_3_balance': balance,
+        'level_3_qol': qualityOfLife,
+        'level_3_creditScore': creditScore,
       }).then((value) {
         Future.delayed(
             Duration(seconds: 1),
-            () => calculationForProgress(() {
+            () => calculationForProgress(onPressed: () {
                   Get.back();
                   _levelCompleteSummary();
                 }));
       });
     }
+
+    firestore.collection('User').doc(userId).update({
+      'level_3_balance': balance,
+      'level_3_qol': qualityOfLife,
+    });
 
     if (balance >= 0 && creditBal >= 0) {
       if (option.toString().trim().length >= 11 &&
@@ -785,7 +813,7 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
           return showDialogWhenUse80Credit(balance, price, controller,
               gameScore, qualityOfLife, qol2, scroll, index);
         }
-     if (creditBal >= priceOfOption) {
+        if (creditBal >= priceOfOption) {
           firestore.collection('User').doc(userId).update({
             'credit_card_bill': FieldValue.increment(priceOfOption),
             'quality_of_life': FieldValue.increment(qol2),
@@ -821,6 +849,9 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
                 'credit_score': creditCount >= 0
                     ? (score + value.ceil() + 10)
                     : (score + value.ceil()),
+                'level_3_creditScore': creditCount >= 0
+                    ? (score + value.ceil() + 10)
+                    : (score + value.ceil()),
                 'score': creditCount >= 0
                     ? FieldValue.increment(10)
                     : FieldValue.increment(0),
@@ -841,6 +872,8 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
           firestore.collection('User').doc(userId).update({
             'account_balance': balance,
             'quality_of_life': FieldValue.increment(qol2),
+            'level_3_balance': balance,
+            'level_3_qol': FieldValue.increment(qol2),
             'game_score': gameScore + balance + qualityOfLife,
             'level_id': index + 1,
             'level_3_id': index + 1,
@@ -886,92 +919,415 @@ class _AllQueLevelThreeState extends State<AllQueLevelThree> {
             8.w,
           ),
           color: AllColors.lightBlue),
-      child: SingleChildScrollView(child: StatefulBuilder(
+      child: StatefulBuilder(
         builder: (context, _setState) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              creditScore >= 750
-                  ? normalText(AllStrings.levelCompleteText)
-                  : normalText(
-                      AllStrings.notManageCreditScore,
+      return SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 1.h,
+            ),
+            Text(AllStrings.creditSumTitle,
+                style: AllTextStyles.dialogStyleExtraLarge(size: 20.sp)),
+            SizedBox(
+              height: 2.h,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 6.w),
+              child: Text(AllStrings.creditSumDes,
+                  style: AllTextStyles.dialogStyleLarge(),
+                  textAlign: TextAlign.center),
+            ),
+            SizedBox(
+              height: 2.h,
+            ),
+            RichText(
+                text: TextSpan(
+                    text: AllStrings.creditScore + ' ',
+                    style: AllTextStyles.dialogStyleExtraLarge(size: 18.sp),
+                    children: [
+                  TextSpan(
+                    text: creditScore.toString(),
+                    style: AllTextStyles.dialogStyleExtraLarge(
+                      size: 18.sp,
+                      color: (creditScore >= 350 && creditScore <= 450)
+                          ? AllColors.creditScore350to450
+                          : (creditScore >= 450 && creditScore <= 550)
+                              ? AllColors.creditScore450to550
+                              : (creditScore >= 550 && creditScore <= 650)
+                                  ? AllColors.creditScore550to650
+                                  : (creditScore >= 650 && creditScore <= 750)
+                                      ? AllColors.creditScore650to750
+                                      : (creditScore >= 750 &&
+                                              creditScore <= 850)
+                                          ? AllColors.creditScore750to850
+                                          : AllColors.creditScore850to950,
                     ),
-              richText(AllStrings.salaryEarned, '\$' + 6000.toString(), 2.h),
-              richText(AllStrings.billsPaid,
-                  '\$' + '${(((bill * 6) / 6000) * 100).floor()}' + '%', 1.h),
-              richText(AllStrings.spentOnNeed,
-                  '\$' + '${((need / 6000) * 100).floor()}' + '%', 1.h),
-              richText(AllStrings.spentOnWant,
-                  '${((want / 6000) * 100).floor()}' + '%', 1.h),
-              richText(
-                  AllStrings.creditScoreLevel3, creditScore.toString(), 1.h),
-              richText(AllStrings.moneySaved,
-                  '${((accountBalance / 6000) * 100).floor()}' + '%', 1.h),
-              creditScore >= 750
-                  ? buttonStyle(
-                      color,
-                      AllStrings.playNextLevel,
-                      color == AllColors.green
-                          ? () {}
-                          : () async {
-                              _setState(() {
-                                color = AllColors.green;
-                              });
-                              Future.delayed(
-                                  Duration(seconds: 2),
-                                  () => Get.offAll(() => RateUs(
-                                      onSubmit: () => _playLevelOrPopQuiz()
-                                      //     () {
-                                      //   firestore
-                                      //       .collection('Feedback')
-                                      //       .doc()
-                                      //       .set({
-                                      //     'user_id': userId,
-                                      //     'level_name': level,
-                                      //     'rating': userInfo.star,
-                                      //     'feedback': userInfo
-                                      //         .feedbackCon.text
-                                      //         .toString(),
-                                      //   }).then((value) =>
-                                      //           _playLevelOrPopQuiz());
-                                      // },
-                                      )));
+                  )
+                ])),
+            // Text(AllStrings.creditScore + '  ' + creditScore.toString(),
+            //     style: AllTextStyles.dialogStyleExtraLarge(size: 18.sp)),
 
-                              // }
-                            },
-                    )
-                  : buttonStyle(
-                      color,
-                      AllStrings.tryAgain,
-                      () {
-                        _setState(() {
-                          color = AllColors.green;
-                        });
-                        bool value = documentSnapshot.get('replay_level');
-                        firestore.collection('User').doc(userId).update({
-                          'previous_session_info': 'Level_3_setUp_page',
-                          if (value != true) 'last_level': 'Level_3_setUp_page',
-                        }).then((value) {
-                          Future.delayed(
-                            Duration(seconds: 1),
-                            () => Get.offNamed('/Level3SetUp'),
-                          );
-                        });
-                      },
-                    ),
-              SizedBox(height: 1.h),
-              if (creditScore < 750)
-                normalText(
-                  AllStrings.poorCreditScore,
+            Container(
+              height: 23.h, width: 65.w,
+              //color: AllColors.orange,
+              alignment: Alignment.topCenter,
+              child: SfRadialGauge(
+                animationDuration: 1000,
+                enableLoadingAnimation: true,
+                // title: GaugeTitle(
+                //     text: 'Credit Score $creditScore',
+                //     textStyle:
+                //         AllTextStyles.dialogStyleExtraLarge(size: 18.sp)),
+                axes: <RadialAxis>[
+                  RadialAxis(
+                      minimum: 350,
+                      showLabels: false,
+                      maximum: 950,
+                      ranges: <GaugeRange>[
+                        GaugeRange(
+                            startValue: 350,
+                            endValue: 450,
+                            label: '350+',
+                            labelStyle: AllTextStyles.gaugeStyle(),
+                            color: AllColors.creditScore350to450,
+                            startWidth: 14.w,
+                            endWidth: 14.w),
+                        GaugeRange(
+                            startValue: 450,
+                            label: '450+',
+                            labelStyle: AllTextStyles.gaugeStyle(),
+                            endValue: 550,
+                            color: AllColors.creditScore450to550,
+                            startWidth: 14.w,
+                            endWidth: 14.w),
+                        GaugeRange(
+                            startValue: 550,
+                            endValue: 650,
+                            label: '550+',
+                            labelStyle: AllTextStyles.gaugeStyle(),
+                            color: AllColors.creditScore550to650,
+                            startWidth: 14.w,
+                            endWidth: 14.w),
+                        GaugeRange(
+                            startValue: 650,
+                            endValue: 750,
+                            label: '650+',
+                            labelStyle: AllTextStyles.gaugeStyle(),
+                            color: AllColors.creditScore650to750,
+                            startWidth: 14.w,
+                            endWidth: 14.w),
+                        GaugeRange(
+                            startValue: 750,
+                            endValue: 850,
+                            label: '750+',
+                            labelStyle: AllTextStyles.gaugeStyle(),
+                            color: AllColors.creditScore750to850,
+                            startWidth: 14.w,
+                            endWidth: 14.w),
+                        GaugeRange(
+                            startValue: 850,
+                            endValue: 950,
+                            label: '850+',
+                            labelStyle: AllTextStyles.gaugeStyle(),
+                            color: AllColors.creditScore850to950,
+                            startWidth: 14.w,
+                            endWidth: 14.w),
+                      ],
+                      startAngle: 180,
+                      endAngle: 0,
+                      canScaleToFit: true,
+                      pointers: <GaugePointer>[
+                        NeedlePointer(value: creditScore.toDouble())
+                      ],
+                      annotations: <GaugeAnnotation>[
+                        GaugeAnnotation(
+                            widget: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              // crossAxisAlignment:
+                              //     CrossAxisAlignment.end,
+                              children: [
+                                Text('😰',
+                                    style: AllTextStyles.dialogStyleLarge(
+                                        size: ((creditScore > 350 &&
+                                                    creditScore <= 450) ||
+                                                (creditScore > 450 &&
+                                                    creditScore <= 550))
+                                            ? 28.sp
+                                            : 14.sp)),
+                                SizedBox(
+                                  width: 2.w,
+                                ),
+                                Text('😞',
+                                    style: AllTextStyles.dialogStyleLarge(
+                                        size: (creditScore > 550 &&
+                                                creditScore <= 650)
+                                            ? 28.sp
+                                            : 14.sp)),
+                                SizedBox(
+                                  width: 2.w,
+                                ),
+                                Text('😐',
+                                    style: AllTextStyles.dialogStyleLarge(
+                                        size: (creditScore > 650 &&
+                                                creditScore <= 750)
+                                            ? 28.sp
+                                            : 14.sp)),
+                                SizedBox(
+                                  width: 2.w,
+                                ),
+                                Text('🙂',
+                                    style: AllTextStyles.dialogStyleLarge(
+                                        size: (creditScore > 750 &&
+                                                creditScore <= 850)
+                                            ? 28.sp
+                                            : 14.sp)),
+                                SizedBox(
+                                  width: 2.w,
+                                ),
+                                Text('😀',
+                                    style: AllTextStyles.dialogStyleLarge(
+                                        size: (creditScore > 850 &&
+                                                creditScore <= 950)
+                                            ? 28.sp
+                                            : 14.sp)),
+                                SizedBox(
+                                  width: 2.w,
+                                ),
+                              ],
+                            ),
+                            angle: 90.0,
+                            positionFactor: 0.5),
+                      ]),
+
+                ],
+              ),
+              //  color: AllColors.red,
+            ),
+            SizedBox(height: 2.h,),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                creditScore >= 750
+                    ? buttonStyle(
+                  color: color,
+                  text: AllStrings.playNextLevel,
+                  onPressed: color == AllColors.green
+                      ? () {}
+                      : () async {
+                    _setState(() {
+                      color = AllColors.green;
+                    });
+                    Future.delayed(
+                        Duration(seconds: 2),
+                            () => Get.offAll(() => RateUs(
+                            onSubmit: () =>
+                                _playLevelOrPopQuiz()
+                          //     () {
+                          //   firestore
+                          //       .collection('Feedback')
+                          //       .doc()
+                          //       .set({
+                          //     'user_id': userId,
+                          //     'level_name': level,
+                          //     'rating': userInfo.star,
+                          //     'feedback': userInfo
+                          //         .feedbackCon.text
+                          //         .toString(),
+                          //   }).then((value) =>
+                          //           _playLevelOrPopQuiz());
+                          // },
+                        )));
+
+                    // }
+                  },
+                )
+                    : buttonStyle(
+                  color: color,
+                  text: AllStrings.tryAgain,
+                  onPressed: () {
+                    _setState(() {
+                      color = AllColors.green;
+                    });
+                    bool value = documentSnapshot
+                        .get('replay_level');
+                    firestore
+                        .collection('User')
+                        .doc(userId)
+                        .update({
+                      'previous_session_info':
+                      'Level_3_setUp_page',
+                      if (value != true)
+                        'last_level':
+                        'Level_3_setUp_page',
+                    }).then((value) {
+                      Future.delayed(
+                        Duration(seconds: 1),
+                            () => Get.offNamed(
+                            '/Level3SetUp'),
+                      );
+                    });
+                  },
                 ),
-              SizedBox(
-                height: 2.h,
-              )
-            ],
-          );
+                SizedBox(height: 1.h),
+                if (creditScore < 750)
+                  normalText(
+                    text: AllStrings.poorCreditScore,
+                  ),
+                SizedBox(
+                  height: 2.h,
+                )
+              ],
+            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     Text('😰',
+            //         style: AllTextStyles.dialogStyleLarge(
+            //             size: ((creditScore > 350 && creditScore <=
+            //                 450) ||
+            //                 (creditScore > 450 && creditScore <= 550))
+            //                 ? 28.sp
+            //                 : 14.sp)),
+            //     SizedBox(
+            //       width: 2.w,
+            //     ),
+            //     Text('😞',
+            //         style: AllTextStyles.dialogStyleLarge(
+            //             size: (creditScore > 550 && creditScore <= 650)
+            //                 ? 28.sp
+            //                 : 14.sp)),
+            //     SizedBox(
+            //       width: 2.w,
+            //     ),
+            //     Text('😐',
+            //         style: AllTextStyles.dialogStyleLarge(
+            //             size: (creditScore > 650 && creditScore <= 750)
+            //                 ? 28.sp
+            //                 : 14.sp)),
+            //     SizedBox(
+            //       width: 2.w,
+            //     ),
+            //     Text('🙂',
+            //         style: AllTextStyles.dialogStyleLarge(
+            //             size: (creditScore > 750 && creditScore <= 850)
+            //                 ? 28.sp
+            //                 : 14.sp)),
+            //     SizedBox(
+            //       width: 2.w,
+            //     ),
+            //     Text('😀',
+            //         style: AllTextStyles.dialogStyleLarge(
+            //             size: (creditScore > 850 && creditScore <= 950)
+            //                 ? 28.sp
+            //                 : 14.sp)),
+            //     SizedBox(
+            //       width: 2.w,
+            //     ),
+            //   ],
+            // ),
+          ],
+        ),
+      );
+      // return Column(
+      //   mainAxisAlignment: MainAxisAlignment.start,
+      //   crossAxisAlignment: CrossAxisAlignment.center,
+      //   children: [
+      //     creditScore >= 750
+      //         ? normalText(text: AllStrings.levelCompleteText)
+      //         : normalText(
+      //             text: AllStrings.notManageCreditScore,
+      //           ),
+      //     richText(
+      //         text1: AllStrings.salaryEarned,
+      //         text2: AllStrings.countrySymbol + 6000.toString(),
+      //         paddingTop: 2.h),
+      //     richText(
+      //         text1: AllStrings.billsPaid,
+      //         text2: AllStrings.countrySymbol + '${(((bill * 6) / 6000) * 100).floor()}' + '%',
+      //         paddingTop: 1.h),
+      //     richText(
+      //         text1: AllStrings.spentOnNeed,
+      //         text2: AllStrings.countrySymbol + '${((need / 6000) * 100).floor()}' + '%',
+      //         paddingTop: 1.h),
+      //     richText(
+      //         text1: AllStrings.spentOnWant,
+      //         text2: '${((want / 6000) * 100).floor()}' + '%',
+      //         paddingTop: 1.h),
+      //     richText(
+      //         text1: AllStrings.creditScoreLevel3,
+      //         text2: creditScore.toString(),
+      //         paddingTop: 1.h),
+      //     richText(
+      //         text1: AllStrings.moneySaved,
+      //         text2: '${((accountBalance / 6000) * 100).floor()}' + '%',
+      //         paddingTop: 1.h),
+      //     creditScore >= 750
+      //         ? buttonStyle(
+      //             color: color,
+      //             text: AllStrings.playNextLevel,
+      //             onPressed: color == AllColors.green
+      //                 ? () {}
+      //                 : () async {
+      //                     _setState(() {
+      //                       color = AllColors.green;
+      //                     });
+      //                     Future.delayed(
+      //                         Duration(seconds: 2),
+      //                         () => Get.offAll(() => RateUs(
+      //                             onSubmit: () => _playLevelOrPopQuiz()
+      //                             //     () {
+      //                             //   firestore
+      //                             //       .collection('Feedback')
+      //                             //       .doc()
+      //                             //       .set({
+      //                             //     'user_id': userId,
+      //                             //     'level_name': level,
+      //                             //     'rating': userInfo.star,
+      //                             //     'feedback': userInfo
+      //                             //         .feedbackCon.text
+      //                             //         .toString(),
+      //                             //   }).then((value) =>
+      //                             //           _playLevelOrPopQuiz());
+      //                             // },
+      //                             )));
+      //
+      //                     // }
+      //                   },
+      //           )
+      //         : buttonStyle(
+      //             color: color,
+      //             text: AllStrings.tryAgain,
+      //             onPressed: () {
+      //               _setState(() {
+      //                 color = AllColors.green;
+      //               });
+      //               bool value = documentSnapshot.get('replay_level');
+      //               firestore.collection('User').doc(userId).update({
+      //                 'previous_session_info': 'Level_3_setUp_page',
+      //                 if (value != true) 'last_level': 'Level_3_setUp_page',
+      //               }).then((value) {
+      //                 Future.delayed(
+      //                   Duration(seconds: 1),
+      //                   () => Get.offNamed('/Level3SetUp'),
+      //                 );
+      //               });
+      //             },
+      //           ),
+      //     SizedBox(height: 1.h),
+      //     if (creditScore < 750)
+      //       normalText(
+      //         text: AllStrings.poorCreditScore,
+      //       ),
+      //     SizedBox(
+      //       height: 2.h,
+      //     )
+      //   ],
+      // );
         },
-      )),
+      ),
     );
   }
 
@@ -1110,7 +1466,8 @@ class CreditCardPaymentWidget extends StatelessWidget {
                           style: AllTextStyles.dialogStyleLarge(),
                           children: [
                             TextSpan(
-                              text: '\$' + creditBill.toString(),
+                              text: AllStrings.countrySymbol +
+                                  creditBill.toString(),
                               style: AllTextStyles.dialogStyleLarge(
                                 color: AllColors.darkYellow,
                               ),
@@ -1132,7 +1489,8 @@ class CreditCardPaymentWidget extends StatelessWidget {
                           style: AllTextStyles.dialogStyleLarge(),
                           children: [
                             TextSpan(
-                                text: '\$' + payableBill.ceil().toString(),
+                                text: AllStrings.countrySymbol +
+                                    payableBill.ceil().toString(),
                                 style: AllTextStyles.dialogStyleLarge(
                                   color: AllColors.darkYellow,
                                 )),
@@ -1153,7 +1511,8 @@ class CreditCardPaymentWidget extends StatelessWidget {
                           style: AllTextStyles.dialogStyleLarge(),
                           children: [
                             TextSpan(
-                              text: '\$' + intrest.ceil().toString(),
+                              text: AllStrings.countrySymbol +
+                                  intrest.ceil().toString(),
                               style: AllTextStyles.dialogStyleLarge(
                                 color: AllColors.darkYellow,
                               ),
@@ -1189,7 +1548,8 @@ class CreditCardPaymentWidget extends StatelessWidget {
                                             : AllColors.darkBlue),
                                     children: [
                                       TextSpan(
-                                        text: '\$' + totalAmount.toString(),
+                                        text: AllStrings.countrySymbol +
+                                            totalAmount.toString(),
                                         style: AllTextStyles.dialogStyleLarge(
                                           color: color1 == AllColors.green
                                               ? Colors.white
@@ -1228,7 +1588,7 @@ class CreditCardPaymentWidget extends StatelessWidget {
                                             : AllColors.darkBlue),
                                     children: [
                                       TextSpan(
-                                        text: '\$' +
+                                        text: AllStrings.countrySymbol +
                                             (totalAmount * 10 ~/ 100)
                                                 .toInt()
                                                 .ceil()

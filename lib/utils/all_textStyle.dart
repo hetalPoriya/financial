@@ -2,6 +2,7 @@ import 'package:financial/utils/all_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class AllTextStyles {
   static TextStyle workSansSmall(
@@ -117,5 +118,6 @@ class AllTextStyles {
       fontSize: fontSize ?? 13.sp,
       color: color ?? AllColors.leaderBoardTextColor);
 
-
+  static gaugeStyle() => GaugeTextStyle(
+      color: Colors.grey.shade900,fontWeight: FontWeight.w500, fontSize: 8.sp);
 }

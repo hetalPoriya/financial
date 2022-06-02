@@ -51,6 +51,8 @@ class AllImages {
   static String creditScore = 'assets/credit_score.png';
   static String netWorth = 'assets/netWorth.png';
   static String star = 'assets/star.png';
+  static String starGif = 'assets/star_gif.gif';
+  static String gifForPopQuiz = 'assets/gif_for_popQuiz.gif';
   static String iImage = 'assets/i.png';
 
   //settings

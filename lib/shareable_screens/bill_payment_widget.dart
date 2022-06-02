@@ -108,9 +108,10 @@ class _BillPaymentWidgetState extends State<BillPaymentWidget> {
                         textAlign: TextAlign.center,
                       ),
                       (level == 'Level_4' || level == 'Level_5')
-                          ? normalText(AllStrings.level4And5TitleTextForBill)
+                          ? normalText(
+                              text: AllStrings.level4And5TitleTextForBill)
                           : normalText(
-                              AllStrings.normalBillTitleText,
+                              text: AllStrings.normalBillTitleText,
                             ),
                       (level == 'Level_5' && rentPrice != 0)
                           ? Column(
@@ -118,10 +119,11 @@ class _BillPaymentWidgetState extends State<BillPaymentWidget> {
                                 allLevelBillPaymentText(
                                   image: AllImages.house,
                                   text1: widget.text1.toString(),
-                                  text2: '${'\$' + widget.forPlan1.toString()}',
+                                  text2:
+                                      '${AllStrings.countrySymbol + widget.forPlan1.toString()}',
                                 ),
                                 Text(
-                                  '${AllStrings.outstandingAmount} ${'\$$homeLoan'}',
+                                  '${AllStrings.outstandingAmount} ${'${AllStrings.countrySymbol}$homeLoan'}',
                                   style: AllTextStyles.dialogStyleMedium(
                                       fontWeight: FontWeight.w500,
                                       color: Colors.grey.shade400),
@@ -133,7 +135,8 @@ class _BillPaymentWidgetState extends State<BillPaymentWidget> {
                               : allLevelBillPaymentText(
                                   text: level == 'Level_4' ? '🏠' : '🏡',
                                   text1: widget.text1.toString(),
-                                  text2: '${'\$' + widget.forPlan1.toString()}',
+                                  text2:
+                                      '${AllStrings.countrySymbol + widget.forPlan1.toString()}',
                                 ),
                       (level == 'Level_5' && transportPrice != 0)
                           ? Column(
@@ -141,10 +144,11 @@ class _BillPaymentWidgetState extends State<BillPaymentWidget> {
                                 allLevelBillPaymentText(
                                   image: AllImages.car,
                                   text1: widget.text2.toString(),
-                                  text2: '${'\$' + widget.forPlan2.toString()}',
+                                  text2:
+                                      '${AllStrings.countrySymbol + widget.forPlan2.toString()}',
                                 ),
                                 Text(
-                                  '${AllStrings.outstandingAmount} ${'\$$transportLoan'}',
+                                  '${AllStrings.outstandingAmount} ${'${AllStrings.countrySymbol}$transportLoan'}',
                                   style: AllTextStyles.dialogStyleMedium(
                                       fontWeight: FontWeight.w500,
                                       color: Colors.grey.shade400),
@@ -156,28 +160,30 @@ class _BillPaymentWidgetState extends State<BillPaymentWidget> {
                               : allLevelBillPaymentText(
                                   text: level == 'Level_4' ? '🚗' : '📺',
                                   text1: widget.text2.toString(),
-                                  text2: '${'\$' + widget.forPlan2.toString()}',
+                                  text2:
+                                      '${AllStrings.countrySymbol + widget.forPlan2.toString()}',
                                 ),
                       allLevelBillPaymentText(
                         image: level == 'Level_5' ? AllImages.lifeStyle : null,
                         text: level == 'Level_4' ? '🛍️' : '🍞',
                         text1: widget.text3.toString(),
-                        text2: '${'\$' + widget.forPlan3.toString()}',
+                        text2:
+                            '${AllStrings.countrySymbol + widget.forPlan3.toString()}',
                       ),
                       if (level != 'Level_4')
                         allLevelBillPaymentText(
                           text: level == 'Level_5' ? '💰' : '📱',
                           text1: widget.text4.toString(),
-                          text2: '${'\$' + widget.forPlan4.toString()}',
+                          text2:
+                              '${AllStrings.countrySymbol + widget.forPlan4.toString()}',
                         ),
                       if (level == 'Level_5')
                         richText(
-                            widget.text5.toString(),
-                            '${'\$' + widget.forPlan5.toString()}',
-                            1.h,
-                            0.0,
-                            0.0,
-                            TextAlign.left),
+                            text1: widget.text5.toString(),
+                            text2:
+                                '${AllStrings.countrySymbol + widget.forPlan5.toString()}',
+                            paddingTop: 1.h,
+                            textAlign: TextAlign.left),
                       Padding(
                           padding: EdgeInsets.only(top: 4.h),
                           child: Container(
@@ -207,7 +213,7 @@ class _BillPaymentWidgetState extends State<BillPaymentWidget> {
                                             ),
                                             children: [
                                               TextSpan(
-                                                text: '\$' +
+                                                text: AllStrings.countrySymbol +
                                                     widget.billPayment
                                                         .toString(),
                                                 style: AllTextStyles

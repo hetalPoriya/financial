@@ -16,7 +16,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   final userController = Get.put<UserInfoController>(UserInfoController());
 
   //function for get all value from fireStore and check user state
@@ -34,6 +33,10 @@ class _SplashScreenState extends State<SplashScreen> {
           .then((doc) => {
                 userController.level = doc.get("previous_session_info"),
                 userController.levelId = doc.get("level_id"),
+                if (doc.data().toString().contains('country') == true)
+                  {
+                    country = doc.get('country'),
+                  },
                 userController.update(),
                 print(userController.level),
                 print(userController.levelId),
@@ -44,68 +47,68 @@ class _SplashScreenState extends State<SplashScreen> {
 
         if (userController.level == 'Level_1_setUp_page')
           Future.delayed(
-              Duration(seconds: 6), () => Get.offNamed('/Level1SetUp'));
+              Duration(seconds: 1), () => Get.offNamed('/Level1SetUp'));
 
         if (userController.level == 'Level_1')
-          Future.delayed(Duration(seconds: 6), () => Get.offNamed('/Level1'));
+          Future.delayed(Duration(seconds: 1), () => Get.offNamed('/Level1'));
 
         if (userController.level == 'Level_1_Pop_Quiz')
           Future.delayed(
-              Duration(seconds: 6), () => Get.offNamed('/LevelOnePopQuiz'));
+              Duration(seconds: 1), () => Get.offNamed('/LevelOnePopQuiz'));
 
         if (userController.level == 'Level_2_setUp_page')
           Future.delayed(
-              Duration(seconds: 6), () => Get.offNamed('/Level2SetUp'));
+              Duration(seconds: 1), () => Get.offNamed('/Level2SetUp'));
 
         if (userController.level == 'Level_2')
-          Future.delayed(Duration(seconds: 6), () => Get.offNamed('/Level2'));
+          Future.delayed(Duration(seconds: 1), () => Get.offNamed('/Level2'));
 
         if (userController.level == 'Level_2_Pop_Quiz' ||
             userController.level == 'Level_3_Pop_Quiz' ||
             userController.level == 'Level_4_Pop_Quiz')
-          Future.delayed(Duration(seconds: 6), () => Get.offNamed('/PopQuiz'));
+          Future.delayed(Duration(seconds: 1), () => Get.offNamed('/PopQuiz'));
 
         if (userController.level == 'Level_3_setUp_page')
           Future.delayed(
-              Duration(seconds: 6), () => Get.offNamed('/Level3SetUp'));
+              Duration(seconds: 1), () => Get.offNamed('/Level3SetUp'));
 
         if (userController.level == 'Level_3')
-          Future.delayed(Duration(seconds: 6), () => Get.offNamed('/Level3'));
+          Future.delayed(Duration(seconds: 1), () => Get.offNamed('/Level3'));
 
         if (userController.level == 'Level_4_setUp_page')
           Future.delayed(
-              Duration(seconds: 6), () => Get.offNamed('/Level4SetUp'));
+              Duration(seconds: 1), () => Get.offNamed('/Level4SetUp'));
 
         if (userController.level == 'Level_4')
-          Future.delayed(Duration(seconds: 6), () => Get.offNamed('/Level4'));
+          Future.delayed(Duration(seconds: 1), () => Get.offNamed('/Level4'));
 
         if (userController.level == 'Level_5_setUp_page')
           Future.delayed(
-              Duration(seconds: 6), () => Get.offNamed('/Level5SetUp'));
+              Duration(seconds: 1), () => Get.offNamed('/Level5SetUp'));
 
         if (userController.level == 'Level_5')
           Future.delayed(
-              Duration(seconds: 6),
+              Duration(seconds: 1),
               () => Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => AllQueLevelFive())));
 
         if (userController.level == 'Level_6_setUp_page')
           Future.delayed(
-              Duration(seconds: 6), () => Get.offNamed('/Level6SetUp'));
+              Duration(seconds: 1), () => Get.offNamed('/Level6SetUp'));
 
         if (userController.level == 'Level_6')
           Future.delayed(
-              Duration(seconds: 6),
+              Duration(seconds: 1),
               () => Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => AllQueLevelSix())));
 
         if (userController.level == 'Coming_soon')
           Future.delayed(
-              Duration(seconds: 6), () => Get.offNamed('/ComingSoon'));
+              Duration(seconds: 1), () => Get.offNamed('/ComingSoon'));
       });
     } else {
       //if user not login than move to intro screen
-      Future.delayed(Duration(seconds: 6), () => Get.offNamed('/OnBoarding'));
+      Future.delayed(Duration(seconds: 1), () => Get.offNamed('/OnBoarding'));
     }
   }
 

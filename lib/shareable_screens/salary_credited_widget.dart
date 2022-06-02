@@ -30,9 +30,9 @@ class SalaryCreditedWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              normalText(AllStrings.salaryTitle, 20.sp, FontWeight.w600),
-              normalText(AllStrings.salaryBody),
-              buttonStyle(color, 'Okay ', onPressed),
+              normalText(text: AllStrings.salaryTitle, fontSize: 20.sp,fontWeight:  FontWeight.w600),
+              normalText(text: AllStrings.salaryBody),
+              buttonStyle(color: color,text:  'Okay ', onPressed: onPressed),
               SizedBox(
                 height: 2.h,
               )

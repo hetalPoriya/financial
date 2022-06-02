@@ -34,14 +34,13 @@ class AllQueLevelTwo extends StatefulWidget {
 }
 
 class _AllQueLevelTwoState extends State<AllQueLevelTwo> {
-
   //for model
   QueModel? queModel;
   List<QueModel> list = [];
 
   getAllData() async {
     QuerySnapshot querySnapshot =
-    await FirebaseFirestore.instance.collection("Level_2").get();
+        await FirebaseFirestore.instance.collection("Level_2").get();
     for (int i = 0; i < querySnapshot.docs.length; i++) {
       var a = querySnapshot.docs[i];
       queModel = QueModel();
@@ -50,6 +49,7 @@ class _AllQueLevelTwoState extends State<AllQueLevelTwo> {
         list.add(queModel!);
       });
     }
+
   }
 
   @override
@@ -114,7 +114,7 @@ class _AllQueLevelTwoState extends State<AllQueLevelTwo> {
                               if (updateValue == 8) {
                                 updateValue = 0;
                                 storeValue.write('update', 0);
-                                calculationForProgress(() {
+                                calculationForProgress(onPressed: () {
                                   Get.back();
                                 });
                               }
@@ -272,8 +272,8 @@ class _AllQueLevelTwoState extends State<AllQueLevelTwo> {
                                           'level_2_id': index + 1,
                                         }).then((value) => Future.delayed(
                                                 Duration(seconds: 1),
-                                                () =>
-                                                    calculationForProgress(() {
+                                                () => calculationForProgress(
+                                                        onPressed: () {
                                                       Get.back();
                                                       _levelCompleteSummary();
                                                     })));
@@ -326,13 +326,11 @@ class _AllQueLevelTwoState extends State<AllQueLevelTwo> {
                       onPressed: color == AllColors.green
                           ? () {}
                           : () async {
-                        DocumentSnapshot doc =
-                            await firestore
-                            .collection('User')
-                            .doc(userId)
-                            .get();
-                        balance =
-                            doc.get('account_balance');
+                              DocumentSnapshot doc = await firestore
+                                  .collection('User')
+                                  .doc(userId)
+                                  .get();
+                              balance = doc.get('account_balance');
                               _setState(() {
                                 color = AllColors.green;
                                 balance = balance - billPayment;
@@ -351,6 +349,8 @@ class _AllQueLevelTwoState extends State<AllQueLevelTwo> {
                                   'account_balance': balance,
                                   'game_score':
                                       gameScore + balance + qualityOfLife,
+                                  'level_2_balance': balance,
+                                  'level_2_qol': qualityOfLife,
                                 });
                                 Future.delayed(
                                     Duration(seconds: 1), () => Get.back());
@@ -381,13 +381,11 @@ class _AllQueLevelTwoState extends State<AllQueLevelTwo> {
                       onPressed: color == AllColors.green
                           ? () {}
                           : () async {
-                        DocumentSnapshot doc =
-                            await firestore
-                            .collection('User')
-                            .doc(userId)
-                            .get();
-                        balance =
-                            doc.get('account_balance');
+                              DocumentSnapshot doc = await firestore
+                                  .collection('User')
+                                  .doc(userId)
+                                  .get();
+                              balance = doc.get('account_balance');
                               _setState(() {
                                 color = AllColors.green;
                                 balance = balance + 1000;
@@ -397,6 +395,8 @@ class _AllQueLevelTwoState extends State<AllQueLevelTwo> {
                                 'account_balance': balance,
                                 'game_score':
                                     gameScore + balance + qualityOfLife,
+                                'level_2_balance': balance,
+                                'level_2_qol': qualityOfLife,
                               });
                               Future.delayed(
                                   Duration(seconds: 1), () => Get.back());
@@ -410,7 +410,7 @@ class _AllQueLevelTwoState extends State<AllQueLevelTwo> {
 
   _showDialogForRestartLevel() {
     restartLevelDialog(
-      () {
+      onPressed: () {
         firestore.collection('User').doc(userId).update({
           'previous_session_info': 'Level_2_setUp_page',
           'bill_payment': 0,
@@ -420,7 +420,10 @@ class _AllQueLevelTwoState extends State<AllQueLevelTwo> {
           'credit_score': 0,
           'payable_bill': 0,
           'quality_of_life': 0,
-          'score': 0
+          'score': 0,
+          'account_balance': 0,
+          'level_2_balance': 0,
+          'level_2_qol': 0,
         });
         Get.off(
           () => LevelTwoSetUpPage(),
@@ -444,9 +447,11 @@ class _AllQueLevelTwoState extends State<AllQueLevelTwo> {
       firestore.collection('User').doc(userId).update({
         'level_id': index + 1,
         'level_2_id': index + 1,
+        'level_2_balance': balance,
+        'level_2_qol': qualityOfLife,
       }).then((value) => Future.delayed(
           Duration(seconds: 1),
-          () => calculationForProgress(() {
+          () => calculationForProgress(onPressed: () {
                 Get.back();
                 _levelCompleteSummary();
               })));
@@ -458,6 +463,8 @@ class _AllQueLevelTwoState extends State<AllQueLevelTwo> {
         'game_score': gameScore + balance + qualityOfLife,
         'level_id': index + 1,
         'level_2_id': index + 1,
+        'level_2_balance': balance,
+        'level_2_qol': qualityOfLife,
         'need': category == 'Need'
             ? FieldValue.increment(price)
             : FieldValue.increment(0),
@@ -481,7 +488,7 @@ class _AllQueLevelTwoState extends State<AllQueLevelTwo> {
     int need = documentSnapshot['need'];
     int want = documentSnapshot['want'];
     int bill = documentSnapshot['bill_payment'];
-     Color color = Colors.white;
+    Color color = Colors.white;
 
     Map<String, double> dataMap = {
       AllStrings.billsPaid: (((bill * 6) / 6000) * 100).floor().toDouble(),
@@ -499,85 +506,94 @@ class _AllQueLevelTwoState extends State<AllQueLevelTwo> {
             },
             child: accountBalance >= 1200
                 ? LevelSummaryScreen(
-                    container: StatefulBuilder(
-                      builder: (context,_setState) {
-                        return LevelSummaryForLevel1And2(
-                            dataMap: dataMap,
-                            widget: buttonStyle(color, AllStrings.playNextLevel,  color == AllColors.green
-                                ? () {}
-                                : () {
-                              _setState(() {
-                                color = AllColors.green;
-                              });
+                    container: StatefulBuilder(builder: (context, _setState) {
+                      return LevelSummaryForLevel1And2(
+                        dataMap: dataMap,
+                        widget: buttonStyle(
+                          color: color,
+                          text: AllStrings.playNextLevel,
+                          onPressed: color == AllColors.green
+                              ? () {}
+                              : () {
+                                  _setState(() {
+                                    color = AllColors.green;
+                                  });
 
-                              Future.delayed(
-                                Duration(seconds: 2),
+                                  Future.delayed(
+                                    Duration(seconds: 2),
                                     () => Get.offAll(() => RateUs(
-                                      onSubmit:() => _playLevelOrPopQuiz(),
-                                //         onSubmit: () {
-                                //   firestore
-                                //       .collection('Feedback')
-                                //       .doc()
-                                //       .set({
-                                //     'user_id': userInfo.userId,
-                                //     'level_name': userInfo.level,
-                                //     'rating': userInfo.star,
-                                //     'feedback': userInfo.feedbackCon.text
-                                //         .toString(),
-                                //   }).then(
-                                //         (value) => _playLevelOrPopQuiz(),
-                                //   );
-                                // }
-                                )),
-                              );
-                            },),
-                            text1: 'Salary Earned : ',
-                            text2: '\$' + 6000.toString(),
-                            paddingTop: 1.h,
-                            );
-                      }
-                    ),
+                                          onSubmit: () => _playLevelOrPopQuiz(),
+                                          //         onSubmit: () {
+                                          //   firestore
+                                          //       .collection('Feedback')
+                                          //       .doc()
+                                          //       .set({
+                                          //     'user_id': userInfo.userId,
+                                          //     'level_name': userInfo.level,
+                                          //     'rating': userInfo.star,
+                                          //     'feedback': userInfo.feedbackCon.text
+                                          //         .toString(),
+                                          //   }).then(
+                                          //         (value) => _playLevelOrPopQuiz(),
+                                          //   );
+                                          // }
+                                        )),
+                                  );
+                                },
+                        ),
+                        text1: 'Salary Earned : ',
+                        text2: AllStrings.countrySymbol + 6000.toString(),
+                        paddingTop: 1.h,
+                      );
+                    }),
                     level: level,
                     document: document)
                 : BackgroundWidget(
                     level: level,
                     document: document,
-                    container: StatefulBuilder(
-                      builder: (context,_setState) {
-                        return Column(
-                          children: [
-                            SizedBox(
-                              height: 5.h,
-                            ),
-                            LevelSummaryForLevel1And2(
-                                dataMap: dataMap,
-                                completeText: AllStrings.level2LosingText,
-                                //color: color,
-                              widget: buttonStyle(color, AllStrings.playAgain,  () {
+                    container: StatefulBuilder(builder: (context, _setState) {
+                      return Column(
+                        children: [
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          LevelSummaryForLevel1And2(
+                            dataMap: dataMap,
+                            completeText: AllStrings.level2LosingText,
+                            //color: color,
+                            widget: buttonStyle(
+                              color: color,
+                              text: AllStrings.playAgain,
+                              onPressed: () {
                                 _setState(() {
                                   color = AllColors.green;
                                 });
-                                bool value = documentSnapshot.get('replay_level');
+                                bool value =
+                                    documentSnapshot.get('replay_level');
                                 documentSnapshot.get('account_balance');
                                 Future.delayed(Duration(seconds: 1), () {
-                                  firestore.collection('User').doc(userId).update({
-                                    'previous_session_info': 'Level_2_setUp_page',
+                                  firestore
+                                      .collection('User')
+                                      .doc(userId)
+                                      .update({
+                                    'previous_session_info':
+                                        'Level_2_setUp_page',
                                     if (value != true)
                                       'last_level': 'Level_2_setUp_page',
                                   }).then((value) {
                                     Get.offNamed('/Level2SetUp');
                                   });
                                 });
-                              },),
-                                text1: 'Salary Earned : ',
-                                text2: '\$' + 6000.toString(),
-                                paddingTop: 1.h,
-                               // onPressed: () {}
-                                ),
-                          ],
-                        );
-                      }
-                    ),
+                              },
+                            ),
+                            text1: 'Salary Earned : ',
+                            text2: AllStrings.countrySymbol + 6000.toString(),
+                            paddingTop: 1.h,
+                            // onPressed: () {}
+                          ),
+                        ],
+                      );
+                    }),
                   ),
           );
         });
@@ -587,57 +603,52 @@ class _AllQueLevelTwoState extends State<AllQueLevelTwo> {
     var userId = storeValue.read('uId');
     DocumentSnapshot snap =
         await firestore.collection('User').doc(userId).get();
-    int bal = snap.get('account_balance');
-    int qol = snap.get('quality_of_life');
     bool value = snap.get('replay_level');
     level = snap.get('last_level');
     level = level.toString().substring(6, 7);
     int lev = int.parse(level);
     if (lev == 2 && value == true) {
-      firestore
-          .collection('User')
-          .doc(userId)
-          .update({'replay_level': false});
+      firestore.collection('User').doc(userId).update({'replay_level': false});
     }
     return popQuizDialog(
-     onPlayPopQuizPressed:  () async {
+      onPlayPopQuizPressed: () async {
         // SharedPreferences pref = await SharedPreferences.getInstance();
-        Future.delayed(Duration(seconds: 2), () {
-          FirebaseFirestore.instance.collection('User').doc(userId).update({
-            'previous_session_info': 'Level_2_Pop_Quiz',
-            'level_id': 0,
-            if (value != true) 'last_level': 'Level_2_Pop_Quiz',
-          });
-          Get.offAll(
-            () => PopQuiz(),
-            // duration: Duration(milliseconds: 500),
-            // transition: Transition.fade,
-          );
+        Future.delayed(Duration(seconds: 1), () {
+          _whenLevelComplete(value: value, levelOrPopQuiz: 'Level_2_Pop_Quiz')
+              .then((value) => Get.offAll(
+                    () => PopQuiz(),
+                  ));
         });
       },
-    onPlayNextLevelPressed:   () async {
-        LocalNotifyManager.init();
-        await localNotifyManager.configureLocalTimeZone();
-        await localNotifyManager.flutterLocalNotificationsPlugin.cancel(2);
-        await localNotifyManager.flutterLocalNotificationsPlugin.cancel(8);
-        await localNotifyManager.scheduleNotificationForLevelThreeSaturdayElevenAm();
-        await localNotifyManager.scheduleNotificationForLevelThreeWednesdaySevenPm();
-        Future.delayed(Duration(seconds: 2), () {
-          FirebaseFirestore.instance.collection('User').doc(userId).update({
-            'previous_session_info': 'Level_3_setUp_page',
-            if (value != true) 'last_level': 'Level_3_setUp_page',
-            'level_2_balance': bal,
-            'level_2_qol': qol
-          });
-          Get.offAll(
-            () => LevelThreeSetUpPage(),
-            // duration: Duration(milliseconds: 500),
-            // transition: Transition.fade,
-          );
+      onPlayNextLevelPressed: () async {
+        Future.delayed(Duration(seconds: 1), () {
+          _whenLevelComplete(value: value, levelOrPopQuiz: 'Level_3_setUp_page')
+              .then((value) => Get.offAll(
+                    () => LevelThreeSetUpPage(),
+                  ));
         });
       },
     );
   }
+
+  Future _whenLevelComplete({bool? value, String? levelOrPopQuiz}) {
+    return firestore.collection('User').doc(userId).update({
+      'previous_session_info': levelOrPopQuiz,
+      'level_id': 0,
+      'account_balance': 0,
+      'need': 0,
+      'want': 0,
+      'quality_of_life': 0,
+      'bill_payment': 0,
+      if (value != true) 'last_level': levelOrPopQuiz,
+    });
+    // LocalNotifyManager.init();
+    // await localNotifyManager.configureLocalTimeZone();
+    // await localNotifyManager.flutterLocalNotificationsPlugin.cancel(2);
+    // await localNotifyManager.flutterLocalNotificationsPlugin.cancel(8);
+    // await localNotifyManager
+    //     .scheduleNotificationForLevelThreeSaturdayElevenAm();
+    // await localNotifyManager
+    //     .scheduleNotificationForLevelThreeWednesdaySevenPm();
+  }
 }
-
-

@@ -62,6 +62,7 @@ class _LevelsState extends State<Levels> {
   int lev = 0;
 
   Future<QueModel?> getLevelId() async {
+
     // SharedPreferences pref = await SharedPreferences.getInstance();
     // userId = pref.getString('uId');
     userId = getCredential.read('uId');
@@ -94,12 +95,14 @@ class _LevelsState extends State<Levels> {
       level4Id = shot.get('level_4_id');
       level5Id = shot.get('level_5_id');
       level6Id = shot.get('level_6_id');
+
       level1popQuizId = shot.get('level_1_popQuiz_id');
       level2popQuizId = shot.get('level_2_popQuiz_id');
       level3popQuizId = shot.get('level_3_popQuiz_id');
       level4popQuizId = shot.get('level_4_popQuiz_id');
       level5popQuizId = shot.get('level_5_popQuiz_id');
       level6popQuizId = shot.get('level_6_popQuiz_id');
+
       level1totalQue = l1.size;
       level2totalQue = l2.size;
       level3totalQue = l3.size;
@@ -111,7 +114,9 @@ class _LevelsState extends State<Levels> {
       level3popQuizQue = l3PopQuiz.size;
       level4popQuizQue = l4PopQuiz.size;
 
+      print('LEVEL 3 $level3totalQue');
       level = shot.get('last_level');
+
     });
     lev = int.parse(level.toString().substring(6, 7));
     return null;
@@ -318,8 +323,7 @@ class _LevelsState extends State<Levels> {
                                                             FontWeight.w900,
                                                         color: Colors.white),
                                               ),
-                                              linearStrokeCap:
-                                                  LinearStrokeCap.roundAll,
+                                              barRadius: Radius.circular(3.w),
                                               progressColor:
                                                   levelList[index].id! > lev
                                                       ? Color(0xffFFDAF0)
@@ -420,8 +424,7 @@ class _LevelsState extends State<Levels> {
                                                             FontWeight.w900,
                                                         size: 10.sp),
                                               ),
-                                              linearStrokeCap:
-                                                  LinearStrokeCap.roundAll,
+                                              barRadius: Radius.circular(3.w),
                                               progressColor:
                                                   levelList[index].id! > lev
                                                       ? Color(0xffCDE4FD)
@@ -590,6 +593,7 @@ class _LevelsState extends State<Levels> {
       'account_balance': 0,
       'bill_payment': 0,
       'credit_card_balance': 0,
+      'pop_quiz_point_changed' : false,
       'credit_card_bill': 0,
       'credit_score': 0,
       'level_id': 0,
@@ -598,6 +602,19 @@ class _LevelsState extends State<Levels> {
       'quality_of_life': 0,
       'score': 0,
       'level_1_id': i == 1 ? 0 : level1Id,
+      if (i == 1) 'level_1_balance': 0,
+      if (i == 1) 'level_1_qol': 0,
+      if (i == 2) 'level_2_balance': 0,
+      if (i == 2) 'level_2_qol': 0,
+      if (i == 3) 'level_3_balance': 0,
+      if (i == 3) 'level_3_qol': 0,
+      if (i == 3) 'level_3_creditScore': 0,
+      if (i == 4) 'level_4_balance': 0,
+      if (i == 4) 'level_4_qol': 0,
+      if (i == 4) 'level_4_investment': 0,
+      if (i == 5) 'level_5_balance': 0,
+      if (i == 5) 'level_5_qol': 0,
+      if (i == 5) 'level_5_investment': 0,
       'level_2_id': i == 2 ? 0 : level2Id,
       'level_3_id': i == 3 ? 0 : level3Id,
       'level_4_id': i == 4 ? 0 : level4Id,
@@ -605,19 +622,19 @@ class _LevelsState extends State<Levels> {
       'level_6_id': i == 6 ? 0 : level6Id,
     }).then((value) {
       if (i == 1)
-        Get.off(
+        Get.offAll(
           () => LevelOneSetUpPage(),
           duration: Duration(milliseconds: 500),
           // transition: Transition.downToUp,
         );
       if (i == 2)
-        Get.off(
+        Get.offAll(
           () => LevelTwoSetUpPage(),
           duration: Duration(milliseconds: 500),
           //transition: Transition.downToUp,
         );
       if (i == 3)
-        Get.off(
+        Get.offAll(
           () => LevelThreeSetUpPage(),
           duration: Duration(milliseconds: 500),
           // transition: Transition.downToUp,
@@ -625,8 +642,9 @@ class _LevelsState extends State<Levels> {
 
       if (i == 4) {
         getCredential.write('level4or5innerPageViewId', 0);
+        getCredential.write('randomNumberValue', 0);
         getCredential.write('count', 0);
-        Get.off(
+        Get.offAll(
           () => LevelFourSetUpPage(),
           duration: Duration(milliseconds: 500),
           // transition: Transition.downToUp,
@@ -634,8 +652,9 @@ class _LevelsState extends State<Levels> {
       }
       if (i == 5) {
         getCredential.write('level4or5innerPageViewId', 0);
+        getCredential.write('randomNumberValue', 0);
         getCredential.write('count', 0);
-        Get.off(
+        Get.offAll(
           () => LevelFiveSetUpPage(),
           duration: Duration(milliseconds: 500),
           // transition: Transition.downToUp,
@@ -665,6 +684,7 @@ class _LevelsState extends State<Levels> {
       'bill_payment': 0,
       'credit_card_balance': 0,
       'credit_card_bill': 0,
+      'pop_quiz_point_changed': false,
       'credit_score': 0,
       'level_id': 0,
       'payable_bill': 0,
@@ -686,21 +706,21 @@ class _LevelsState extends State<Levels> {
       'level_6_popQuiz_id': i == 6 ? 0 : level6popQuizId,
     }).then((value) {
       if (i == 1) {
-        Get.off(
+        Get.offAll(
           () => LevelOnePopQuiz(),
           duration: Duration(milliseconds: 500),
           //  transition: Transition.downToUp,
         );
       }
       if (i == 2 || i == 3 || i == 4)
-        Get.off(
+        Get.offAll(
           () => PopQuiz(),
           duration: Duration(milliseconds: 500),
           // transition: Transition.downToUp,
         );
 
       if (i == 5)
-        Get.off(
+        Get.offAll(
           () => LevelFiveSetUpPage(),
           duration: Duration(milliseconds: 500),
         );

@@ -8,6 +8,7 @@ import 'package:financial/utils/all_textStyle.dart';
 import 'package:financial/views/all_que_level_one.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:sizer/sizer.dart';
 
@@ -112,7 +113,7 @@ class _LevelOneSetUpPageState extends State<LevelOneSetUpPage> {
               storeValue.write('tInvestment', 0);
               storeValue.write('tCredit', 0);
               storeValue.write('tUser', 0);
-              getUser(1).then((value) => Get.offAll(
+              getUser(levelId: 1).then((value) => Get.offAll(
                     () => AllQueLevelOne(),
                     duration: Duration(milliseconds: 250),
                     transition: Transition.downToUp,

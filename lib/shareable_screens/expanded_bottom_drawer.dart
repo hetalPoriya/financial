@@ -253,7 +253,9 @@ class _ExpandedBottomDrawerState extends State<ExpandedBottomDrawer> {
                 child: text == 'account_balance'
                     ? RichText(
                         text: TextSpan(
-                            text: '\$',
+                            text:  country == 'India'
+                                ? '\u{20B9}' : country == 'Europe'? '\€'
+                                : '\$',
                             style: AllTextStyles.dialogStyleMedium(
                               color: color,
                               size: 16.sp,

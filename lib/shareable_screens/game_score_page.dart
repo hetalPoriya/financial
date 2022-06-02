@@ -1,5 +1,6 @@
 //ignore: must_be_immutable
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:financial/controllers/user_info_controller.dart';
 import 'package:financial/shareable_screens/globle_variable.dart';
 import 'package:financial/shareable_screens/gradient_text.dart';
 import 'package:financial/utils/all_colors.dart';
@@ -17,9 +18,15 @@ import 'dart:math' as math;
 class GameScorePage extends StatefulWidget {
   var document;
   final String level;
+  final bool? pointValue;
   GlobalKey? keyValue = GlobalKey();
 
-  GameScorePage({Key? key, this.document, required this.level, this.keyValue})
+  GameScorePage(
+      {Key? key,
+      this.document,
+      required this.level,
+      this.keyValue,
+      this.pointValue})
       : super(key: key);
 
   @override
@@ -59,6 +66,8 @@ class _GameScorePageState extends State<GameScorePage> {
     super.initState();
   }
 
+  bool? popQuiz;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -69,120 +78,246 @@ class _GameScorePageState extends State<GameScorePage> {
           // SizedBox(
           //   height: forPortrait * .08,
           // ),
-          Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Container(
-                  height: 17.w,
-                  width: 56.w,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.w),
-                      color: Colors.white),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 17.w,
-                        width: 14.w,
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 4.w),
-                          child: Container(
-                              child: Image.asset(
-                            AllImages.star,
-                            width: 10.w,
-                            height: 6.h,
-                            fit: BoxFit.contain,
-                          )),
-                        ),
-                      ),
-                      Spacer(),
-                      Container(
-                          height: 17.w,
-                          width: 42.w,
-                          //  color: Colors.green,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                height: 1.w,
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Container(
-                                  child: Text('GAME SCORE',
-                                      style:AllTextStyles.dialogStyleSmall(fontWeight: FontWeight.w500,color:AllColors.extraDarkPurple ),
-                                      maxLines: 1),
-                                  alignment: Alignment.center,
-                                ),
-                              ),
-                              gameScore(),
-                              SizedBox(
-                                height: 1.w,
-                              ),
-                            ],
-                          )),
-                      Spacer(),
-                    ],
+
+          StreamBuilder<DocumentSnapshot>(
+            stream: firestore.collection('User').doc(userId).snapshots(),
+            builder: (context, streamSnapshot) {
+              if (streamSnapshot.hasError) {
+                return Text('It\'s Error!');
+              }
+              if (!streamSnapshot.hasData || !streamSnapshot.data!.exists)
+                return Center(
+                  child: SizedBox(
+                    height: 1.h,
+                    width: 1.w,
+                    child: CircularProgressIndicator(
+                      backgroundColor: Colors.white12,
+                      color: Colors.white12,
+                    ),
                   ),
-                ),
-                (level == 'Level_1' && levelId == 0)
-                    ? Showcase(
-                        description: AllStrings.showCaseProfilePageText,
-                        descTextStyle: AllTextStyles.workSansSmall(fontSize: 12.sp),
-                        animationDuration: Duration(milliseconds: 500),
-                        key: widget.keyValue!,
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 6.w, right: 8.w),
-                          child: GestureDetector(
-                              onTap: () async {
-                                DocumentSnapshot doc = await FirebaseFirestore
-                                    .instance
-                                    .collection('User')
-                                    .doc(userId)
-                                    .get();
-                                Object? map = doc.data();
-                                if (map.toString().contains('user_name')) {
-                                  Get.to(
-                                    () => SettingsPage(),
-                                    duration: Duration(milliseconds: 500),
-                                    transition: Transition.downToUp,
-                                  );
-                                } else {
-                                  firestore.collection('User').doc(userId).set(
-                                      {'user_name': ''},
-                                      SetOptions(
-                                          merge: true)).then((value) => Get.to(
+                );
+              return Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      height: 17.w,
+                      width: 56.w,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.w),
+                          color: Colors.white),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            height: 17.w,
+                            width: 14.w,
+                            // color: AllColors.red,
+                            child: Padding(
+                                padding: EdgeInsets.only(
+                                    left: ((streamSnapshot.data
+                                                    ?.data()
+                                                    .toString()
+                                                    .contains(
+                                                        'pop_quiz_point_changed') ==
+                                                true) &&
+                                            streamSnapshot.data![
+                                                    'pop_quiz_point_changed'] ==
+                                                true)
+                                        ? 1.w
+                                        : 3.w),
+                                child: Container(
+                                  child: Image.asset(
+                                    ((streamSnapshot.data
+                                                    ?.data()
+                                                    .toString()
+                                                    .contains(
+                                                        'pop_quiz_point_changed') ==
+                                                true) &&
+                                            streamSnapshot.data![
+                                                    'pop_quiz_point_changed'] ==
+                                                true)
+                                        ? AllImages.gifForPopQuiz
+                                        : AllImages.star,
+                                    width:
+                                        //14.w,
+                                        10.w,
+                                    height:
+                                        //17.w,
+                                        6.h,
+                                    fit: BoxFit.contain,
+                                    //color: Colors.white,
+                                  ),
+                                  // child: StreamBuilder<DocumentSnapshot>(
+                                  //   stream: firestore
+                                  //       .collection('User')
+                                  //       .doc(userId)
+                                  //       .snapshots(),
+                                  //   builder: (context, streamSnapshot) {
+                                  //     if (streamSnapshot.hasError) {
+                                  //       return Text('It\'s Error!');
+                                  //     }
+                                  //     if (!streamSnapshot.hasData ||
+                                  //         !streamSnapshot.data!.exists)
+                                  //       return Center(
+                                  //         child: SizedBox(
+                                  //           height: 1.h,
+                                  //           width: 1.w,
+                                  //           child: CircularProgressIndicator(
+                                  //             backgroundColor: Colors.white12,
+                                  //             color: Colors.white12,
+                                  //           ),
+                                  //         ),
+                                  //       );
+                                  //
+                                  //     return FittedBox(
+                                  //       child: Image.asset(
+                                  //         streamSnapshot.data!['pop_quiz_point_changed'] == true
+                                  //             ? AllImages.starGif
+                                  //             : AllImages.star,
+                                  //         // width:   (popQuizPointChanges == true) ? 14.w :10.w,
+                                  //         // height: (popQuizPointChanges == true) ? 17.w : 6.h,
+                                  //         fit: BoxFit.fitWidth,
+                                  //       ),
+                                  //     );
+                                  //     // }
+                                  //   },
+                                  // ),
+                                )),
+                          ),
+                          Spacer(),
+                          Container(
+                              height: 17.w,
+                              width: 42.w,
+                              //  color: Colors.green,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    height: 1.w,
+                                  ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: Container(
+                                      child: Text('GAME SCORE',
+                                          style: AllTextStyles.dialogStyleSmall(
+                                              fontWeight: FontWeight.w500,
+                                              color: AllColors.extraDarkPurple),
+                                          maxLines: 1),
+                                      alignment: Alignment.center,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: FittedBox(
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                            right: 5.w, left: 2.w),
+                                        child: GradientText(
+                                            text:
+                                                '${'${streamSnapshot.data!['game_score'].toString()}'}'
+                                                    .toString(),
+                                            style: AllTextStyles.gameScore(),
+                                            gradient: LinearGradient(
+                                                colors: [
+                                                  AllColors.darkBlue,
+                                                  AllColors.darkPink
+                                                ],
+                                                transform: GradientRotation(
+                                                    math.pi / 2))),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 1.w,
+                                  ),
+                                ],
+                              )),
+                          Spacer(),
+                        ],
+                      ),
+                    ),
+                    (level == 'Level_1' && levelId == 0)
+                        ? Showcase(
+                            description: AllStrings.showCaseProfilePageText,
+                            descTextStyle:
+                                AllTextStyles.workSansSmall(fontSize: 12.sp),
+                            animationDuration: Duration(milliseconds: 500),
+                            key: widget.keyValue!,
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 6.w, right: 8.w),
+                              child: GestureDetector(
+                                  onTap: () async {
+                                    DocumentSnapshot doc =
+                                        await FirebaseFirestore.instance
+                                            .collection('User')
+                                            .doc(userId)
+                                            .get();
+                                    Object? map = doc.data();
+                                    if (map.toString().contains('user_name')) {
+                                      Get.to(
                                         () => SettingsPage(),
                                         duration: Duration(milliseconds: 500),
                                         transition: Transition.downToUp,
-                                      ));
-                                }
-                              },
-                              child: Image.asset(
-                                AllImages.profileThreeLine,
-                                width: 6.w,
-                                height: 15.w,
-                                fit: BoxFit.contain,
-                              )),
-                        ),
-                      )
-                    : Padding(
-                        padding: EdgeInsets.only(left: 6.w, right: 8.w),
-                        child: GestureDetector(
-                            onTap: () async {
-                              Get.to(() => SettingsPage());
-                            },
-                            child: Image.asset(
-                              AllImages.profileThreeLine,
-                              width: 6.w,
-                              height: 15.w,
-                              fit: BoxFit.contain,
-                            )),
-                      ),
-              ],
-            ),
+                                      );
+                                    } else {
+                                      firestore
+                                          .collection('User')
+                                          .doc(userId)
+                                          .set({
+                                        'user_name': ''
+                                      }, SetOptions(merge: true)).then(
+                                              (value) => Get.to(
+                                                    () => SettingsPage(),
+                                                    duration: Duration(
+                                                        milliseconds: 500),
+                                                    transition:
+                                                        Transition.downToUp,
+                                                  ));
+                                    }
+                                  },
+                                  child: Image.asset(
+                                    AllImages.profileThreeLine,
+                                    width: 6.w,
+                                    height: 15.w,
+                                    fit: BoxFit.contain,
+                                  )),
+                            ),
+                          )
+                        : Padding(
+                            padding: EdgeInsets.only(left: 6.w, right: 8.w),
+                            child: GestureDetector(
+                                onTap: () async {
+                                  Get.to(() => SettingsPage());
+                                },
+                                child: Image.asset(
+                                  AllImages.profileThreeLine,
+                                  width: 6.w,
+                                  height: 15.w,
+                                  fit: BoxFit.contain,
+                                )),
+                          ),
+                  ],
+                ),
+              );
+              // popQuiz= streamSnapshot.data!['pop_quiz_point_changed'];
+              // return FittedBox(
+              //   child: Padding(
+              //     padding: EdgeInsets.only(right: 5.w, left: 2.w),
+              //     child: GradientText(
+              //         text:
+              //             '${'${streamSnapshot.data!['game_score'].toString()}'}'
+              //                 .toString(),
+              //         style: AllTextStyles.gameScore(),
+              //         gradient: LinearGradient(
+              //             colors: [AllColors.darkBlue, AllColors.darkPink],
+              //             transform: GradientRotation(math.pi / 2))),
+              //   ),
+              // );
+              // }
+            },
           ),
+
           if (level == 'Level_2_Pop_Quiz' && level == 'Level_3_Pop_Quiz')
             Padding(
                 padding: EdgeInsets.only(
@@ -220,55 +355,56 @@ class _GameScorePageState extends State<GameScorePage> {
                 ),
                 child: widget.document['month'] == 0
                     ? _text('MONTH 1/30')
-                    : _text(
-                        'MONTH ' + widget.document['month'].toString() + '/30')),
+                    : _text('MONTH ' +
+                        widget.document['month'].toString() +
+                        '/30')),
         ],
       ),
     );
   }
 
-  gameScore() {
-    return Expanded(
-      flex: 2,
-      child: Container(
-        alignment: Alignment.center,
-        child: StreamBuilder<DocumentSnapshot>(
-          stream: firestore.collection('User').doc(userId).snapshots(),
-          builder: (context, streamSnapshot) {
-            if (streamSnapshot.hasError) {
-              return Text('It\'s Error!');
-            }
-            if (!streamSnapshot.hasData || !streamSnapshot.data!.exists)
-              return Center(
-                child: SizedBox(
-                  height: 1.h,
-                  width: 1.w,
-                  child: CircularProgressIndicator(
-                    backgroundColor: Colors.white12,
-                    color: Colors.white12,
-                  ),
-                ),
-              );
-
-            return FittedBox(
-              child: Padding(
-                padding: EdgeInsets.only(right: 5.w, left: 2.w),
-                child: GradientText(
-                    text:
-                        '${'${streamSnapshot.data!['game_score'].toString()}'}'
-                            .toString(),
-                    style: AllTextStyles.gameScore(),
-                    gradient:  LinearGradient(
-                        colors: [AllColors.darkBlue, AllColors.darkPink],
-                        transform: GradientRotation(math.pi / 2))),
-              ),
-            );
-            // }
-          },
-        ),
-      ),
-    );
-  }
+  // gameScore() {
+  //   return Expanded(
+  //     flex: 2,
+  //     child: Container(
+  //       alignment: Alignment.center,
+  //       child: StreamBuilder<DocumentSnapshot>(
+  //         stream: firestore.collection('User').doc(userId).snapshots(),
+  //         builder: (context, streamSnapshot) {
+  //           if (streamSnapshot.hasError) {
+  //             return Text('It\'s Error!');
+  //           }
+  //           if (!streamSnapshot.hasData || !streamSnapshot.data!.exists)
+  //             return Center(
+  //               child: SizedBox(
+  //                 height: 1.h,
+  //                 width: 1.w,
+  //                 child: CircularProgressIndicator(
+  //                   backgroundColor: Colors.white12,
+  //                   color: Colors.white12,
+  //                 ),
+  //               ),
+  //             );
+  //           // popQuiz= streamSnapshot.data!['pop_quiz_point_changed'];
+  //           // return FittedBox(
+  //           //   child: Padding(
+  //           //     padding: EdgeInsets.only(right: 5.w, left: 2.w),
+  //           //     child: GradientText(
+  //           //         text:
+  //           //             '${'${streamSnapshot.data!['game_score'].toString()}'}'
+  //           //                 .toString(),
+  //           //         style: AllTextStyles.gameScore(),
+  //           //         gradient: LinearGradient(
+  //           //             colors: [AllColors.darkBlue, AllColors.darkPink],
+  //           //             transform: GradientRotation(math.pi / 2))),
+  //           //   ),
+  //           // );
+  //           // }
+  //         },
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _text(String text) => Text(
         text,

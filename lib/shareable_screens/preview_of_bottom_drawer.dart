@@ -89,19 +89,19 @@ class _PreviewOfBottomDrawerState extends State<PreviewOfBottomDrawer>
   }
 
   _savingBalance() {
-    return getValues('account_balance', AllColors.darkYellow);
+    return getValues(text: 'account_balance', color: AllColors.darkYellow);
   }
 
   _creditScore() {
-    return getValues('credit_score', AllColors.lightGreen);
+    return getValues(text: 'credit_score', color: AllColors.lightGreen);
   }
 
   _netWorth() {
-    return getValues('investment', AllColors.orange);
+    return getValues(text: 'investment', color: AllColors.orange);
   }
 
   _qualityOfLife() {
-    return getValues('quality_of_life', AllColors.extraLightBlue);
+    return getValues(text: 'quality_of_life', color: AllColors.extraLightBlue);
   }
 
   Widget bottomValue(Widget widget, String image) => Container(
@@ -136,55 +136,61 @@ class _PreviewOfBottomDrawerState extends State<PreviewOfBottomDrawer>
         ),
       );
 
-  Widget getValues(String text, Color color) => StreamBuilder<DocumentSnapshot>(
-        stream: firestore.collection('User').doc(userId).snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Text('It\'s Error!');
-          }
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return Center(
-                  child: Padding(
-                padding: EdgeInsets.only(bottom: 2.w),
-                child: SizedBox(
-                  height: 3.h,
-                  width: 6.w,
-                  child: CircularProgressIndicator(
-                    backgroundColor: Colors.white10,
-                    color: Colors.white10,
-                  ),
+  Widget getValues({String? text, Color? color}) {
+    return StreamBuilder<DocumentSnapshot>(
+      stream: firestore.collection('User').doc(userId).snapshots(),
+      builder: (context, snapshot) {
+        //print('country ${snapshot.data!.data().toString().contains('country')}');
+        if (snapshot.hasError) {
+          return Text('It\'s Error!');
+        }
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return Center(
+                child: Padding(
+              padding: EdgeInsets.only(bottom: 2.w),
+              child: SizedBox(
+                height: 3.h,
+                width: 6.w,
+                child: CircularProgressIndicator(
+                  backgroundColor: Colors.white10,
+                  color: Colors.white10,
                 ),
-              ));
-            default:
-              return Container(
-                child: RichText(
-                  text: TextSpan(children: [
-                    if (text == 'account_balance')
-                      TextSpan(
-                        text: '\$',
-                        style: AllTextStyles.dialogStyleMedium(
-                          color: color,
-                          size: 16.sp,
-                        ),
-                      ),
+              ),
+            ));
+          default:
+            return Container(
+              child: RichText(
+                text: TextSpan(children: [
+                  if (text == 'account_balance')
                     TextSpan(
-                      text: snapshot.data![text].toString().length >= 5
-                          ? Numeral(snapshot.data![text].toInt().ceil())
-                              .format(fractionDigits: 1)
-                              .toString()
-                          : snapshot.data![text].toString(),
+                      text: country == 'India'
+                              ? '\u{20B9}' : country == 'Europe'? '\€'
+                              : '\$',
                       style: AllTextStyles.dialogStyleMedium(
                         color: color,
                         size: 16.sp,
                       ),
-                    )
-                  ]),
-                ),
-              );
-          }
-        },
-      );
+                    ),
+                  TextSpan(
+                    text: snapshot.data![text.toString()].toString().length >= 5
+                        ? Numeral(
+                                snapshot.data![text.toString()].toInt().ceil())
+                            .format(fractionDigits: 1)
+                            .toString()
+                        : snapshot.data![text.toString()].toString(),
+                    style: AllTextStyles.dialogStyleMedium(
+                      color: color,
+                      size: 16.sp,
+                    ),
+                  )
+                ]),
+              ),
+            );
+        }
+      },
+    );
+  }
 
   previewWidget() {
     return Column(

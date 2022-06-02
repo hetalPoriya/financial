@@ -1,6 +1,8 @@
-
 import 'package:financial/shareable_screens/comman_functions.dart';
 import 'package:financial/utils/all_colors.dart';
+import 'package:financial/utils/all_strings.dart';
+import 'package:financial/utils/all_strings.dart';
+import 'package:financial/utils/all_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -14,12 +16,12 @@ class FundAllocationScreen extends StatelessWidget {
 
   const FundAllocationScreen(
       {Key? key,
-        required this.totalMutualFund,
-        required this.lastMonthIncDecValue,
-        required this.netWorth,
-        required this.color,
-        required this.widget,
-        required this.onPressed})
+      required this.totalMutualFund,
+      required this.lastMonthIncDecValue,
+      required this.netWorth,
+      required this.color,
+      required this.widget,
+      required this.onPressed})
       : super(key: key);
 
   @override
@@ -45,23 +47,25 @@ class FundAllocationScreen extends StatelessWidget {
                   height: 2.h,
                 ),
                 normalText(
-                    'Monthly Discretionary Fund', 18.sp, FontWeight.w600),
-                richText('Invested Amount :  ',
-                    '${'\$' + totalMutualFund.toString()}', 1.h),
+                    text: 'Monthly Discretionary Fund', fontSize: 18.sp, fontWeight: FontWeight.w600),
                 richText(
-                    'Previous Month Value:  ',
-                    '${'\$' + netWorth.toString()}',
-                    0.h,
-                    2.w,
-                    2.w,
-                    TextAlign.center),
-                richText('Current Value : ',
-                    '${'\$' + lastMonthIncDecValue.toString()}', 0.h),
+                    text1: 'Invested Amount :  ',
+                    text2: '${AllStrings.countrySymbol + totalMutualFund.toString()}',
+                    paddingTop: 1.h),
+                richText(
+                    text1: 'Previous Month Value:  ',
+                    text2: '${AllStrings.countrySymbol + netWorth.toString()}',
+                    paddingTop: 0.h,
+                    paddingLeft: 2.w,
+                    paddingRight: 2.w,
+                    textAlign: TextAlign.center),
+                richText(text1: 'Current Value : ',
+                    text2: '${AllStrings.countrySymbol + lastMonthIncDecValue.toString()}', ),
                 SizedBox(
                   height: 2.h,
                 ),
                 widget,
-                buttonStyle(color, 'Done ', onPressed),
+                buttonStyle(color: color, text: 'Done ', onPressed: onPressed),
                 SizedBox(
                   height: 2.h,
                 ),

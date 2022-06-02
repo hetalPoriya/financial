@@ -455,8 +455,8 @@ class _LevelFourAndFiveOptionsState extends State<LevelFourAndFiveOptions>
                                                   child: _text(
                                                     level ==
                                                             'Level_4_setUp_page'
-                                                        ? ' \$ ${_controller.bills[index1].optionsValue![index].rent}/month'
-                                                        : 'EMI \$ ${_controller.bills[index1].optionsValue![index].rent}/month',
+                                                        ? ' ${AllStrings.countrySymbol} ${_controller.bills[index1].optionsValue![index].rent}/month'
+                                                        : 'EMI ${AllStrings.countrySymbol} ${_controller.bills[index1].optionsValue![index].rent}/month',
                                                     Colors.white,
                                                     FontWeight.w400,
                                                     14.sp,
@@ -626,32 +626,21 @@ class _LevelFourAndFiveOptionsState extends State<LevelFourAndFiveOptions>
                                                               .update({
                                                             if (replayLevel !=
                                                                 true)
-                                                              'last_level':
-                                                                  'Level_4',
-                                                            'previous_session_info':
-                                                                'Level_4',
-                                                            'account_balance':
-                                                                2000,
-                                                            'bill_payment':
-                                                                level4TotalPrice,
-                                                            'credit_card_balance':
-                                                                0,
-                                                            'credit_card_bill':
-                                                                0,
-                                                            'credit_score': 0,
+                                                              'last_level': 'Level_4',
+                                                            'previous_session_info': 'Level_4',
+                                                            'account_balance': 2000,
+                                                            'bill_payment': level4TotalPrice,
                                                             'level_id': 0,
-                                                            'payable_bill': 0,
-                                                            'quality_of_life':
-                                                                0,
-                                                            'score': 0,
+                                                            'quality_of_life': 0,
                                                             'need': 0,
                                                             'want': 0,
                                                             'mutual_fund': 0,
-                                                            'home_loan': 0,
-                                                            'transport_loan': 0,
-                                                            'investment': 0
+                                                            'investment': 0,
+                                                            'level_4_investment': 0,
+                                                            'level_4_balance': 2000,
+                                                            'level_4_qol': 0
                                                           }).then((value) {
-                                                            getUser(4)
+                                                            getUser(levelId: 4)
                                                                 .then((value) {
                                                               Get.off(
                                                                 () =>
@@ -721,6 +710,12 @@ class _LevelFourAndFiveOptionsState extends State<LevelFourAndFiveOptions>
                                                                 'score': 0,
                                                                 'need': 0,
                                                                 'want': 0,
+                                                                'level_5_investment':
+                                                                    0,
+                                                                'level_5_balance':
+                                                                2000,
+                                                                'level_5_qol':
+                                                                    0,
                                                                 'mutual_fund':
                                                                     0,
                                                                 'home_loan':
@@ -738,7 +733,7 @@ class _LevelFourAndFiveOptionsState extends State<LevelFourAndFiveOptions>
                                                                       merge:
                                                                           true)).then(
                                                                   (value) {
-                                                            getUser(4)
+                                                            getUser(levelId: 5)
                                                                 .then((value) {
                                                               Get.off(
                                                                 () =>

@@ -9,11 +9,13 @@ import 'package:financial/models/que_model.dart';
 import 'package:financial/utils/all_colors.dart';
 import 'package:financial/utils/all_strings.dart';
 import 'package:financial/utils/all_textStyle.dart';
+import 'package:financial/views/coming_soon.dart';
 import 'package:financial/views/level_four_setUp_page.dart';
 import 'package:financial/views/level_three_setUp_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:sizer/sizer.dart';
 
 import 'local_notify_manager.dart';
@@ -76,12 +78,29 @@ class _PopQuizState extends State<PopQuiz> with SingleTickerProviderStateMixin {
         list.add(queModel!);
       });
     }
+
     return null;
+  }
+
+  static Future<int> totalUsers() async {
+    var userId = GetStorage().read('uId');
+    final collection =
+        FirebaseFirestore.instance.collection('User').snapshots();
+    print('Collection ${collection.length}');
+    DocumentSnapshot documentSnapshot = await firestore
+        .collection('Pop_Quiz_Calculation')
+        .doc('Level2Question1')
+        .get();
+    var arr = documentSnapshot['ans_a_all_user'];
+    arr.toString().contains('${userId.toString()}');
+    print('aaa ${arr.toString().contains('${userId.toString()}')}');
+    return collection.length;
   }
 
   @override
   void initState() {
     super.initState();
+    totalUsers();
     getLevelId();
     _controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 500));
@@ -104,23 +123,17 @@ class _PopQuizState extends State<PopQuiz> with SingleTickerProviderStateMixin {
         decoration: boxDecoration,
         child: list.isEmpty
             ? Center(
-                child: CircularProgressIndicator(
-                    backgroundColor: AllColors.blue))
+                child:
+                    CircularProgressIndicator(backgroundColor: AllColors.blue))
             : StreamBuilder<QuerySnapshot>(
-                stream: popQuiz == 'Level_2_Pop_Quiz'
-                    ? firestore
-                        .collection('Level_2_Pop_Quiz')
-                        .orderBy('id')
-                        .snapshots()
-                    : popQuiz == 'Level_3_Pop_Quiz'
-                        ? firestore
-                            .collection('Level_3_Pop_Quiz')
-                            .orderBy('id')
-                            .snapshots()
-                        : firestore
-                            .collection('Level_4_Pop_Quiz')
-                            .orderBy('id')
-                            .snapshots(),
+                stream: firestore
+                    .collection(popQuiz == 'Level_2_Pop_Quiz'
+                        ? 'Level_2_Pop_Quiz'
+                        : popQuiz == 'Level_3_Pop_Quiz'
+                            ? 'Level_3_Pop_Quiz'
+                            : 'Level_4_Pop_Quiz')
+                    .orderBy('id')
+                    .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     return Text('It\'s Error!');
@@ -159,7 +172,7 @@ class _PopQuizState extends State<PopQuiz> with SingleTickerProviderStateMixin {
                         return Scaffold(
                             backgroundColor: Colors.transparent,
                             body: DoubleBackToCloseApp(
-                              snackBar:  SnackBar(
+                              snackBar: SnackBar(
                                 content: Text(AllStrings.tapBack),
                               ),
                               child: Container(
@@ -219,66 +232,80 @@ class _PopQuizState extends State<PopQuiz> with SingleTickerProviderStateMixin {
                                                           'correct_ans'];
                                                       return Column(
                                                         children: [
-                                                          options(() {
-                                                            _checkCorrectAnswer(
-                                                                ans,
-                                                                _setState,
-                                                                document,
-                                                                index,
-                                                                1);
-                                                          },
-                                                              index,
-                                                              document[
-                                                                  'option_1'],
-                                                              color1,
-                                                              1),
-                                                          options(() {
-                                                            _checkCorrectAnswer(
-                                                                ans,
-                                                                _setState,
-                                                                document,
-                                                                index,
-                                                                2);
-                                                          },
-                                                              index,
-                                                              document[
-                                                                  'option_2'],
-                                                              color2,
-                                                              2),
-                                                          if (popQuiz ==
-                                                                  'Level_2_Pop_Quiz' ||
-                                                              popQuiz ==
-                                                                  'Level_3_Pop_Quiz')
-                                                            options(() {
+                                                          options(
+                                                            onPressed: () {
                                                               _checkCorrectAnswer(
                                                                   ans,
                                                                   _setState,
                                                                   document,
                                                                   index,
-                                                                  3);
+                                                                  1);
                                                             },
-                                                                index,
-                                                                document[
-                                                                    'option_3'],
-                                                                color3,
-                                                                3),
-                                                          if (popQuiz ==
-                                                                  'Level_2_Pop_Quiz' ||
-                                                              popQuiz ==
-                                                                  'Level_3_Pop_Quiz')
-                                                            options(() {
+                                                            index: index,
+                                                            document: document,
+                                                            color: color1,
+                                                            i: 1,
+                                                            text: document[
+                                                                'option_1'],
+                                                          ),
+                                                          options(
+                                                            onPressed: () {
                                                               _checkCorrectAnswer(
                                                                   ans,
                                                                   _setState,
                                                                   document,
                                                                   index,
-                                                                  4);
+                                                                  2);
                                                             },
-                                                                index,
-                                                                document[
-                                                                    'option_4'],
-                                                                color4,
-                                                                4),
+                                                            index: index,
+                                                            document: document,
+                                                            color: color2,
+                                                            i: 2,
+                                                            text: document[
+                                                                'option_2'],
+                                                          ),
+                                                          if (popQuiz ==
+                                                                  'Level_2_Pop_Quiz' ||
+                                                              popQuiz ==
+                                                                  'Level_3_Pop_Quiz')
+                                                            options(
+                                                              onPressed: () {
+                                                                _checkCorrectAnswer(
+                                                                    ans,
+                                                                    _setState,
+                                                                    document,
+                                                                    index,
+                                                                    3);
+                                                              },
+                                                              index: index,
+                                                              document:
+                                                                  document,
+                                                              color: color3,
+                                                              i: 3,
+                                                              text: document[
+                                                                  'option_3'],
+                                                            ),
+                                                          if (popQuiz ==
+                                                                  'Level_2_Pop_Quiz' ||
+                                                              popQuiz ==
+                                                                  'Level_3_Pop_Quiz')
+                                                            options(
+                                                              onPressed: () {
+                                                                _checkCorrectAnswer(
+                                                                    ans,
+                                                                    _setState,
+                                                                    document,
+                                                                    index,
+                                                                    4);
+                                                              },
+                                                              index: index,
+                                                              document:
+                                                                  document,
+                                                              color: color4,
+                                                              i: 4,
+                                                              text: document[
+                                                                  'option_4'],
+                                                            ),
                                                           // Padding(
                                                           //     padding: EdgeInsets
                                                           //         .only(
@@ -639,8 +666,8 @@ class _PopQuizState extends State<PopQuiz> with SingleTickerProviderStateMixin {
                                                     shape: MaterialStateProperty.all(
                                                         RoundedRectangleBorder(
                                                             side: BorderSide(
-                                                              color:
-                                                                  AllColors.blue,
+                                                              color: AllColors
+                                                                  .blue,
                                                             ),
                                                             borderRadius:
                                                                 BorderRadius.circular(
@@ -654,10 +681,6 @@ class _PopQuizState extends State<PopQuiz> with SingleTickerProviderStateMixin {
                                                             fontSize: 12.sp)))
                                             : ElevatedButton(
                                                 onPressed: () async {
-                                                  // SharedPreferences pref =
-                                                  //     await SharedPreferences
-                                                  //         .getInstance();
-                                                  // userId = pref.get('uId');
                                                   userId =
                                                       getCredential.read('uId');
                                                   if (index ==
@@ -674,165 +697,10 @@ class _PopQuizState extends State<PopQuiz> with SingleTickerProviderStateMixin {
                                                         list[index]
                                                                 .isSelected4 ==
                                                             true) {
-
-                                                      if(popQuiz == 'Level_2_Pop_Quiz'){
-                                                        // await localNotifyManager.flutterLocalNotificationsPlugin.cancel(22);
-                                                        // await localNotifyManager.repeatNotificationLevel3();
-                                                        await localNotifyManager.flutterLocalNotificationsPlugin.cancel(2);
-                                                        await localNotifyManager.flutterLocalNotificationsPlugin.cancel(8);
-                                                        await localNotifyManager.scheduleNotificationForLevelThreeSaturdayElevenAm();
-                                                        await localNotifyManager.scheduleNotificationForLevelThreeWednesdaySevenPm();
-                                                      }
-                                                      if(popQuiz == 'Level_3_Pop_Quiz'){
-                                                        // await localNotifyManager.flutterLocalNotificationsPlugin.cancel(23);
-                                                        // await localNotifyManager.repeatNotificationLevel4();
-                                                        await localNotifyManager.flutterLocalNotificationsPlugin.cancel(3);
-                                                        await localNotifyManager.flutterLocalNotificationsPlugin.cancel(9);
-                                                        await localNotifyManager.scheduleNotificationForLevelFourSaturdayElevenAm();
-                                                        await localNotifyManager.scheduleNotificationForLevelFourWednesdaySevenPm();
-                                                      }
-                                                      if(popQuiz == 'Level_4_Pop_Quiz'){
-                                                        //await localNotifyManager.flutterLocalNotificationsPlugin.cancel(24);
-                                                        await localNotifyManager.flutterLocalNotificationsPlugin.cancel(4);
-                                                        await localNotifyManager.flutterLocalNotificationsPlugin.cancel(10);
-                                                      }
-
-                                                      DocumentSnapshot
-                                                          documentSnapshot =
-                                                          await firestore
-                                                              .collection(
-                                                                  'User')
-                                                              .doc(userId)
-                                                              .get();
-                                                      bool value =
-                                                          documentSnapshot.get(
-                                                              'replay_level');
-                                                      // level = documentSnapshot
-                                                      //     .get('last_level');
-                                                      // int myBal = documentSnapshot
-                                                      //     .get('account_balance');
-                                                      // level = level
-                                                      //     .toString()
-                                                      //     .substring(6, 7);
-                                                      // int lev = int.parse(level);
-                                                      // if (value == true) {
-                                                      //   Future.delayed(
-                                                      //       Duration(seconds: 1),
-                                                      //       () => showDialogForReplay(lev, userId));
-                                                      // } else {
-                                                      firestore
-                                                          .collection('User')
-                                                          .doc(userId)
-                                                          .update({
-                                                        'previous_session_info': popQuiz ==
-                                                                'Level_2_Pop_Quiz'
-                                                            ? 'Level_3_setUp_page'
-                                                            : popQuiz ==
-                                                                    'Level_3_Pop_Quiz'
-                                                                ? 'Level_4_setUp_page'
-                                                                //: 'Level_5_setUp_page',
-                                                                : 'Coming_soon',
-                                                        'level_id': 0,
-                                                        'bill_payment': 0,
-                                                        'credit_card_balance':
-                                                            0,
-                                                        'credit_card_bill': 0,
-                                                        'credit_score': 0,
-                                                        'payable_bill': 0,
-                                                        'score': 0,
-                                                        if (value != true)
-                                                          'last_level': popQuiz ==
-                                                                  'Level_2_Pop_Quiz'
-                                                              ? 'Level_3_setUp_page'
-                                                              // : 'Coming_soon',
-                                                              // 'last_level'
-                                                              : popQuiz ==
-                                                                      'Level_3_Pop_Quiz'
-                                                                  ? 'Level_4_setUp_page'
-                                                                  : 'Level_4_setUp_page',
-                                                        //: 'Level_5_setUp_page',
-                                                        'need': 0,
-                                                        'want': 0,
-                                                      });
-                                                      popQuiz ==
-                                                              'Level_2_Pop_Quiz'
-                                                          ? firestore
-                                                              .collection(
-                                                                  'User')
-                                                              .doc(userId)
-                                                              .update({
-                                                              'level_id':
-                                                                  index + 1,
-                                                              'level_2_popQuiz_id':
-                                                                  index + 1,
-                                                            }).then((value) {
-                                                              Future.delayed(
-                                                                  Duration(
-                                                                      seconds:
-                                                                          2),
-                                                                  () => Get.off(
-                                                                        () =>
-                                                                            LevelThreeSetUpPage(),
-                                                                        duration:
-                                                                            Duration(milliseconds: 500),
-                                                                        transition:
-                                                                            Transition.downToUp,
-                                                                      ));
-                                                            })
-                                                          : popQuiz ==
-                                                                  'Level_3_Pop_Quiz'
-                                                              ? firestore
-                                                                  .collection(
-                                                                      'User')
-                                                                  .doc(userId)
-                                                                  .update({
-                                                                  'level_id':
-                                                                      index + 1,
-                                                                  'level_3_popQuiz_id':
-                                                                      index + 1,
-                                                                }).then(
-                                                                      (value) {
-                                                                  Future.delayed(
-                                                                      Duration(seconds: 2),
-                                                                      () =>
-                                                                          // Get.off(() => ComingSoon(),
-                                                                          Get.off(
-                                                                            () =>
-                                                                                LevelFourSetUpPage(),
-                                                                            duration:
-                                                                                Duration(milliseconds: 500),
-                                                                            transition:
-                                                                                Transition.downToUp,
-                                                                          ));
-                                                                })
-                                                              : firestore
-                                                                  .collection(
-                                                                      'User')
-                                                                  .doc(userId)
-                                                                  .update({
-                                                                  'level_id':
-                                                                      index + 1,
-                                                                  'level_4_popQuiz_id':
-                                                                      index + 1,
-                                                                }).then(
-                                                                      (value) {
-                                                                  inviteDialog();
-                                                                  // Future.delayed(
-                                                                  //     Duration(
-                                                                  //         seconds:
-                                                                  //         2),
-                                                                  //         () =>
-                                                                  //     Get.offAll(() => ComingSoon(),
-                                                                  //     // Get.off(
-                                                                  //     //       () =>
-                                                                  //     //       LevelFiveSetUpPage(),
-                                                                  //       duration:
-                                                                  //       Duration(milliseconds: 500),
-                                                                  //       transition:
-                                                                  //       Transition.downToUp,
-                                                                  //     ));
-                                                                });
-                                                      //}
+                                                      _whenLevelComplete(
+                                                          index: index + 1,
+                                                          userId: userId,
+                                                          popQuiz: popQuiz);
                                                     }
                                                   } else {
                                                     if (list[index].isSelected1 == true ||
@@ -845,30 +713,10 @@ class _PopQuizState extends State<PopQuiz> with SingleTickerProviderStateMixin {
                                                         list[index]
                                                                 .isSelected4 ==
                                                             true) {
-                                                      firestore
-                                                          .collection('User')
-                                                          .doc(userId)
-                                                          .update({
-                                                        'level_id': index + 1,
-                                                        if (popQuiz ==
-                                                            'Level_2_Pop_Quiz')
-                                                          'level_2_popQuiz_id':
-                                                              index + 1,
-                                                        if (popQuiz ==
-                                                            'Level_3_Pop_Quiz')
-                                                          'level_3_popQuiz_id':
-                                                              index + 1,
-                                                        if (popQuiz ==
-                                                            'Level_4_Pop_Quiz')
-                                                          'level_4_popQuiz_id':
-                                                              index + 1,
-                                                      }).then((value) {
-                                                        controller.nextPage(
-                                                            duration: Duration(
-                                                                seconds: 1),
-                                                            curve:
-                                                                Curves.easeIn);
-                                                      });
+                                                      _whenLevelNotComplete(
+                                                          index: index + 1,
+                                                          userId: userId,
+                                                          popQuiz: popQuiz);
                                                     }
                                                   }
                                                 },
@@ -878,8 +726,7 @@ class _PopQuizState extends State<PopQuiz> with SingleTickerProviderStateMixin {
                                                             .all(Colors.white),
                                                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
                                                         side: BorderSide(
-                                                          color:
-                                                              AllColors.blue,
+                                                          color: AllColors.blue,
                                                         ),
                                                         borderRadius: BorderRadius.circular(4.w)))),
                                                 child: Text('Tap To Move Next Question',
@@ -887,7 +734,8 @@ class _PopQuizState extends State<PopQuiz> with SingleTickerProviderStateMixin {
                                                       fontSize: 12.sp,
                                                       fontWeight:
                                                           FontWeight.w500,
-                                                      color:AllColors.extraDarkPurple,
+                                                      color: AllColors
+                                                          .extraDarkPurple,
                                                     )))),
                                     Spacer(),
                                   ],
@@ -905,53 +753,250 @@ class _PopQuizState extends State<PopQuiz> with SingleTickerProviderStateMixin {
   _checkCorrectAnswer(
       String ans, StateSetter _setState, var document, int index, int i) {
     _setState(() {
+      if ((ans == 'a' && i == 1) ||
+          (ans == 'b' && i == 2) ||
+          (ans == 'c' && i == 3) ||
+          (ans == 'd' && i == 4)) {
+        firestore.collection('User').doc(userId).update(
+          {
+            'game_score': FieldValue.increment(5),
+            'pop_quiz_point_changed': true
+          },
+        );
+      }
+
+      String myLevelQueId1 = popQuiz == 'Level_2_Pop_Quiz'
+          ? 'Level2Question1'
+          : popQuiz == 'Level_3_Pop_Quiz'
+              ? 'Level3Question1'
+              : 'Level4Question1';
+
+      String myLevelQueId2 = popQuiz == 'Level_2_Pop_Quiz'
+          ? 'Level2Question2'
+          : popQuiz == 'Level_3_Pop_Quiz'
+              ? 'Level3Question2'
+              : 'Level4Question2';
+
+      String myLevelQueId3 = popQuiz == 'Level_2_Pop_Quiz'
+          ? 'Level2Question3'
+          : popQuiz == 'Level_3_Pop_Quiz'
+              ? 'Level3Question3'
+              : 'Level4Question3';
+
+      String myLevelQueId4 = popQuiz == 'Level_2_Pop_Quiz'
+          ? 'Level2Question4'
+          : popQuiz == 'Level_3_Pop_Quiz'
+              ? 'Level3Question4'
+              : 'Level4Question4';
+
+      String myLevelQueId5 = popQuiz == 'Level_2_Pop_Quiz'
+          ? 'Level2Question5'
+          : popQuiz == 'Level_3_Pop_Quiz'
+              ? 'Level3Question5'
+              : 'Level4Question5';
+
+      String myLevelQueId6 = popQuiz == 'Level_2_Pop_Quiz'
+          ? 'Level2Question6'
+          : popQuiz == 'Level_3_Pop_Quiz'
+              ? 'Level3Question6'
+              : 'Level4Question6';
+
+      String myLevelQueId7 = popQuiz == 'Level_2_Pop_Quiz'
+          ? 'Level2Question7'
+          : popQuiz == 'Level_3_Pop_Quiz'
+              ? 'Level3Question7'
+              : 'Level4Question7';
+
+      String myLevelQueId8 = popQuiz == 'Level_2_Pop_Quiz'
+          ? 'Level2Question8'
+          : popQuiz == 'Level_3_Pop_Quiz'
+              ? 'Level3Question8'
+              : 'Level4Question8';
+
+      String myLevelQueId9 = popQuiz == 'Level_2_Pop_Quiz'
+          ? 'Level2Question9'
+          : popQuiz == 'Level_3_Pop_Quiz'
+              ? 'Level3Question9'
+              : 'Level4Question9';
+
+      String myLevelQueId10 = popQuiz == 'Level_2_Pop_Quiz'
+          ? 'Level2Question10'
+          : popQuiz == 'Level_3_Pop_Quiz'
+              ? 'Level3Question10'
+              : 'Level4Question10';
+
+      if (document['id'] == 1) {
+        firestore.collection('Pop_Quiz_Calculation').doc(myLevelQueId1).set({
+          if (i == 1) 'ans_a_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 1) 'ans_a_total_users': FieldValue.increment(1),
+          if (i == 2) 'ans_b_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 2) 'ans_b_total_users': FieldValue.increment(1),
+          if (i == 3) 'ans_c_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 3) 'ans_c_total_users': FieldValue.increment(1),
+          if (i == 4) 'ans_d_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 4) 'ans_d_total_users': FieldValue.increment(1),
+        }, SetOptions(merge: true));
+      }
+      if (document['id'] == 2) {
+        firestore.collection('Pop_Quiz_Calculation').doc(myLevelQueId2).set({
+          if (i == 1) 'ans_a_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 1) 'ans_a_total_users': FieldValue.increment(1),
+          if (i == 2) 'ans_b_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 2) 'ans_b_total_users': FieldValue.increment(1),
+          if (i == 3) 'ans_c_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 3) 'ans_c_total_users': FieldValue.increment(1),
+          if (i == 4) 'ans_d_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 4) 'ans_d_total_users': FieldValue.increment(1),
+        }, SetOptions(merge: true));
+      }
+      if (document['id'] == 3) {
+        firestore.collection('Pop_Quiz_Calculation').doc(myLevelQueId3).set({
+          if (i == 1) 'ans_a_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 1) 'ans_a_total_users': FieldValue.increment(1),
+          if (i == 2) 'ans_b_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 2) 'ans_b_total_users': FieldValue.increment(1),
+          if (i == 3) 'ans_c_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 3) 'ans_c_total_users': FieldValue.increment(1),
+          if (i == 4) 'ans_d_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 4) 'ans_d_total_users': FieldValue.increment(1),
+        }, SetOptions(merge: true));
+      }
+      if (document['id'] == 4) {
+        firestore.collection('Pop_Quiz_Calculation').doc(myLevelQueId4).set({
+          if (i == 1) 'ans_a_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 1) 'ans_a_total_users': FieldValue.increment(1),
+          if (i == 2) 'ans_b_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 2) 'ans_b_total_users': FieldValue.increment(1),
+          if (i == 3) 'ans_c_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 3) 'ans_c_total_users': FieldValue.increment(1),
+          if (i == 4) 'ans_d_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 4) 'ans_d_total_users': FieldValue.increment(1),
+        }, SetOptions(merge: true));
+      }
+      if (document['id'] == 5) {
+        firestore.collection('Pop_Quiz_Calculation').doc(myLevelQueId5).set({
+          if (i == 1) 'ans_a_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 1) 'ans_a_total_users': FieldValue.increment(1),
+          if (i == 2) 'ans_b_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 2) 'ans_b_total_users': FieldValue.increment(1),
+          if (i == 3) 'ans_c_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 3) 'ans_c_total_users': FieldValue.increment(1),
+          if (i == 4) 'ans_d_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 4) 'ans_d_total_users': FieldValue.increment(1),
+        }, SetOptions(merge: true));
+      }
+      if (document['id'] == 6) {
+        firestore.collection('Pop_Quiz_Calculation').doc(myLevelQueId6).set({
+          if (i == 1) 'ans_a_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 1) 'ans_a_total_users': FieldValue.increment(1),
+          if (i == 2) 'ans_b_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 2) 'ans_b_total_users': FieldValue.increment(1),
+          if (i == 3) 'ans_c_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 3) 'ans_c_total_users': FieldValue.increment(1),
+          if (i == 4) 'ans_d_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 4) 'ans_d_total_users': FieldValue.increment(1),
+        }, SetOptions(merge: true));
+      }
+      if (document['id'] == 7) {
+        firestore.collection('Pop_Quiz_Calculation').doc(myLevelQueId7).set({
+          if (i == 1) 'ans_a_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 1) 'ans_a_total_users': FieldValue.increment(1),
+          if (i == 2) 'ans_b_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 2) 'ans_b_total_users': FieldValue.increment(1),
+          if (i == 3) 'ans_c_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 3) 'ans_c_total_users': FieldValue.increment(1),
+          if (i == 4) 'ans_d_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 4) 'ans_d_total_users': FieldValue.increment(1),
+        }, SetOptions(merge: true));
+      }
+      if (document['id'] == 8) {
+        firestore.collection('Pop_Quiz_Calculation').doc(myLevelQueId8).set({
+          if (i == 1) 'ans_a_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 1) 'ans_a_total_users': FieldValue.increment(1),
+          if (i == 2) 'ans_b_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 2) 'ans_b_total_users': FieldValue.increment(1),
+          if (i == 3) 'ans_c_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 3) 'ans_c_total_users': FieldValue.increment(1),
+          if (i == 4) 'ans_d_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 4) 'ans_d_total_users': FieldValue.increment(1),
+        }, SetOptions(merge: true));
+      }
+      if (document['id'] == 9) {
+        firestore.collection('Pop_Quiz_Calculation').doc(myLevelQueId9).set({
+          if (i == 1) 'ans_a_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 1) 'ans_a_total_users': FieldValue.increment(1),
+          if (i == 2) 'ans_b_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 2) 'ans_b_total_users': FieldValue.increment(1),
+          if (i == 3) 'ans_c_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 3) 'ans_c_total_users': FieldValue.increment(1),
+          if (i == 4) 'ans_d_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 4) 'ans_d_total_users': FieldValue.increment(1),
+        }, SetOptions(merge: true));
+      }
+      if (document['id'] == 10) {
+        firestore.collection('Pop_Quiz_Calculation').doc(myLevelQueId10).set({
+          if (i == 1) 'ans_a_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 1) 'ans_a_total_users': FieldValue.increment(1),
+          if (i == 2) 'ans_b_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 2) 'ans_b_total_users': FieldValue.increment(1),
+          if (i == 3) 'ans_c_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 3) 'ans_c_total_users': FieldValue.increment(1),
+          if (i == 4) 'ans_d_all_user': FieldValue.arrayUnion([userId]),
+          if (i == 4) 'ans_d_total_users': FieldValue.increment(1),
+        }, SetOptions(merge: true));
+      }
+
+      Color one = AllColors.green;
+      Color two = AllColors.red;
+      Color three = AllColors.lightGrey;
+
       if (ans == 'a') {
         list[index].isSelected1 = true;
-        color1 = Color(0xff04AA6D);
+        color1 = one;
       } else {
         list[index].isSelected1 = true;
         if (popQuiz == 'Level_2_Pop_Quiz' || popQuiz == 'Level_3_Pop_Quiz') {
           if (i == 1)
-            color1 = Color(0xffff3333);
+            color1 = two;
           else
-            color1 = Color(0xffbfbfbf);
+            color1 = three;
         } else {
-          color1 = Color(0xffff3333);
+          color1 = two;
         }
       }
       if (ans == 'b') {
         list[index].isSelected2 = true;
-        color2 = Color(0xff04AA6D);
+        color2 = one;
       } else {
         list[index].isSelected2 = true;
         if (popQuiz == 'Level_2_Pop_Quiz' || popQuiz == 'Level_3_Pop_Quiz') {
           if (i == 2)
-            color2 = Color(0xffff3333);
+            color2 = two;
           else
-            color2 = Color(0xffbfbfbf);
+            color2 = three;
         } else {
-          color2 = Color(0xffff3333);
+          color2 = two;
         }
       }
       if (ans == 'c') {
         list[index].isSelected3 = true;
-        color3 = Color(0xff04AA6D);
+        color3 = one;
       } else {
         list[index].isSelected3 = true;
         if (i == 3)
-          color3 = Color(0xffff3333);
+          color3 = two;
         else
-          color3 = Color(0xffbfbfbf);
+          color3 = three;
       }
       if (ans == 'd') {
         list[index].isSelected4 = true;
-        color4 = Color(0xff04AA6D);
+        color4 = one;
       } else {
         list[index].isSelected4 = true;
         if (i == 4)
-          color4 = Color(0xffff3333);
+          color4 = two;
         else
-          color4 = Color(0xffbfbfbf);
+          color4 = three;
       }
     });
     _flipCard();
@@ -965,33 +1010,324 @@ class _PopQuizState extends State<PopQuiz> with SingleTickerProviderStateMixin {
     }
   }
 
-  Widget options(GestureTapCallback onPressed, int index, var document,
-          Color color, int i) =>
-      Padding(
-          padding: EdgeInsets.only(top: i == 1 ? 3.h : 1.h),
-          child: GestureDetector(
-            onTap: onPressed,
-            child: Container(
-              alignment: Alignment.centerLeft,
-              width: 70.w,
-              height: 7.h,
-              decoration: BoxDecoration(
-                  color: list[index].isSelected1 == true
-                      ? color
-                      : AllColors.whiteLight2,
-                  borderRadius: BorderRadius.circular(3.w)),
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.w),
-                  child: Text(document,
-                      style: AllTextStyles.workSansSmall(
-                        fontWeight: FontWeight.w500,
-                        color: list[index].isSelected1 == true
-                            ? Colors.white
-                            : AllColors.extraDarkPurple,
-                      )),
-                ),
-              ),
-            ),
-          ));
+  Widget options(
+      {GestureTapCallback? onPressed,
+      int? index,
+      var document,
+      Color? color,
+      int? i,
+      String? text}) {
+    var questionId;
+    if (popQuiz == 'Level_2_Pop_Quiz') {
+      questionId = document['id'] == 1
+          ? 'Level2Question1'
+          : document['id'] == 2
+              ? 'Level2Question2'
+              : document['id'] == 3
+                  ? 'Level2Question3'
+                  : document['id'] == 4
+                      ? 'Level2Question4'
+                      : document['id'] == 5
+                          ? 'Level2Question5'
+                          : document['id'] == 6
+                              ? 'Level2Question6'
+                              : document['id'] == 7
+                                  ? 'Level2Question7'
+                                  : document['id'] == 8
+                                      ? 'Level2Question8'
+                                      : document['id'] == 9
+                                          ? 'Level2Question9'
+                                          : 'Level2Question10';
+    }
+    if (popQuiz == 'Level_3_Pop_Quiz') {
+      questionId = document['id'] == 1
+          ? 'Level3Question1'
+          : document['id'] == 2
+              ? 'Level3Question2'
+              : document['id'] == 3
+                  ? 'Level3Question3'
+                  : document['id'] == 4
+                      ? 'Level3Question4'
+                      : document['id'] == 5
+                          ? 'Level3Question5'
+                          : document['id'] == 6
+                              ? 'Level3Question6'
+                              : document['id'] == 7
+                                  ? 'Level3Question7'
+                                  : document['id'] == 8
+                                      ? 'Level3Question8'
+                                      : document['id'] == 9
+                                          ? 'Level3Question9'
+                                          : 'Level3Question10';
+    }
+    if (popQuiz == 'Level_4_Pop_Quiz') {
+      questionId = document['id'] == 1
+          ? 'Level4Question1'
+          : document['id'] == 2
+              ? 'Level4Question2'
+              : document['id'] == 3
+                  ? 'Level4Question3'
+                  : document['id'] == 4
+                      ? 'Level4Question4'
+                      : document['id'] == 5
+                          ? 'Level4Question5'
+                          : document['id'] == 6
+                              ? 'Level4Question6'
+                              : document['id'] == 7
+                                  ? 'Level4Question7'
+                                  : document['id'] == 8
+                                      ? 'Level4Question8'
+                                      : document['id'] == 9
+                                          ? 'Level4Question9'
+                                          : 'Level4Question10';
+    }
+
+    return Padding(
+        padding: EdgeInsets.only(top: i == 1 ? 3.h : 1.h, bottom: 1.h),
+        child: Container(
+          height: 7.h,
+          width: 70.w,
+          child: SingleChildScrollView(
+            child: StreamBuilder<DocumentSnapshot>(
+                stream: firestore
+                    .collection('Pop_Quiz_Calculation')
+                    .doc(questionId)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Text('It\'s Error!');
+                  }
+                  if (!snapshot.hasData)
+                    return Container(
+                      // decoration: boxDecoration,
+                      child: Center(
+                        child: SizedBox(
+                          child: CircularProgressIndicator(
+                              backgroundColor: Colors.white,
+                              color: Colors.white),
+                        ),
+                      ),
+                    );
+
+                  int value;
+                  if (popQuiz == 'Level_2_Pop_Quiz' ||
+                      popQuiz == 'Level_3_Pop_Quiz') {
+                    value = snapshot.data!['ans_a_total_users'] +
+                        snapshot.data!['ans_b_total_users'] +
+                        snapshot.data!['ans_c_total_users'] +
+                        snapshot.data!['ans_d_total_users'];
+                  } else {
+                    value = snapshot.data!['ans_a_total_users'] +
+                        snapshot.data!['ans_b_total_users'];
+                  }
+
+                  return GestureDetector(
+                    onTap: onPressed,
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: LinearPercentIndicator(
+                        // animation: true,
+                        lineHeight: 7.h,
+                        width: 70.w,
+                        // animationDuration: 1000,
+                        percent: (popQuiz == 'Level_2_Pop_Quiz' ||
+                                popQuiz == 'Level_3_Pop_Quiz')
+                            ? (snapshot.data![i == 1
+                                    ? 'ans_a_total_users'
+                                    : i == 2
+                                        ? 'ans_b_total_users'
+                                        : i == 3
+                                            ? 'ans_c_total_users'
+                                            : 'ans_d_total_users'] /
+                                value)
+                            : (snapshot.data![i == 1
+                                    ? 'ans_a_total_users'
+                                    : 'ans_b_total_users'] /
+                                value),
+                        barRadius: Radius.circular(3.w),
+                        center: Padding(
+                          padding: EdgeInsets.only(
+                              right: 2.w, top: 1.w, bottom: 1.w, left: 2.w),
+                          child: Container(
+                            alignment: Alignment.centerLeft,
+                            child: SingleChildScrollView(
+                              child: Text(
+                                text.toString(),
+                                style: AllTextStyles.workSansSmall(
+                                    // color: optionSelect != 0
+                                    //     ? Colors.white
+                                    //     : AllColors.extraDarkPurple,
+                                    color: AllColors.extraDarkPurple,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        //linearStrokeCap: LinearStrokeCap.roundAll,
+                        progressColor: list[index!].isSelected1 == true
+                            ? color
+                            : AllColors.whiteLight2,
+                        backgroundColor: AllColors.whiteLight2,
+                        // backgroundColor:
+                        //     optionSelect == 0 ? AllColors.whiteLight2 : color,
+                      ),
+                    ),
+                  );
+                }),
+          ),
+        ));
+  }
+
+  Future _whenLevelComplete({String? popQuiz, var userId, int? index}) async {
+    // if (popQuiz == 'Level_2_Pop_Quiz') {
+    //   // await localNotifyManager.flutterLocalNotificationsPlugin.cancel(22);
+    //   // await localNotifyManager.repeatNotificationLevel3();
+    //   // await localNotifyManager
+    //   //     .flutterLocalNotificationsPlugin
+    //   //     .cancel(2);
+    //   // await localNotifyManager
+    //   //     .flutterLocalNotificationsPlugin
+    //   //     .cancel(8);
+    //   // await localNotifyManager
+    //   //     .scheduleNotificationForLevelThreeSaturdayElevenAm();
+    //   // await localNotifyManager
+    //   //     .scheduleNotificationForLevelThreeWednesdaySevenPm();
+    // }
+    // if (popQuiz == 'Level_3_Pop_Quiz') {
+    //   // await localNotifyManager.flutterLocalNotificationsPlugin.cancel(23);
+    //   // await localNotifyManager.repeatNotificationLevel4();
+    //   // await localNotifyManager
+    //   //     .flutterLocalNotificationsPlugin
+    //   //     .cancel(3);
+    //   // await localNotifyManager
+    //   //     .flutterLocalNotificationsPlugin
+    //   //     .cancel(9);
+    //   // await localNotifyManager
+    //   //     .scheduleNotificationForLevelFourSaturdayElevenAm();
+    //   // await localNotifyManager
+    //   //     .scheduleNotificationForLevelFourWednesdaySevenPm();
+    // }
+    // if (popQuiz == 'Level_4_Pop_Quiz') {
+    //   //await localNotifyManager.flutterLocalNotificationsPlugin.cancel(24);
+    //   // await localNotifyManager
+    //   //     .flutterLocalNotificationsPlugin
+    //   //     .cancel(4);
+    //   // await localNotifyManager
+    //   //     .flutterLocalNotificationsPlugin
+    //   //     .cancel(10);
+    // }
+    DocumentSnapshot documentSnapshot =
+        await firestore.collection('User').doc(userId).get();
+    bool value = documentSnapshot.get('replay_level');
+
+    if (popQuiz == 'Level_2_Pop_Quiz') {
+      firestore.collection('User').doc(userId).update({
+        'previous_session_info': 'Level_3_setUp_page',
+        'level_id': 0,
+        'bill_payment': 0,
+        'account_balance': 0,
+        'need': 0,
+        'want': 0,
+        'quality_of_life': 0,
+        'level_2_popQuiz_id': index,
+        'pop_quiz_point_changed': false,
+        if (value != true) 'last_level': 'Level_3_setUp_page',
+      }).then((value) => Future.delayed(
+          Duration(seconds: 1),
+          () => Get.offAll(
+                () => LevelThreeSetUpPage(),
+              )));
+    }
+
+    if (popQuiz == 'Level_3_Pop_Quiz') {
+      firestore.collection('User').doc(userId).update({
+        'bill_payment': 0,
+        'credit_card_bill': 0,
+        'previous_session_info': 'Level_4_setUp_page',
+        'credit_card_balance': 0,
+        'account_balance': 0,
+        'level_id': 0,
+        'credit_score': 0,
+        'quality_of_life': 0,
+        'payable_bill': 0,
+        'score': 0,
+        'need': 0,
+        'want': 0,
+        'level_3_popQuiz_id': index,
+        'pop_quiz_point_changed': false,
+        if (value != true) 'last_level': 'Level_4_setUp_page',
+      }).then((value) => Future.delayed(
+          Duration(seconds: 1),
+          () => Get.offAll(
+                () => LevelFourSetUpPage(),
+              )));
+    }
+
+    if (popQuiz == 'Level_4_Pop_Quiz') {
+      firestore.collection('User').doc(userId).update({
+        'previous_session_info': 'Coming_soon',
+        'account_balance': 0,
+        'bill_payment': 0,
+        'level_id': 0,
+        'quality_of_life': 0,
+        'need': 0,
+        'want': 0,
+        'mutual_fund': 0,
+        'home_loan': 0,
+        'transport_loan': 0,
+        'investment': 0,
+        'level_4_popQuiz_id': index,
+        'pop_quiz_point_changed': false,
+        if (value != true) 'last_level': 'Level_4',
+      }).then((value) {
+        inviteDialog().then((value) => Future.delayed(
+            Duration(seconds: 1),
+            () => Get.offAll(
+                  () => ComingSoon(),
+                )));
+      });
+    }
+  }
+
+  Future _whenLevelNotComplete(
+      {int? index, var userId, String? popQuiz}) async {
+    firestore.collection('User').doc(userId).update({
+      'level_id': index,
+      if (popQuiz == 'Level_2_Pop_Quiz') 'level_2_popQuiz_id': index,
+      if (popQuiz == 'Level_3_Pop_Quiz') 'level_3_popQuiz_id': index,
+      if (popQuiz == 'Level_4_Pop_Quiz') 'level_4_popQuiz_id': index,
+      'pop_quiz_point_changed': false,
+    }).then((value) {
+      controller.nextPage(duration: Duration(seconds: 1), curve: Curves.easeIn);
+    });
+  }
+
+// Padding(
+//     padding: EdgeInsets.only(top: i == 1 ? 3.h : 1.h),
+//     child: GestureDetector(
+//       onTap: onPressed,
+//       child: Container(
+//         alignment: Alignment.centerLeft,
+//         width: 70.w,
+//         height: 7.h,
+//         decoration: BoxDecoration(
+//             color: list[index].isSelected1 == true
+//                 ? color
+//                 : AllColors.whiteLight2,
+//             borderRadius: BorderRadius.circular(3.w)),
+//         child: SingleChildScrollView(
+//           child: Padding(
+//             padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.w),
+//             child: Text(document,
+//                 style: AllTextStyles.workSansSmall(
+//                   fontWeight: FontWeight.w500,
+//                   color: list[index].isSelected1 == true
+//                       ? Colors.white
+//                       : AllColors.extraDarkPurple,
+//                 )),
+//           ),
+//         ),
+//       ),
+//     ));
 }
