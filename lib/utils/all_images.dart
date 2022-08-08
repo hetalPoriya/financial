@@ -16,6 +16,7 @@ class AllImages {
 
   static String done = 'assets/done.png';
   static String comingSoon = 'assets/comingSoon.png';
+  static String inviteScreenImage = 'assets/invite_screen_image.png';
 
   //profile page
   static String profileThreeLine = 'assets/settings.png';
@@ -60,6 +61,7 @@ class AllImages {
   static String settingSymbol = 'assets/settings_symbol.png';
   static String share = 'assets/share.png';
   static String feedback = 'assets/feedback.png';
+  static String faq = 'assets/faq.png';
   static String leaderBoard = 'assets/leader_board.png';
   static String circle = 'assets/circle.png';
   static String rank1 = 'assets/rank1.png';
@@ -83,6 +85,23 @@ class AllImages {
   static String house = 'assets/house.png';
   static String car = 'assets/car.png';
   static String lifeStyle = 'assets/lifestyle.png';
+  static String invitationGif = 'assets/invitation_cat.gif';
+  static String lockForReferralPage = 'assets/lock_for_referralPage.png';
+
+  //level 4 and 5 option
+  static String level4Step1Image1 = 'assets/studioApartment.png';
+  static String level4Step1Image2 = 'assets/midRiseApartment.png';
+  static String level4Step1Image3 = 'assets/upscaleApartment.png';
+  static String level4Step1Image4 = 'assets/luxuryHouse.png';
+  static String level4Step1Image5 = 'assets/suburbanHouse.png';
+
+  static String level4Step2Image1 = 'assets/transport1.png';
+  static String level4Step2Image2 = 'assets/transport2.png';
+  static String level4Step2Image3 = 'assets/transport3.png';
+
+  static String level4Step3Image1 = 'assets/lifestyle1.png';
+  static String level4Step3Image2 = 'assets/lifestyle2.png';
+  static String level4Step3Image3 = 'assets/lifestyle3.png';
 
 
 }

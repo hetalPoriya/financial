@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:financial/shareable_screens/globle_variable.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
+
+import '../utils/utils.dart';
+
 
 class LevelFiveController extends GetxController {
   List getTotalEmi = [];
@@ -21,7 +22,7 @@ class LevelFiveController extends GetxController {
   var userId;
 
   getEmiData() {
-    userId = GetStorage().read('uId');
+    userId = Prefs.getString(PrefString.userId);
     totalEMILength = 0;
     firestore.collection('User').doc(userId).get().then((value) {
       getTotalEmi = value.data()!['List'];
@@ -114,7 +115,7 @@ class LevelFiveController extends GetxController {
   }
 
   getYourEmiData(document) async {
-    userId = GetStorage().read('uId');
+    userId = Prefs.getString(PrefString.userId);
     DocumentSnapshot doc = await firestore.collection('User').doc(userId).get();
     totalEMIAmount = doc.get('total_emi_level_5');
 

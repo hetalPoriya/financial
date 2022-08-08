@@ -1,17 +1,15 @@
-import 'package:financial/shareable_screens/globle_variable.dart';
+import 'utils.dart';
+
 
 class AllStrings {
-
-  static String countrySymbol =   country == 'India'
-      ? '\u{20B9}' : country == 'Europe'? '\€'
-      : '\$';
-
+  static String countrySymbol =
+      Prefs.getString(PrefString.countrySymbol).toString();
 
   //level1 SetupPage
   static String levelOneText1 = ' Do you think you are smart with your money?';
   static String levelOneText2 = 'Let\'s test you';
   static String levelOneText3 =
-      'It\’s your birthday week and you\’ve won a gift card worth ${countrySymbol}200!';
+      'It\’s your birthday week and you\’ve won a gift card worth ${Prefs.getString(PrefString.countrySymbol)}200!';
 
   //   'It\'s your birthday week and your generous Aunt has gifted you \$200!';
   static String levelOneText4 = 'Let\'s see how smartly you spend it.';
@@ -27,7 +25,7 @@ class AllStrings {
 
   //level3 SetupPage
   static String levelThreeText1 =
-      'You\’ve just been given your first credit card. It has a credit limit of ${countrySymbol}2000.';
+      'You\’ve just been given your first credit card. It has a credit limit of ${Prefs.getString(PrefString.countrySymbol)}2000.';
   static String levelThreeText2 =
       'A high Credit Score shows you can be trusted to pay back the money you owe. A good score helps you get home and other loans cheaper!';
   static String levelThreeText3 =
@@ -35,11 +33,11 @@ class AllStrings {
 
   //level4 SetupPage
   static String levelFourText1 =
-      'You\'ve just been promoted at your job and you\'ll now be earning ${countrySymbol}2000 a month. ';
+      'You\'ve just been promoted at your job and you\'ll now be earning ${Prefs.getString(PrefString.countrySymbol)}2000 a month. ';
   static String levelFourText2 =
       'Your goal in this level is to grow your savings by investing in Mutual Funds and Fixed Deposits. ';
   static String levelFourText3 =
-      'Your target is to get at least ${countrySymbol}30k in your account so that you can use it as down payment to buy a new house!';
+      'Your target is to get at least ${Prefs.getString(PrefString.countrySymbol)}30k in your account so that you can use it as down payment to buy a new house!';
 
   static String tapBack = 'Tap back to exit';
   static String optionAlreadySelected = 'Sorry, you already selected option';
@@ -53,7 +51,7 @@ class AllStrings {
   static String dialogForResLev1Text1 =
       'Oops! You’ve run out of money\!. \n You seem to have fallen prey to mental accounting. Mental accounting is when we value the same amount of money differently because of certain mental associations.';
   static String dialogForResLev1Text2 =
-      'For example, when we receive a ${countrySymbol}200 gift, we are more prone to spend it on '
+      'For example, when we receive a ${Prefs.getString(PrefString.countrySymbol)}200 gift, we are more prone to spend it on '
       'discretionary wants, because in our mind, that money is \'free money\'. '
       'We might be more careful with spending the same amount, had we earned it.';
 
@@ -112,14 +110,13 @@ class AllStrings {
   //salary
   static String salaryTitle = 'Salary Credited';
   static String salaryBody =
-      'Monthly salary of ${countrySymbol}1000 has been credited to your account.';
+      'Monthly salary of ${Prefs.getString(PrefString.countrySymbol)}1000 has been credited to your account.';
 
   //mutual fund
   static String mutualFund = 'Mutual Fund';
-  static String mutualFundDecreaseText =
-      'Your investments are down by ';
-  static String mutualFundIncreaseText =
-      'Your investments are up by ';
+  static String mutualFundDecreaseText = 'Your investments are down by ';
+  static String mutualFundIncreaseText = 'Your investments are up by ';
+
   // static String mutualFundDecreaseText =
   //     'Due to a fall in stock markets your Mutual Fund value has decreased by ';
   // static String mutualFundIncreaseText =
@@ -155,16 +152,16 @@ class AllStrings {
   static String moneySaved = 'Money Saved : ';
   static String tryAgain = 'Try Again';
   static String level5SummaryTitleWhenComplete =
-      "Congratulations you\'ve managed to save up ${countrySymbol}30K! You now have enough savings to pay the down payment for a house or car. Go to the next level to make your first big purchase!";
+      "Congratulations you\'ve managed to save up ${Prefs.getString(PrefString.countrySymbol)}30K! You now have enough savings to pay the down payment for a house or car. Go to the next level to make your first big purchase!";
   static String level5SummaryTitleWhenLose =
-      "Oops! Unfortunately you haven\'t managed to achieve your goal of ${countrySymbol}30k."
+      "Oops! Unfortunately you haven\'t managed to achieve your goal of ${Prefs.getString(PrefString.countrySymbol)}30k."
       "Purchasing a house or car needs you to pay an upfront booking amount. But don\'t lose hope. You can try again!";
 
   //level 4 summary text
   static String level4SummaryTitleWhenComplete =
-      "Congratulations you\'ve managed to save up ${countrySymbol}30K! You now have enough savings to pay the down payment for a house or car. Go to the next level to make your first big purchase!";
+      "Congratulations you\'ve managed to save up ${Prefs.getString(PrefString.countrySymbol)}30K! You now have enough savings to pay the down payment for a house or car. Go to the next level to make your first big purchase!";
   static String level4SummaryTitleWhenLose =
-      "Oops! Unfortunately you haven\'t managed to achieve your goal of ${countrySymbol}30k."
+      "Oops! Unfortunately you haven\'t managed to achieve your goal of ${Prefs.getString(PrefString.countrySymbol)}30k."
       "Purchasing a house or car needs you to pay an upfront booking amount. But don\'t lose hope. You can try again!";
 
   //level 3
@@ -195,9 +192,10 @@ class AllStrings {
   static String billsPaid = 'Bills Paid  ';
   static String levelCompleteText =
       'Congratulations! You have completed this level successfully ';
-  static String level1And2CompleteText = 'Budgeting Skills';
-  static String level1And2CompleteText2 =
-      'Here\'s a breakdown of your spending habits';
+
+  // static String level1And2CompleteText = 'Budgeting Skills';
+  // static String level1And2CompleteText2 =
+  //     'Here\'s a breakdown of your spending habits';
 
   static String level2LosingText =
       'Oops! You haven\’t managed to achieve your savings goal of 20%. Please try again! ';
@@ -214,8 +212,8 @@ class AllStrings {
   static String level1 = 'Honey Pot';
   static String level1Dec =
       'Be smart with your money. Learn to differentiate between Needs and Wants.';
-  static String level1Goal = 'Goal : Don’t run out of your ${countrySymbol}200 budget.';
-
+  static String level1Goal =
+      'Goal : Don’t run out of your ${Prefs.getString(PrefString.countrySymbol)}200 budget.';
 
   static String level2 = 'Smart Savers';
   static String level2Dec =
@@ -230,7 +228,8 @@ class AllStrings {
   static String level4 = 'Building Up';
   static String level4Dec =
       'Fight off inflation. Learn to navigate the volatities of the stock market. ';
-  static String level4Goal = 'Goal : Achieve ${countrySymbol}30k in savings and investments.';
+  static String level4Goal =
+      'Goal : Achieve ${Prefs.getString(PrefString.countrySymbol)}30k in savings and investments.';
 
   static String level5 = 'EMI Mania';
   static String level5Dec =
@@ -265,6 +264,11 @@ class AllStrings {
   static String feedback = 'Feedback';
   static String feedbackDes =
       'Send us your feedback. Or request a new feature. ';
+  static String faq = 'FAQ';
+  static String faqDes = 'Invite your friends and share us on social media. ';
+  static String setting = 'Setting';
+  static String settingDes = 'Description ';
+
   static String share = 'Share';
   static String shareDes = 'Invite your friends and share us on social media.';
 
@@ -273,5 +277,90 @@ class AllStrings {
   static String creditSumDes =
       'Your credit card usage is high. Your credit score has fallen to poor category.';
 
+  static String unlockNextLevel = 'Unlock Next Level';
+  static String inviteFriendsText = 'Invite 2 friends to unlock the next level';
+  static String bringFriend = 'Bring Friends';
+  static String payToUnlock = 'Pay ₹29 to UNLOCK';
+  static String inviteCode = 'Enter special invite code';
+
+  //level 4 and 5 option
+
+  static String level4Step1 = 'STEP 01';
+  static String level4Step2 = 'STEP 02';
+  static String level4Step3 = 'STEP 03';
+  static String level4step1Text = 'WHERE WILL YOU LIVE?';
+  static String level4step2Text = 'HOW WILL YOU TRAVEL?';
+  static String level4step3Text = 'CHOOSE YOUR LIFESTYLE';
+
+  //step 1
+  static String level4step1Option1 = 'Studio \nApartment ';
+  static String level4step1Option1Des =
+      'Rent a Studio Apartment in downtown. Close to Stores, Gym, Restaurants & Work.';
+  static String level4step1Option1BottomText =
+      'Tip: Distance from amenities & work will impact your monthly transport expense';
+
+  static String level4step1Option2 = 'Mid-Rise \nApartment ';
+  static String level4step1Option2Des =
+      'Rent a 1 Bedroom Apartment in Downtown.  Walkable distance from Grocery stores, Restaurants, Local Gym & Work.';
+  static String level4step1Option2BottomText =
+      'Tip: Distance from amenities & work will impact your monthly transport expense';
+
+  static String level4step1Option3 = 'Upscale \nCondo ';
+  static String level4step1Option3Des =
+      'Rent a 2 Bedroom Apartment in Upscale Building. Has a Gym, Sports facilities & shared pool. Medium distance from Work';
+  static String level4step1Option3BottomText =
+      'Tip: Distance from amenities & work will impact your monthly transport expense';
+
+  static String level4step1Option4 = 'Luxury \nHouse ';
+  static String level4step1Option4Des =
+      'Luxury house in Posh Suburb. Close to shopping center, Gym & Hospital. Far from Work';
+  static String level4step1Option4BottomText =
+      'Tip: Distance from amenities & work will impact your monthly transport expense';
+
+  static String level4step1Option5 = 'Suburban \nHouse ';
+  static String level4step1Option5Des =
+      '3 bedroom  house in upcoming Suburb. No Facilities nearby. Far from Work.';
+  static String level4step1Option5BottomText =
+      'Tip: Distance from amenities & work will impact your monthly transport expense';
+
+  //step 2
+  static String level4step2Option1 = 'Economy ';
+  static String level4step2Option1Des =
+      ' Travel using a city bus, subway or other forms of public transportation.';
+  static String level4step2Option1BottomText =
+      ' Public transport is cheap but commute times are longer and will lead to lower quality of life points. ';
+
+  static String level4step2Option2 = 'Plus ';
+  static String level4step2Option2Des =
+      ' Travel using public transport and use taxis occasionally.';
+  static String level4step2Option2BottomText =
+      'Use public transport as your primary mode of transport and use taxis in case of emergency.';
+
+  static String level4step2Option3 = 'Premium ';
+  static String level4step2Option3Des =
+      ' Travel using private cabs. Save time and enjoy a comfortable commute.';
+  static String level4step2Option3BottomText =
+      'Travel using taxis to save time and increased comfort. Earn high quality of life points.';
+
+  //step 3
+  static String level4step3Option1 = 'Economy ';
+  static String level4step3Option1Des =
+      ' Organic groceries.  affordable cellphone and internet plans. Shop and eat out once a month.';
+
+  // static String level4step3Option1BottomText =
+  //     ' Public transport is cheap but commute times are longer and will lead to lower quality of life points. ';
+
+  static String level4step3Option2 = 'Plus ';
+  static String level4step3Option2Des =
+      'Gourmet groceries, unlimited cellphone and internet plans. Shop and eat out often.';
+
+  // static String level4step3Option2BottomText =
+  //     'Use public transport as your primary mode of transport and use taxis in case of emergency.';
+
+  static String level4step3Option3 = 'Premium ';
+  static String level4step3Option3Des =
+      'Basic quality groceries, budget cellphone and internet plans, shop only on sale.';
+// static String level4step3Option3BottomText =
+//     'Travel using taxis to save time and increased comfort. Earn high quality of life points.';
 
 }

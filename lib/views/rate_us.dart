@@ -1,15 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:financial/shareable_screens/globle_variable.dart';
 import 'package:financial/controllers/user_info_controller.dart';
-import 'package:financial/utils/all_colors.dart';
-import 'package:financial/utils/all_strings.dart';
-import 'package:financial/utils/all_textStyle.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:store_redirect/store_redirect.dart';
+
+
+import '../utils/utils.dart';
 
 class RateUs extends StatelessWidget {
   final Function onSubmit;
@@ -22,12 +21,13 @@ class RateUs extends StatelessWidget {
     con.submit = false;
     con.star = 0;
     con.update();
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          title: Text('Feedback', style: AllTextStyles.settingsAppTitle()),
+          title: Text('Feedback', style: AllTextStyles.settingsAppTitleInter()),
           centerTitle: true,
         ),
         extendBodyBehindAppBar: true,
@@ -44,7 +44,7 @@ class RateUs extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10.w),
                       child: Text(AllStrings.rateText1,
-                          style: AllTextStyles.signikaText1(),
+                          style: AllTextStyles.signikaTextLarge(),
                           textAlign: TextAlign.center),
                     ),
                     SizedBox(
@@ -52,7 +52,7 @@ class RateUs extends StatelessWidget {
                     ),
                     Text(
                       AllStrings.rateText2,
-                      style: AllTextStyles.signikaText2(),
+                      style: AllTextStyles.signikaTextMedium(),
                     ),
                     SizedBox(
                       height: 3.h,
@@ -88,7 +88,8 @@ class RateUs extends StatelessWidget {
                     ),
                     Text(
                       AllStrings.rateText3,
-                      style: AllTextStyles.signikaText2(size: 14.sp),
+                      style: AllTextStyles.signikaTextMedium()
+                          .copyWith(fontSize: 14.sp),
                     ),
                     SizedBox(
                       height: 2.h,
@@ -118,68 +119,66 @@ class RateUs extends StatelessWidget {
                     ElevatedButton(
                       onPressed: userInfo.star == 0
                           ? () {
-                              print(userInfo.star);
-                              Fluttertoast.showToast(
-                                  msg: 'Please rate your experience ');
-                            }
+                        print(userInfo.star);
+                        Fluttertoast.showToast(
+                            msg: 'Please rate your experience ');
+                      }
                           : () async {
-                              userInfo.submit = true;
-                              userInfo.update();
-                              if (userInfo.star == 5) {
-                                StoreRedirect.redirect(
-                                  androidAppId: "com.finshark",
-                                  //iOSAppId: "585027354"
-                                );
-                              }
-                              print('STATATA ${userInfo.star}');
-                              DocumentSnapshot snap = await firestore
-                                  .collection('User')
-                                  .doc(userInfo.userId)
-                                  .get();
-                              String level = snap.get('previous_session_info');
-                              level = level.toString().substring(0, 7);
-                              print('STATATA ${level}');
-                              firestore
-                                  .collection('Feedback')
-                                  .doc(userInfo.userId)
-                                  .set({
-                                'user_id': userInfo.userId,
-                                if (level == 'Level_1')
-                                  'level_1_feedback': userInfo.feedbackCon.text,
-                                if (level == 'Level_1')
-                                  'level_1_rating': userInfo.star,
-                                if (level == 'Level_2')
-                                  'level_2_feedback': userInfo.feedbackCon.text,
-                                if (level == 'Level_2')
-                                  'level_2_rating': userInfo.star,
-                                if (level == 'Level_3')
-                                  'level_3_feedback': userInfo.feedbackCon.text,
-                                if (level == 'Level_3')
-                                  'level_3_rating': userInfo.star,
-                                if (level == 'Level_4')
-                                  'level_4_feedback': userInfo.feedbackCon.text,
-                                if (level == 'Level_4')
-                                  'level_4_rating': userInfo.star,
-                                if (level == 'Level_5')
-                                  'level_5_feedback': userInfo.feedbackCon.text,
-                                if (level == 'Level_5')
-                                  'level_5_rating': userInfo.star,
-                                if (level == 'Level_6')
-                                  'level_6_feedback': userInfo.feedbackCon.text,
-                                if (level == 'Level_6')
-                                  'level_6_rating': userInfo.star,
+                        userInfo.submit = true;
+                        userInfo.update();
+                        if (userInfo.star == 5) {
+                          StoreRedirect.redirect(
+                            androidAppId: "com.finshark",
+                            //iOSAppId: "585027354"
+                          );
+                        }
+                        var userId = Prefs.getString(PrefString.userId);
+                        DocumentSnapshot snap = await firestore
+                            .collection('User')
+                            .doc(userId)
+                            .get();
+                        String level = snap.get('previous_session_info');
+                        level = level.toString().substring(0, 7);
+                        print('STATATA ${level}');
+                        firestore
+                            .collection('Feedback')
+                            .doc(userId)
+                            .set({
+                          'user_id': userId,
+                          if (level == 'Level_1')
+                            'level_1_feedback': userInfo.feedbackCon.text,
+                          if (level == 'Level_1')
+                            'level_1_rating': userInfo.star,
+                          if (level == 'Level_2')
+                            'level_2_feedback': userInfo.feedbackCon.text,
+                          if (level == 'Level_2')
+                            'level_2_rating': userInfo.star,
+                          if (level == 'Level_3')
+                            'level_3_feedback': userInfo.feedbackCon.text,
+                          if (level == 'Level_3')
+                            'level_3_rating': userInfo.star,
+                          if (level == 'Level_4')
+                            'level_4_feedback': userInfo.feedbackCon.text,
+                          if (level == 'Level_4')
+                            'level_4_rating': userInfo.star,
+                          if (level == 'Level_5')
+                            'level_5_feedback': userInfo.feedbackCon.text,
+                          if (level == 'Level_5')
+                            'level_5_rating': userInfo.star,
+                          if (level == 'Level_6')
+                            'level_6_feedback': userInfo.feedbackCon.text,
+                          if (level == 'Level_6')
+                            'level_6_rating': userInfo.star,
+                        }, SetOptions(merge: true)).then(
+                              (v) => onSubmit(),
+                        );
 
-
-                              }, SetOptions(merge: true)).then(
-                                (v) => onSubmit(),
-                              );
-
-                              Get.back();
-                            },
+                        Get.back();
+                      },
                       child: Text(
                         'Submit',
-                        style: AllTextStyles.signikaText2(
-                            size: 14.sp,
+                        style: AllTextStyles.signikaTextMedium().copyWith(
+                            fontSize: 14.sp,
                             color: userInfo.submit == true
                                 ? Colors.white
                                 : AllColors.lightBlue2),
@@ -191,12 +190,12 @@ class RateUs extends StatelessWidget {
                                 : Colors.white,
                           ),
                           minimumSize:
-                              MaterialStateProperty.all(Size(80.w, 8.h)),
+                          MaterialStateProperty.all(Size(80.w, 8.h)),
                           shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.sp),
-                          ))),
+                          MaterialStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.sp),
+                              ))),
                     ),
                     Spacer(),
                   ]),

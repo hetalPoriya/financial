@@ -1,28 +1,34 @@
 // @dart=2.9
 
-
 import 'package:country_code_picker/country_localizations.dart';
-import 'package:devicelocale/devicelocale.dart';
+import 'package:device_preview/device_preview.dart';
 import 'package:financial/helper/route_helper.dart';
-import 'package:financial/network/network_binding.dart';
-import 'package:financial/views/local_notify_manager.dart';
-
+import 'package:financial/models/provider_model.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:new_version/new_version.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:intl/intl.dart';
 import 'dart:io' show Platform;
 
-import 'package:syncfusion_flutter_charts/charts.dart';
+import 'utils/utils.dart';
 
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
-  FlutterBranchSdk.validateSDKIntegration();
+
+  if (defaultTargetPlatform == TargetPlatform.android) {
+    // For play billing library 2.0 on Android, it is mandatory to call
+    // [enablePendingPurchases](https://developer.android.com/reference/com/android/billingclient/api/BillingClient.Builder.html#enablependingpurchases)
+    // as part of initializing the app.
+    InAppPurchaseAndroidPlatformAddition.enablePendingPurchases();
+  }
+
+  // FlutterBranchSdk.validateSDKIntegration();
   // FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   //     FlutterLocalNotificationsPlugin();
   // const AndroidInitializationSettings initializationSettingsAndroid =
@@ -35,14 +41,16 @@ void main() async {
   // );
   // await localNotifyManager.configureLocalTimeZone();
   await Firebase.initializeApp();
-  await GetStorage.init();
-  // runApp(
-  //   DevicePreview(
+  await Prefs.init();
+  // runApp(ChangeNotifierProvider(
+  //   create: (context) => ProviderModel(),
+  //   child: DevicePreview(
   //     enabled: !kReleaseMode,
   //     builder: (context) => MyApp(), // Wrap your app
   //   ),
-  // );
-  runApp(MyApp());
+  // ));
+  runApp(ChangeNotifierProvider(
+      create: (context) => ProviderModel(), child: MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -53,23 +61,31 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   @override
-  void initState()  {
+  void initState() {
+    var provider = Provider.of<ProviderModel>(context, listen: false);
+    provider.initialize();
     super.initState();
-    _checkVersion(context);
+    //_checkVersion(context);
+  }
+
+  @override
+  void dispose() {
+    var provider = Provider.of<ProviderModel>(context, listen: false);
+    provider.subscription.cancel();
+    super.dispose();
   }
 
   _checkVersion(BuildContext context) async {
-    try{
+    try {
       print('CalledVersion');
       NewVersion(
-       // iOSId: 'com.version check.iOS',//dummy IOS bundle ID
-        androidId: 'com.finshark',//dummy android ID
+        // iOSId: 'com.version check.iOS',//dummy IOS bundle ID
+        androidId: 'com.finshark', //dummy android ID
       ).showAlertIfNecessary(context: context);
-    }catch(e){
+    } catch (e) {
       debugPrint("error=====>${e.toString()}");
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -78,10 +94,7 @@ class _MyAppState extends State<MyApp> {
       DeviceOrientation.portraitDown,
     ]);
     return Sizer(builder: (context, orientation, deviceType) {
-      print('lcoalll ${ Get.deviceLocale}');
-
       return GetMaterialApp(
-        locale: Get.deviceLocale,
         // supportedLocales: [
         //   Locale("af"),
         //   Locale("am"),
@@ -157,20 +170,22 @@ class _MyAppState extends State<MyApp> {
         localizationsDelegates: [
           CountryLocalizations.delegate,
         ],
-        builder: (BuildContext context, Widget child) {
-          return MediaQuery(
-            data: MediaQuery.of(context).copyWith(
-              textScaleFactor: 1.0,
-            ),
-            //set desired text scale factor here
-            child: child,
-          );
-        },
+        // builder: (BuildContext context, Widget child) {
+        //   return MediaQuery(
+        //     data: MediaQuery.of(context).copyWith(
+        //       textScaleFactor: 1.0,
+        //     ),
+        //     //set desired text scale factor here
+        //     child: child,
+        //   );
+        // },
         title: 'Finshark',
         debugShowCheckedModeBanner: false,
-        initialBinding: NetworkBinding(),
-        // locale: DevicePreview.locale(context), // Add the locale here
-        // builder: DevicePreview.appBuilder, // Add the builder here
+        //initialBinding: NetworkBinding(),
+        locale: DevicePreview.locale(context),
+        // Add the locale here
+        builder: DevicePreview.appBuilder,
+        // Add the builder here
         getPages: RouteHelper.getPages,
         initialRoute: RouteHelper.splash,
         //home: LevelOneSetUpPage()

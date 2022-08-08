@@ -1,29 +1,13 @@
-import 'package:financial/views/all_done_screen.dart';
-import 'package:financial/views/all_que_level_five.dart';
-import 'package:financial/views/all_que_level_four.dart';
-import 'package:financial/views/all_que_level_one.dart';
-import 'package:financial/views/all_que_level_six.dart';
-import 'package:financial/views/all_que_level_three.dart';
-import 'package:financial/views/all_que_level_two.dart';
 import 'package:financial/views/coming_soon.dart';
-import 'package:financial/views/leader_board.dart';
-import 'package:financial/views/level_five_setUp_page.dart';
-import 'package:financial/views/level_four_and_five_options.dart';
-import 'package:financial/views/level_four_setUp_page.dart';
-import 'package:financial/views/level_one_pop_quiz.dart';
-import 'package:financial/views/level_one_setUp_page.dart';
-import 'package:financial/views/level_six_setUp_page.dart';
-import 'package:financial/views/level_three_setUp_page.dart';
-import 'package:financial/views/level_two_and_three_options.dart';
-import 'package:financial/views/level_two_setUp_page.dart';
-import 'package:financial/views/login_page.dart';
-import 'package:financial/views/on_boarding_page.dart';
-import 'package:financial/views/pop_quiz.dart';
-import 'package:financial/views/levels.dart';
 import 'package:financial/views/rate_us.dart';
-import 'package:financial/views/settings_page.dart';
-import 'package:financial/views/splash_screen.dart';
-import 'package:get/get.dart';
+import 'package:financial/views/referral_system.dart';
+import 'package:get/route_manager.dart';
+
+import '../views/auth/auth.dart';
+import '../views/levels/levels.dart';
+import '../views/popQuiz/popQuiz.dart';
+import '../views/profile/profile.dart';
+import '../views/setupPage/setup_page.dart';
 
 class RouteHelper{
 
@@ -52,6 +36,7 @@ class RouteHelper{
   static  String rateUs= '/RateUs';
   static  String settings= '/Settings';
   static  String leaderBoard= '/LeaderBoard';
+  static  String referralSystem= '/ReferralSystem';
 
   static List<GetPage> getPages = [
     GetPage(name: level1, page: () => AllQueLevelOne()),
@@ -72,12 +57,13 @@ class RouteHelper{
     GetPage(name: onBoarding, page: () => OnBoardingPage()),
     GetPage(name: login, page: () => LoginPage()),
     GetPage(name: level1PopQuiz, page: () => LevelOnePopQuiz()),
-    GetPage(name: popQuiz, page: () => PopQuiz()),
-    GetPage(name: levels, page: () => Levels()),
+    GetPage(name: popQuiz, page: () => LevelsPopQuiz()),
+    GetPage(name: levels, page: () => SettingPageLevels()),
     GetPage(name: comingSoon, page: () => ComingSoon()),
     GetPage(name: allDone, page: () => AllDone()),
     GetPage(name: rateUs, page: () => RateUs(onSubmit: () {},)),
     GetPage(name: settings, page: () => SettingsPage()),
     GetPage(name: leaderBoard, page: () => LeaderBoard(userName: '',userId: '',)),
+    GetPage(name: referralSystem, page: () => ReferralSystem()),
   ];
 }

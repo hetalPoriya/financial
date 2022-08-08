@@ -1,4 +1,6 @@
 import 'package:financial/models/level_four_options_model.dart';
+import 'package:financial/utils/all_images.dart';
+import 'package:financial/utils/all_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -16,84 +18,68 @@ class LevelFourOptionsController extends GetxController {
 
   List<LevelFourOptions> bills = [
     LevelFourOptions(
-        text: 'WHERE WILL YOU LIVE?',
-        step: 'STEP 01',
-        options1: 'Studio \nApartment ',
-        options2: 'Mid-Rise \nApartment ',
-        options3: 'Upscale \nCondo ',
-        options4: 'Luxury \nHouse ',
-        options5: 'Suburban \nHouse ',
+        text: AllStrings.level4step1Text,
+        step: AllStrings.level4Step1,
+        options1: AllStrings.level4step1Option1,
+        options2: AllStrings.level4step1Option2,
+        options3: AllStrings.level4step1Option3,
+        options4: AllStrings.level4step1Option4,
+        options5: AllStrings.level4step1Option5,
         //isSelectedButton: 0,
         isSelectedOption: 0,
         optionsValue: [
           OptionsValue(
-              description:
-                  'Rent a Studio Apartment in downtown. Close to Stores, Gym, Restaurants & Work.',
+              description: AllStrings.level4step1Option1Des,
               rent: 200,
               //emi: 100,
-              image: 'assets/studioApartment.png',
-              bottomText:
-                  'Tip: Distance from amenities & work will impact your monthly transport expense'),
+              image: AllImages.level4Step1Image1,
+              bottomText: AllStrings.level4step1Option1BottomText),
           OptionsValue(
-              description:
-                  'Rent a 1 Bedroom Apartment in Downtown.  Walkable distance from Grocery stores, Restaurants, Local Gym & Work.',
+              description: AllStrings.level4step1Option2Des,
               rent: 300,
-              image: 'assets/midRiseApartment.png',
-              bottomText:
-                  'Tip: Distance from amenities & work will impact your monthly transport expense'),
+              image: AllImages.level4Step1Image2,
+              bottomText: AllStrings.level4step1Option2BottomText),
           OptionsValue(
-              description:
-                  'Rent a 2 Bedroom Apartment in Upscale Building. Has a Gym, Sports facilities & shared pool. Medium distance from Work',
+              description: AllStrings.level4step1Option3Des,
               rent: 500,
-              image: 'assets/upscaleApartment.png',
-              bottomText:
-                  'Tip: Distance from amenities & work will impact your monthly transport expense'),
+              image: AllImages.level4Step1Image3,
+              bottomText: AllStrings.level4step1Option3BottomText),
           OptionsValue(
-              description:
-                  'Luxury house in Posh Suburb. Close to shopping center, Gym & Hospital. Far from Work',
+              description: AllStrings.level4step1Option4Des,
               rent: 400,
-              image: 'assets/luxuryHouse.png',
-              bottomText:
-                  'Tip: Distance from amenities & work will impact your monthly transport expense'),
+              image: AllImages.level4Step1Image4,
+              bottomText: AllStrings.level4step1Option4BottomText),
           OptionsValue(
-              description:
-                  '3 bedroom  house in upcoming Suburb. No Facilities nearby. Far from Work.',
+              description: AllStrings.level4step1Option5Des,
               rent: 300,
-              image: 'assets/suburbanHouse.png',
-              bottomText:
-                  'Tip: Distance from amenities & work will impact your monthly transport expense')
+              image: AllImages.level4Step1Image5,
+              bottomText: AllStrings.level4step1Option5BottomText)
         ]),
     LevelFourOptions(
-        step: 'STEP 02',
-        text: 'HOW WILL YOU TRAVEL?',
-        options1: 'Economy ',
-        options2: 'Plus ',
-        options3: 'Premium ',
+        step: AllStrings.level4Step2,
+        text: AllStrings.level4step2Text,
+        options1: AllStrings.level4step2Option1,
+        options2: AllStrings.level4step2Option2,
+        options3: AllStrings.level4step2Option3,
         //options4: 'New \nSUV car ',
         // isSelectedButton: 0,
         isSelectedOption: 0,
         optionsValue: [
           OptionsValue(
-              description:
-                  ' Travel using a city bus, subway or other forms of public transportation.',
+              description: AllStrings.level4step2Option1Des,
               rent: 200,
-              image: 'assets/transport1.png',
-              bottomText:
-                  ' Public transport is cheap but commute times are longer and will lead to lower quality of life points. '),
+              image: AllImages.level4Step2Image1,
+              bottomText: AllStrings.level4step2Option1BottomText),
           OptionsValue(
-              description:
-                  ' Travel using public transport and use taxis occasionally.',
+              description: AllStrings.level4step2Option2Des,
               rent: 350,
-              image: 'assets/transport2.png',
-              bottomText:
-                  'Use public transport as your primary mode of transport and use taxis in case of emergency.'),
+              image: AllImages.level4Step2Image2,
+              bottomText: AllStrings.level4step2Option2BottomText),
           OptionsValue(
-              description:
-                  ' Travel using private cabs. Save time and enjoy a comfortable commute.',
+              description: AllStrings.level4step2Option3Des,
               rent: 500,
-              image: 'assets/transport3.png',
-              bottomText:
-                  'Travel using taxis to save time and increased comfort. Earn high quality of life points.'),
+              image: AllImages.level4Step2Image3,
+              bottomText: AllStrings.level4step2Option3BottomText),
           // OptionsValue(
           //     description:
           //     'This brand new vehicle has no prior owner. The car is in mint condition and has premium features and options, such as power windows, four-wheel drive, keyless entry and sunroof.',
@@ -101,35 +87,35 @@ class LevelFourOptionsController extends GetxController {
           //     image: 'assets/luxuryHouse.png')
         ]),
     LevelFourOptions(
-        text: 'CHOOSE YOUR LIFESTYLE',
-        step: 'STEP 03',
-        options1: 'Economy ',
-        options2: 'Plus ',
-        options3: 'Premium ',
+        text: AllStrings.level4step3Text,
+        step: AllStrings.level4Step3,
+        options1: AllStrings.level4step3Option1,
+        options2: AllStrings.level4step3Option2,
+        options3: AllStrings.level4step3Option3,
         //isSelectedButton: 0,
         isSelectedOption: 0,
         optionsValue: [
           OptionsValue(
-              description: ' Organic groceries.  affordable cellphone and internet plans. Shop and eat out once a month.',
+              description: AllStrings.level4step3Option1Des,
               rent: 300,
-              image: 'assets/lifestyle1.png',
-               bottomText:''
+              image: AllImages.level4Step3Image1,
+              bottomText: ''
               // 'Tip: Distance from amenities & work will impact your monthly transport expense'
-        ),
+              ),
           OptionsValue(
-              description: 'Gourmet groceries, unlimited cellphone and internet plans. Shop and eat out often.',
+              description: AllStrings.level4step3Option2Des,
               rent: 400,
-              image: 'assets/lifestyle2.png',
-               bottomText:''
+              image: AllImages.level4Step3Image2,
+              bottomText: ''
               // 'Tip: Distance from amenities & work will impact your monthly transport expense'
-          ),
+              ),
           OptionsValue(
-              description: 'Basic quality groceries, budget cellphone and internet plans, shop only on sale.',
+              description: AllStrings.level4step3Option3Des,
               rent: 600,
-              image: 'assets/lifestyle3.png',
-               bottomText:''
+              image: AllImages.level4Step3Image3,
+              bottomText: ''
               // 'Tip: Distance from amenities & work will impact your monthly transport expense'
-          )
+              )
         ]),
   ];
 }

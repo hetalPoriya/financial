@@ -1,8 +1,8 @@
 import 'package:financial/models/on_boarding_model.dart';
-import 'package:financial/utils/all_images.dart';
-import 'package:financial/utils/all_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../utils/utils.dart';
 
 class OnBoardingController extends GetxController {
   var pageController = PageController();

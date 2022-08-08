@@ -29,7 +29,10 @@ class AllColors{
   static Color lightOrange = Color(0xffFF917C);
   static Color orange = Color(0xffFF627F);
   static Color darkOrange = Color(0xffEF645B);
+  static Color lightRed = Color(0xffff9085);
   static Color red = Color(0xffff3333);
+  static Color yellowMedium = Color(0xffFFC444);
+  static Color skin = Color(0xffFEF1EE);
 
 
   static Color preview1 = Color(0xff553EC4);
@@ -70,7 +73,7 @@ class AllColors{
   static Color leaderBoardTextColor = Color(0xff6165D7);
   static Color leaderBoardConColor = Color(0xffF2E7FF);
   static Color leaderBoardColor = Color(0xffE0D5F6);
-  static Color leaderBoardNameColor = Color(0xffA1085C);
+  static Color leaderBoardNameInterColor = Color(0xffA1085C);
 
   //level progress Color
   static Color progressColor = Color(0xff8672E8);
@@ -83,4 +86,9 @@ class AllColors{
   static Color creditScore650to750 = Color(0xffFEEE00);
   static Color creditScore750to850 = Color(0xffCFDA00);
   static Color creditScore850to950 = Color(0xff3ECF00);
+
+  //button
+static Color buttonColor1 = Color(0xff634AE8);
+static Color buttonColor2 = Color(0xff4E6BF1);
+static Color buttonColor3 = Color(0xff624CE8);
 }

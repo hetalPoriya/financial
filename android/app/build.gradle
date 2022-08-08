@@ -13,7 +13,7 @@ if (flutterRoot == null) {
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
-  flutterVersionCode = '17'
+  flutterVersionCode = '22'
 }
 
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
@@ -32,7 +32,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-  compileSdkVersion 31
+  compileSdkVersion 33
   sourceSets {
     main.java.srcDirs += 'src/main/kotlin'
   }
@@ -41,7 +41,7 @@ android {
     // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
     applicationId "com.finshark"
     minSdkVersion 21
-    targetSdkVersion 31
+    targetSdkVersion 33
     versionCode flutterVersionCode.toInteger()
     versionName flutterVersionName
     multiDexEnabled true
